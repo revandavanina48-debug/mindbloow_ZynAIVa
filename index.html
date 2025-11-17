@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindBloow: Stories, Support, & Mental Clarity</title>
+
+    <!-- Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">MindBloow</div>
+        <ul class="nav-links">
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#edu">Edukasi</a></li>
+            <li><a href="#signs">Tanda-tanda</a></li>
+            <li><a href="#help">Cara Mengatasi</a></li>
+            <li><a href="#test">Tes Mental</a></li>
+            <li><a href="#ai">AI Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <header id="home" class="hero">
+        <h1>MindBloow</h1>
+        <p>Stories, Support, & Mental Clarity</p>
+        <a href="#ai" class="btn-primary">Mulai Bicara</a>
+    </header>
+
+    <!-- Edukasi -->
+    <section id="edu" class="section">
+        <h2>Edukasi Singkat</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>Depresi</h3>
+                <p>Depresi adalah kondisi mental yang mempengaruhi suasana hati, energi, dan motivasi.</p>
+            </div>
+            <div class="card">
+                <h3>Kecemasan</h3>
+                <p>Kecemasan berlebihan dapat mengganggu aktivitas harian dan fokus.</p>
+            </div>
+            <div class="card">
+                <h3>Burnout</h3>
+                <p>Burnout muncul akibat tekanan kerja atau sekolah yang terus menerus.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tanda-tanda -->
+    <section id="signs" class="section alt">
+        <h2>Tanda-tanda Umum</h2>
+        <ul class="list">
+            <li>Kehilangan energi</li>
+            <li>Menarik diri dari lingkungan</li>
+            <li>Mood berubah tiba-tiba</li>
+            <li>Kesulitan tidur</li>
+        </ul>
+    </section>
+
+    <!-- Cara Mengatasi -->
+    <section id="help" class="section">
+        <h2>Cara Mengatasi</h2>
+        <ol class="list">
+            <li>Curhat kepada teman yang dipercaya</li>
+            <li>Istirahat yang cukup</li>
+            <li>Melakukan journaling</li>
+            <li>Mencari bantuan profesional</li>
+        </ol>
+    </section>
+
+    <!-- Tes Mental -->
+    <section id="test" class="section alt">
+        <h2>Tes Mental Sederhana</h2>
+        <p>Jawab jujur untuk mengetahui kondisi awal pikiranmu.</p>
+
+        <div class="quiz">
+            <label>1. Saya merasa cemas akhir-akhir ini.</label>
+            <select id="q1">
+                <option value="0">Tidak Pernah</option>
+                <option value="1">Kadang</option>
+                <option value="2">Sering</option>
+            </select>
+
+            <label>2. Saya sulit tidur atau gelisah.</label>
+            <select id="q2">
+                <option value="0">Tidak Pernah</option>
+                <option value="1">Kadang</option>
+                <option value="2">Sering</option>
+            </select>
+
+            <label>3. Saya kehilangan motivasi.</label>
+            <select id="q3">
+                <option value="0">Tidak Pernah</option>
+                <option value="1">Kadang</option>
+                <option value="2">Sering</option>
+            </select>
+
+            <button class="btn-primary" onclick="calculateScore()">Lihat Hasil</button>
+
+            <p id="result"></p>
+        </div>
+    </section>
+
+    <!-- AI Chat -->
+    <section id="ai" class="section">
+        <h2>MindBloow AI Support</h2>
+        <div class="ai-box">
+            <textarea id="userInput" placeholder="Ceritakan apa yang kamu rasakan..."></textarea>
+            <button class="btn-primary" onclick="respondAI()">Kirim</button>
+            <div id="aiResponse" class="ai-response"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 MindBloow — Mental Clarity for Everyone</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
