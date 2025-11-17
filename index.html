@@ -5,54 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MindBloow: Stories, Support, & Mental Clarity</title>
 
-    <!-- Font Google -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .hidden { display: none; }
+        .active-link { color: #4f73ff; font-weight: 700; }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="logo">MindBloow</div>
         <ul class="nav-links">
-            <li><a href="#home">Beranda</a></li>
-            <li><a href="#edu">Edukasi</a></li>
-            <li><a href="#signs">Tanda-tanda</a></li>
-            <li><a href="#help">Cara Mengatasi</a></li>
-            <li><a href="#test">Tes Mental</a></li>
-            <li><a href="#ai">AI Support</a></li>
+            <li><a href="#" data-page="home" class="nav-btn active-link">Beranda</a></li>
+            <li><a href="#" data-page="edu" class="nav-btn">Edukasi</a></li>
+            <li><a href="#" data-page="signs" class="nav-btn">Tanda-tanda</a></li>
+            <li><a href="#" data-page="help" class="nav-btn">Cara Mengatasi</a></li>
+            <li><a href="#" data-page="test" class="nav-btn">Tes Mental</a></li>
+            <li><a href="#" data-page="ai" class="nav-btn">Konsultasi</a></li>
         </ul>
     </nav>
 
-    <!-- Hero -->
-    <header id="home" class="hero">
-        <h1>MindBloow</h1>
-        <p>Stories, Support, & Mental Clarity</p>
-        <a href="#ai" class="btn-primary">Mulai Bicara</a>
-    </header>
+    <!-- Beranda -->
+    <section id="home" class="page-section">
+        <header class="hero">
+            <h1>MindBloow</h1>
+            <p>Stories, Support, & Mental Clarity</p>
+            <a data-page="ai" class="btn-primary nav-btn">Mulai Bicara</a>
+        </header>
+    </section>
 
     <!-- Edukasi -->
-    <section id="edu" class="section">
+    <section id="edu" class="page-section hidden">
         <h2>Edukasi Singkat</h2>
         <div class="card-container">
-            <div class="card">
-                <h3>Depresi</h3>
-                <p>Depresi adalah kondisi mental yang mempengaruhi suasana hati, energi, dan motivasi.</p>
-            </div>
-            <div class="card">
-                <h3>Kecemasan</h3>
-                <p>Kecemasan berlebihan dapat mengganggu aktivitas harian dan fokus.</p>
-            </div>
-            <div class="card">
-                <h3>Burnout</h3>
-                <p>Burnout muncul akibat tekanan kerja atau sekolah yang terus menerus.</p>
-            </div>
+            <div class="card"><h3>Depresi</h3><p>Depresi adalah kondisi mental yang mempengaruhi suasana hati, energi, dan motivasi.</p></div>
+            <div class="card"><h3>Kecemasan</h3><p>Kecemasan berlebihan dapat mengganggu aktivitas harian dan fokus.</p></div>
+            <div class="card"><h3>Burnout</h3><p>Burnout muncul akibat tekanan kerja atau sekolah yang terus menerus.</p></div>
         </div>
     </section>
 
     <!-- Tanda-tanda -->
-    <section id="signs" class="section alt">
+    <section id="signs" class="page-section hidden">
         <h2>Tanda-tanda Umum</h2>
         <ul class="list">
             <li>Kehilangan energi</li>
@@ -63,7 +58,7 @@
     </section>
 
     <!-- Cara Mengatasi -->
-    <section id="help" class="section">
+    <section id="help" class="page-section hidden">
         <h2>Cara Mengatasi</h2>
         <ol class="list">
             <li>Curhat kepada teman yang dipercaya</li>
@@ -74,40 +69,26 @@
     </section>
 
     <!-- Tes Mental -->
-    <section id="test" class="section alt">
+    <section id="test" class="page-section hidden">
         <h2>Tes Mental Sederhana</h2>
         <p>Jawab jujur untuk mengetahui kondisi awal pikiranmu.</p>
-
         <div class="quiz">
             <label>1. Saya merasa cemas akhir-akhir ini.</label>
-            <select id="q1">
-                <option value="0">Tidak Pernah</option>
-                <option value="1">Kadang</option>
-                <option value="2">Sering</option>
-            </select>
+            <select id="q1"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
 
             <label>2. Saya sulit tidur atau gelisah.</label>
-            <select id="q2">
-                <option value="0">Tidak Pernah</option>
-                <option value="1">Kadang</option>
-                <option value="2">Sering</option>
-            </select>
+            <select id="q2"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
 
             <label>3. Saya kehilangan motivasi.</label>
-            <select id="q3">
-                <option value="0">Tidak Pernah</option>
-                <option value="1">Kadang</option>
-                <option value="2">Sering</option>
-            </select>
+            <select id="q3"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
 
             <button class="btn-primary" onclick="calculateScore()">Lihat Hasil</button>
-
             <p id="result"></p>
         </div>
     </section>
 
-    <!-- AI Chat -->
-    <section id="ai" class="section">
+    <!-- Konsultasi AI -->
+    <section id="ai" class="page-section hidden">
         <h2>MindBloow AI Support</h2>
         <div class="ai-box">
             <textarea id="userInput" placeholder="Ceritakan apa yang kamu rasakan..."></textarea>
@@ -120,6 +101,23 @@
         <p>© 2025 MindBloow — Mental Clarity for Everyone</p>
     </footer>
 
-    <script src="app.js"></script>
+<script>
+    const buttons = document.querySelectorAll('.nav-btn');
+    const pages = document.querySelectorAll('.page-section');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            let target = btn.getAttribute('data-page');
+
+            pages.forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(target).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+            if (btn.tagName === 'A') btn.classList.add('active-link');
+        });
+    });
+</script>
+
+<script src="app.js"></script>
 </body>
 </html>
