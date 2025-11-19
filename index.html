@@ -90,7 +90,7 @@
 
   @media (max-width:900px){
     .grid.cols-3{grid-template-columns:1fr}
-    .menu{display:none}
+    .menu{display:none;flex-direction:column;gap:14px;position:absolute;top:70px;right:20px;background:white;padding:18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.1);min-width:180px;animation:slideDown 0.25s ease}
     .nav-toggle{display:inline-flex}
     .hero{flex-direction:column;text-align:left}
   }
@@ -475,6 +475,10 @@
     const navToggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.menu');
     navToggle.addEventListener('click', () => {
+      const isShown = menu.classList.toggle('open');
+      if(isShown){ menu.style.display = 'flex'; }
+      else{ menu.style.display = 'none'; }
+    });('click', () => {
       const shown = menu.style.display === 'flex';
       menu.style.display = shown ? 'none' : 'flex';
     });
