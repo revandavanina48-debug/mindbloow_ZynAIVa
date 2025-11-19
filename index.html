@@ -1,106 +1,510 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MindBloow: Stories, Support, & Mental Clarity</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MindBloow — AI Interactive</title>
+  <meta name="description" content="MindBloow — Edukasi, Tes, dan Konsultasi AI untuk kesehatan mental (demo).">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <style>
+  :root{
+    --bg: #FAFBFF;
+    --card: #ffffff;
+    --muted: #6b7a92;
+    --primary: #5a6eff;
+    --primary-soft: #e8ecff;
+    --accent: #ffa8c9;
+    --accent-soft: #ffe6f1;
+    --radius: 16px;
+    --gap: 18px;
+    --shadow: 0 8px 28px rgba(30, 60, 120, 0.08);
+    --shadow-soft: 0 4px 16px rgba(30, 60, 120, 0.05);
+    font-family: 'Poppins', system-ui;
+  }
 
-    <style>
-        .hidden { display: none; }
-        .active-link { color: #4f73ff; font-weight: 700; }
-    </style>
+  *{box-sizing:border-box; transition: all .25s ease}
+  html,body{margin:0;height:100%;background:var(--bg);color:#0f172a}
+
+  /* Layout */
+  .site{display:flex;flex-direction:column;min-height:100vh}
+  header{background:rgba(255,255,255,0.7);backdrop-filter:blur(14px);padding:14px 20px;position:sticky;top:0;z-index:60;box-shadow:var(--shadow-soft)}
+  .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+  .brand .logo{font-weight:700;color:var(--primary);font-size:22px;letter-spacing:-0.5px}
+
+  /* Menu */
+  .menu{display:flex;gap:4px}
+  .menu button{
+    background:transparent;border:0;padding:10px 16px;border-radius:var(--radius);
+    font-weight:600;color:var(--muted);cursor:pointer;opacity:.85
+  }
+  .menu button:hover{opacity:1;background:var(--primary-soft)}
+  .menu button[aria-current="true"]{
+    background:linear-gradient(90deg,var(--primary),var(--accent));color:white;
+    box-shadow:var(--shadow);opacity:1
+  }
+  .nav-toggle{display:none;border:0;background:transparent;font-size:22px;padding:8px;border-radius:10px}
+
+  main{flex:1;max-width:1100px;margin:24px auto;padding:20px;width:100%}
+  .page{display:none;opacity:0;transform:translateY(10px)}
+  .page.active{display:block;opacity:1;transform:none}
+
+  /* Cards */
+  .card{
+    background:var(--card);
+    padding:22px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    animation:fadeIn .35s ease;
+  }
+
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* Grid */
+  .grid{display:grid;gap:20px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+
+  /* Hero */
+  .hero{display:flex;align-items:center;gap:30px;padding:30px;border-radius:18px;background:linear-gradient(135deg,#eef3ff,#fff1f7)}
+  .hero:hover{transform:scale(1.01)}
+  .hero h1{margin:0;font-size:30px;line-height:1.2}
+
+  /* Illustrations */
+  .illustration{padding:20px;border-radius:18px;background:linear-gradient(180deg,#fff,#f4f7ff);box-shadow:var(--shadow-soft)}
+  .illustration:hover{transform:scale(1.02)}
+  .illus-svg{width:100%;max-width:430px}
+
+  /* Quiz */
+  .quiz-card{display:flex;flex-direction:column;gap:14px}
+  .progress{height:14px;background:#e5ebff;border-radius:999px;overflow:hidden}
+  .progress>i{height:100%;width:0;background:linear-gradient(90deg,#6a8bff,#ffa6c8)}
+
+  .choice{
+    padding:12px;border-radius:12px;border:1px solid #dde5ff;background:white;
+    cursor:pointer;font-weight:500;flex:1;min-width:120px;text-align:center;
+  }
+  .choice:hover{background:var(--primary-soft)}
+  .choice.selected{background:linear-gradient(90deg,var(--primary),var(--accent));border-color:transparent;color:white}
+
+  .result{padding:18px;border-radius:12px;background:#fff8fb;border:1px solid #ffdcec}
+
+  /* Chat */
+  .history{min-height:130px;max-height:450px;overflow:auto;padding:12px;border-radius:14px;background:linear-gradient(180deg,#ffffff,#fbfbff);box-shadow:var(--shadow-soft)}
+  .bubble{padding:12px;border-radius:14px;margin-bottom:10px;max-width:78%;animation:fadeIn .35s ease}
+  .bubble.user{background:#e9efff;margin-left:auto}
+  .bubble.bot{background:#fff0f7}
+
+  .chip{padding:10px 14px;border-radius:999px;border:1px solid #dde5ff;background:white;cursor:pointer;font-weight:500}
+  .chip:hover{background:var(--primary-soft)}
+
+  footer{text-align:center;padding:20px;color:var(--muted)}
+
+  /* Responsive */
+  @media(max-width:900px){
+    .grid.cols-3{grid-template-columns:1fr}
+    .menu{display:none;flex-direction:column;background:white;padding:10px;border-radius:14px;box-shadow:var(--shadow)}
+    .nav-toggle{display:inline-flex}
+  }
+
+  @media(max-width:600px){
+    .hero{flex-direction:column;text-align:left;padding:22px}
+    main{padding:12px}
+  }
+  /* Theme Variants */
+  body.theme-dark{
+    --bg:#0f1116;
+    --card:#151821;
+    --muted:#a7b2c8;
+    --primary:#6d8dff;
+    --primary-soft:#20263a;
+    --accent:#ff92b7;
+    --accent-soft:#3a1f2c;
+    color:white;
+  }
+  body.theme-dark .card{background:#1a1e29;color:white}
+  body.theme-dark .bubble.user{background:#28304a}
+  body.theme-dark .bubble.bot{background:#2c1d29}
+  body.theme-dark .menu button{color:#c8d0e0}
+  body.theme-dark .menu button:hover{background:#2a3244}
+  body.theme-dark footer{color:#8c95a7}
+
+  @media(max-width:500px){
+    .illustration{border-radius:12px;}
+    .hero h1{font-size:24px}
+    .illus-svg{max-width:280px}
+    .card{padding:18px}
+    .chip{padding:8px 12px;font-size:14px}
+  }
+
+</style>
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="logo">MindBloow</div>
-        <ul class="nav-links">
-            <li><a href="#" data-page="home" class="nav-btn active-link">Beranda</a></li>
-            <li><a href="#" data-page="journal" class="nav-btn">Jurnal Harian</a></li>
-            <li><a href="#" data-page="test" class="nav-btn">Tes Kesehatan Mental</a></li>
-            <li><a href="#" data-page="ai" class="nav-btn">Konsultasi</a></li>
-        </ul>
-    </nav>
-
-
-    <!-- BERANDA -->
-    <section id="home" class="page-section">
-        <header class="hero">
-            <h1>MindBloow</h1>
-            <p>Stories, Support, & Mental Clarity</p>
-            <a data-page="ai" class="btn-primary nav-btn">Mulai Bicara</a>
-        </header>
-    </section>
-
-
-    <!-- 🎯 JURNAL HARIAN -->
-    <section id="journal" class="page-section hidden">
-        <h2>Jurnal Harian</h2>
-        <p>Tulis perasaanmu hari ini secara jujur dan bebas 🌿</p>
-        <textarea id="journalInput" placeholder="Tulis perasaanmu di sini..."></textarea>
-        <button class="btn-primary" onclick="saveJournal()">Simpan Jurnal</button>
-
-        <h3>Riwayat Jurnal</h3>
-        <ul id="journalList" class="journal-list"></ul>
-    </section>
-
-
-    <!-- 🧠 TES KESEHATAN MENTAL -->
-    <section id="test" class="page-section hidden">
-        <h2>Tes Kesehatan Mental</h2>
-        <p>Jawab jujur untuk mengetahui kondisi awal pikiranmu.</p>
-
-        <div class="quiz">
-            <label>1. Saya merasa cemas akhir-akhir ini.</label>
-            <select id="q1"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
-
-            <label>2. Saya sulit tidur atau gelisah.</label>
-            <select id="q2"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
-
-            <label>3. Saya kehilangan motivasi.</label>
-            <select id="q3"><option value="0">Tidak Pernah</option><option value="1">Kadang</option><option value="2">Sering</option></select>
-
-            <button class="btn-primary" onclick="calculateScore()">Lihat Hasil</button>
-            <p id="result"></p>
+  <div class="site">
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="logo">MindBloow</div>
         </div>
-    </section>
 
+        <nav>
+          <div class="menu" role="tablist" aria-label="Main navigation">
+            <button data-page="home" aria-current="true">Beranda</button>
+            <button data-page="edu">Edukasi</button>
+            <button data-page="signs">Tanda-tanda</button>
+            <button data-page="help">Cara Mengatasi</button>
+            <button data-page="test">Tes Mental</button>
+            <button data-page="consult">Konsultasi</button>
+          </div>
+          <button class="nav-toggle" aria-label="Buka menu">☰</button>
+        </nav>
+      </div>
+    </header>
 
-    <!-- 🤖 KONSULTASI AI -->
-    <section id="ai" class="page-section hidden">
-        <h2>MindBloow AI Support</h2>
-        <div class="ai-box">
-            <textarea id="userInput" placeholder="Ceritakan apa yang kamu rasakan..."></textarea>
-            <button class="btn-primary" onclick="respondAI()">Kirim</button>
-            <div id="aiResponse" class="ai-response"></div>
+    <!-- THEME SWITCHER -->
+    <div style="position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px">
+      <button class="chip" id="themeToggle">Ganti Tema</button>
+    </div>
+
+    <main>
+      <!-- HOME -->
+      <section id="home" class="page active">
+        <div class="hero card">
+          <div>
+            <h1>Jaga Kesehatan Mentalmu</h1>
+            <p>Self-screening, edukasi, dan dukungan awal berbasis pola — demo AI ringan.</p>
+            <div style="margin-top:12px"><button data-page="test" class="chip">Mulai Tes</button> <button data-page="consult" class="chip">Konsultasi Sekarang</button></div>
+          </div>
+          <div class="illustration" aria-hidden="true">
+            <!-- soft pastel svg illustration (inline so no external images needed) -->
+            <svg class="illus-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi lembut">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#E8F4FF"/><stop offset="1" stop-color="#FFF0F6"/></linearGradient>
+              </defs>
+              <rect x="0" y="0" width="560" height="360" rx="18" fill="url(#g1)" />
+              <g transform="translate(40,40)">
+                <ellipse cx="220" cy="140" rx="90" ry="85" fill="#FFF" opacity="0.9" />
+                <circle cx="120" cy="120" r="36" fill="#FFDEE9" opacity="0.9" />
+                <circle cx="300" cy="80" r="28" fill="#DFF7FF" opacity="0.95" />
+                <path d="M70 220c35-30 210-30 250 0v20H70z" fill="#fff" opacity="0.6" />
+              </g>
+            </svg>
+          </div>
         </div>
-    </section>
+      </section>
 
+      <!-- EDUKASI -->
+      <section id="edu" class="page">
+        <div class="card">
+          <h2>Edukasi Singkat</h2>
+          <p class="muted">Ilustrasi lembut di samping menjelaskan kondisi dengan warna pastel.</p>
+
+          <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:16px">
+            <div style="flex:1;min-width:260px">
+              <div class="grid cols-3">
+                <div class="card"><h3>Depresi</h3><p>Kondisi suasana hati yang menurunkan energi dan minat.</p></div>
+                <div class="card"><h3>Kecemasan</h3><p>Khawatir berlebih yang mengganggu aktivitas harian.</p></div>
+                <div class="card"><h3>Burnout</h3><p>Kelelahan kronis akibat tekanan yang berkepanjangan.</p></div>
+              </div>
+            </div>
+
+            <div style="width:320px">
+              <!-- larger pastel illustration for edu page -->
+              <div class="illustration card" role="img" aria-label="Ilustrasi edukasi pastel">
+                <svg viewBox="0 0 360 360" class="illus-svg" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="eduGrad" x1="0" x2="1"><stop offset="0" stop-color="#FFF1F6"/><stop offset="1" stop-color="#F0FBFF"/></linearGradient>
+                  </defs>
+                  <rect width="100%" height="100%" rx="12" fill="url(#eduGrad)"/>
+                  <g transform="translate(20,20)">
+                    <circle cx="90" cy="90" r="62" fill="#FFEAF2" />
+                    <rect x="150" y="40" width="140" height="110" rx="14" fill="#E8F7FF" />
+                    <path d="M10 220c40-28 220-24 280 0v24H10z" fill="#FFFFFF" opacity="0.9" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIGNS -->
+      <section id="signs" class="page">
+        <div class="card">
+          <h2>Tanda-tanda yang Perlu Diperhatikan</h2>
+          <ul>
+            <li>Kehilangan energi</li>
+            <li>Menarik diri dari lingkungan</li>
+            <li>Mood berubah tiba-tiba</li>
+            <li>Kesulitan tidur</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- HELP -->
+      <section id="help" class="page">
+        <div class="card">
+          <h2>Cara Mengatasi — Tips Singkat</h2>
+          <ol>
+            <li>Curhat kepada teman yang dipercaya</li>
+            <li>Istirahat yang cukup</li>
+            <li>Melakukan journaling</li>
+            <li>Mencari bantuan profesional bila perlu</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- TEST -->
+      <section id="test" class="page">
+        <div class="card quiz-card">
+          <h2>Tes Interaktif (GAD-like singkat)</h2>
+          <p class="muted">Pilih jawaban untuk setiap pertanyaan — hasil bersifat indikatif, bukan diagnosis.</p>
+
+          <div class="progress" aria-hidden="false"><i id="progressFill"></i></div>
+          <div id="qArea"></div>
+
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button id="prevQ" class="chip" style="display:none">Kembali</button>
+            <button id="nextQ" class="chip">Lanjut</button>
+          </div>
+
+          <div id="resultBox" class="result" style="display:none;margin-top:12px"></div>
+        </div>
+      </section>
+
+      <!-- CONSULT -->
+      <section id="consult" class="page">
+        <div class="card chat">
+          <h2>Konsultasi — AI Support (demo)</h2>
+          <div id="history" class="history" aria-live="polite"></div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input id="story" placeholder="Ceritakan apa yang kamu rasakan..." style="flex:1;padding:12px;border-radius:10px;border:1px solid #e6eef8" />
+            <button id="sendBtn" class="chip">Kirim</button>
+            <button id="clearBtn" class="chip">Bersihkan</button>
+          </div>
+
+          <div style="margin-top:8px" class="quick-replies" aria-hidden="false">
+            <button class="chip quick" data-q="cemas">Saya cemas</button>
+            <button class="chip quick" data-q="sedih">Saya sedih</button>
+            <button class="chip quick" data-q="tidur">Sulit tidur</button>
+            <button class="chip quick" data-q="sendiri">Saya merasa sendiri</button>
+          </div>
+        </div>
+      </section>
+
+    
+
+      <!-- ADDITIONAL ILLUSTRATION SECTION -->
+      <section id="extra-illustration" class="page">
+        <div class="card">
+          <h2>Ilustrasi Tambahan</h2>
+          <p class="muted">Ilustrasi lembut ekstra untuk memperkaya tampilan.</p>
+
+          <div class="illustration" style="margin-top:18px">
+            <svg class="illus-svg" viewBox="0 0 420 300">
+              <defs>
+                <linearGradient id="ex1" x1="0" x2="1">
+                  <stop offset="0" stop-color="#FFF3FA"/>
+                  <stop offset="1" stop-color="#EAF4FF"/>
+                </linearGradient>
+              </defs>
+              <rect width="100%" height="100%" rx="18" fill="url(#ex1)" />
+              <circle cx="140" cy="150" r="60" fill="#FFD9EC" opacity="0.9"/>
+              <circle cx="260" cy="120" r="40" fill="#DFF1FF" opacity="0.9"/>
+              <rect x="80" y="200" width="260" height="40" rx="14" fill="#ffffff" opacity="0.8"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+    </main>
 
     <footer>
-        <p>© 2025 MindBloow — Mental Clarity for Everyone</p>
+      <small>© 2025 MindBloow — Demo. Bukan pengganti profesional.</small>
     </footer>
+  </div>
 
-<script>
-    // NAVIGATION (SEMUA WORK)
-    const buttons = document.querySelectorAll('.nav-btn');
-    const pages = document.querySelectorAll('.page-section');
+  <script>
+  // Simple SPA navigation
+  (function(){
+    const buttons = document.querySelectorAll('[data-page]');
+    const pages = document.querySelectorAll('.page');
 
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            let target = btn.getAttribute('data-page');
-            pages.forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(target).classList.remove('hidden');
+    function show(pageId){
+      pages.forEach(p => p.classList.toggle('active', p.id === pageId));
+      buttons.forEach(b => b.setAttribute('aria-current', b.dataset.page === pageId ? 'true' : 'false'));
+      // update hash for back/forward
+      history.replaceState(null, '', '#'+pageId);
+    }
 
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
-            if (btn.tagName === 'A') btn.classList.add('active-link');
-        });
+    buttons.forEach(b => b.addEventListener('click', () => show(b.dataset.page)));
+
+    // initialize from hash
+    const initial = (location.hash && location.hash.replace('#','')) || 'home';
+    show(initial);
+
+    // small nav toggle for mobile
+    const navToggle = document.querySelector('.nav-toggle');
+    const menu = document.querySelector('.menu');
+    navToggle.addEventListener('click', () => {
+      const shown = menu.style.display === 'flex';
+      menu.style.display = shown ? 'none' : 'flex';
     });
-</script>
 
-<script src="app.js"></script>
+    // close mobile menu on click outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !navToggle.contains(e.target) && window.innerWidth < 900) menu.style.display = 'none';
+    });
+
+  })();
+
+  /* -------- QUIZ LOGIC (interactive, 7 q) -------- */
+  (function(){
+    const questions = [
+      'Merasa gugup, gelisah, atau tegang?',
+      'Tidak dapat berhenti atau mengendalikan kekhawatiran?',
+      'Khawatir berlebihan tentang berbagai hal?',
+      'Sulit santai?',
+      'Sulit untuk berhenti merasa khawatir?',
+      'Sulit untuk tidur karena kecemasan?',
+      'Kehilangan minat karena khawatir terus?'
+    ];
+
+    const qArea = document.getElementById('qArea');
+    const prev = document.getElementById('prevQ');
+    const next = document.getElementById('nextQ');
+    const progress = document.getElementById('progressFill');
+    const resultBox = document.getElementById('resultBox');
+
+    let idx = 0;
+    let answers = new Array(questions.length).fill(null);
+
+    function render(i){
+      qArea.innerHTML = '';
+      const q = document.createElement('div'); q.className='question';
+      const h = document.createElement('h3'); h.innerText = (i+1) + '. ' + questions[i];
+      q.appendChild(h);
+
+      const choices = document.createElement('div'); choices.className='choices';
+      const labels = ['Tidak sama sekali','Beberapa hari','Lebih dari setengah hari','Hampir setiap hari'];
+      for(let j=0;j<4;j++){
+        const btn = document.createElement('button');
+        btn.className = 'choice'; btn.innerText = labels[j]; btn.dataset.val = j;
+        if (answers[i] === j) btn.classList.add('selected');
+        btn.addEventListener('click', ()=>{
+          answers[i] = j; updateSelected(i); // keep same index
+        });
+        choices.appendChild(btn);
+      }
+
+      q.appendChild(choices);
+      qArea.appendChild(q);
+
+      const denom = Math.max(1, (questions.length - 1));
+      const pct = Math.round((i/denom)*100);
+      progress.style.width = pct + '%';
+
+      prev.style.display = (i===0)? 'none':'inline-flex';
+      next.innerText = (i < questions.length-1) ? 'Lanjut' : 'Selesai';
+      resultBox.style.display = 'none';
+    }
+
+    function updateSelected(i){
+      const nodes = qArea.querySelectorAll('.choice');
+      nodes.forEach(n => n.classList.toggle('selected', Number(n.dataset.val) === answers[i]));
+    }
+
+    prev.addEventListener('click', ()=>{ if (idx>0){ idx--; render(idx);} });
+    next.addEventListener('click', ()=>{
+      if (answers[idx] === null){ alert('Pilih jawaban dahulu untuk melanjutkan.'); return; }
+      if (idx < questions.length-1){ idx++; render(idx); }
+      else { showResult(); }
+    });
+
+    function showResult(){
+      const sum = answers.reduce((s,v)=> s + (v ?? 0), 0);
+      const max = questions.length * 3;
+      let category='', label='';
+      if (sum >= Math.round(max * 0.7)){ category='Tinggi'; label='Tinggi — Perlu perhatian profesional'; }
+      else if (sum >= Math.round(max * 0.4)){ category='Sedang'; label='Sedang — Perhatikan & pertimbangkan konsultasi'; }
+      else { category='Ringan'; label='Ringan — Perawatan diri & pemantauan'; }
+
+      const suggestions = {
+        'Ringan': ['Coba rutinitas tidur yang konsisten.','Lakukan latihan pernapasan 5 menit setiap hari.','Berbagi cerita ke teman atau keluarga.'],
+        'Sedang': ['Pertimbangkan journaling harian.','Coba konseling jangka pendek atau layanan konselor sekolah/komunitas.','Kurangi konsumsi berita bila itu memicu kecemasan.'],
+        'Tinggi': ['Segera cari bantuan profesional (psikolog/psikiater) untuk evaluasi lebih lanjut.','Jika ada pikiran untuk menyakiti diri sendiri, hubungi layanan darurat segera.','Dukungan dari orang terdekat sangat penting — jangan menanggung sendiri.']
+      };
+
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `<h3>Hasil Tes</h3><p class="muted">Skor: <strong>${sum}</strong> / ${max} — <strong>${label}</strong></p><div><strong>Saran awal:</strong><ul>${suggestions[category].map(s=>`<li>${s}</li>`).join('')}</ul></div><div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end"><button id="retake" class="chip">Ulangi</button><button id="talk" class="chip" data-goto="consult">Konsultasi</button></div>`;
+      document.getElementById('retake').addEventListener('click', ()=>{ answers = new Array(questions.length).fill(null); idx=0; render(idx); progress.style.width = '0%'; resultBox.style.display='none'; });
+      document.getElementById('talk').addEventListener('click', (e)=>{ const goto = e.target.dataset.goto; document.querySelector(`[data-page="${goto}"]`).click(); });
+
+      progress.style.width = '100%';
+    }
+
+    // init
+    render(0);
+  })();
+
+  /* --------- CONSULT CHAT (interactive replies + quick replies) --------- */
+  (function(){
+    const history = document.getElementById('history');
+    const story = document.getElementById('story');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const quicks = document.querySelectorAll('.quick');
+
+    function append(text, who='bot'){
+      const el = document.createElement('div'); el.className = 'bubble ' + (who==='user'?'user':'bot');
+      el.innerHTML = `<div>${escapeHtml(text)}</div>`;
+      history.appendChild(el); history.scrollTop = history.scrollHeight;
+    }
+    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function analyze(text){
+      const t = text.toLowerCase();
+      const responses = [];
+      if (t.includes('cemas')||t.includes('khawatir')||t.includes('gelisah')) responses.push('Coba tarik napas dalam-dalam 4 kali secara perlahan (4-4-4). Mau aku berikan panduan singkat?');
+      if (t.includes('sedih')||t.includes('menangis')||t.includes('down')) responses.push('Aku dengar kamu sedih. Menuliskan tiga hal kecil yang berjalan baik hari ini bisa membantu. Mau coba?');
+      if (t.includes('tidur')||t.includes('insomnia')||t.includes('susah tidur')) responses.push('Coba matikan layar 30 menit sebelum tidur dan lakukan rutinitas ringan seperti peregangan.');
+      if (t.includes('sendiri')||t.includes('kesepian')) responses.push('Kamu tidak sendirian. Punya seseorang yang bisa diajak bicara sekarang?');
+      if (responses.length === 0) responses.push('Terima kasih sudah berbagi. Mau ceritakan lebih detail kapan ini mulai terjadi?');
+      return responses.slice(0,3);
+    }
+
+    async function botReply(userText){
+      append('...', 'bot');
+      await new Promise(r=>setTimeout(r,600));
+      const last = history.querySelector('.bubble.bot:last-child'); if (last && last.textContent === '...') last.remove();
+      const out = analyze(userText);
+      out.forEach(o=> append(o,'bot'));
+      // offer next actions as chips
+      const actions = document.createElement('div'); actions.className = 'quick-replies';
+      actions.innerHTML = '<button class="chip" onclick="document.querySelector(\'[data-page="test"]\').click()">Lakukan Tes</button> <button class="chip" onclick="alert(\'Jika butuh bantuan darurat, hubungi layanan setempat.\')">Info Darurat</button>';
+      history.appendChild(actions); history.scrollTop = history.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', async ()=>{
+      const text = (story.value||'').trim();
+      if (!text) return; append(text,'user'); story.value=''; await botReply(text);
+    });
+
+    clearBtn.addEventListener('click', ()=>{ history.innerHTML=''; story.value=''; story.focus(); });
+    quicks.forEach(q => q.addEventListener('click', async (e)=>{ const t = e.target.dataset.q; story.value = (t==='cemas')? 'Saya cemas akhir-akhir ini' : (t==='sedih')? 'Saya sering sedih' : (t==='tidur')? 'Saya susah tidur' : 'Saya merasa sendiri'; sendBtn.click(); }));
+
+    // keyboard send (Ctrl+Enter)
+    story.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' && (e.ctrlKey||e.metaKey)){ sendBtn.click(); } });
+
+  })();
+
+  </script>
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', ()=>{
+      document.body.classList.toggle('theme-dark');
+      themeToggle.innerText = document.body.classList.contains('theme-dark') ? 'Tema Terang' : 'Tema Gelap';
+    });
+  </script>
 </body>
 </html>
