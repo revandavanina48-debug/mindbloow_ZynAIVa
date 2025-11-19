@@ -4,9 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>MindBloow — AI Interactive</title>
-  <meta name="description" content="MindBloow — Edukasi, Tes, dan Konsultasi AI untuk kesehatan mental .">
+  <meta name="description" content="MindBloow — Edukasi, Tes, dan Konsultasi AI untuk kesehatan mental.">
 
-  <!-- FIXED HEADER STYLE TELAH DIPERBARUI -->
   <style>
   :root{
     --bg: #FBFDFF;
@@ -19,15 +18,24 @@
     --shadow: 0 10px 30px rgba(12,34,56,0.06);
     font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
   }
+
   *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:linear-gradient(180deg,#FBFDFF,#F7FAFF 60%);color:#0f172a}
+  html,body{
+    height:100%;
+    margin:0;
+    background:linear-gradient(180deg,#FBFDFF,#F7FAFF 60%);
+    color:#0f172a;
+  }
 
-  /* Layout */
-  .site{display:flex;flex-direction:column;min-height:100vh}
+  .site{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
 
-  /* ⭐ FIXED HEADER PERMANENT + BOX + SHADOW */
+  /* FIXED HEADER */
   header{
-    background:#ffffffcc;
+    background:#ffffffdd;
     backdrop-filter:blur(10px);
     padding:14px 20px;
     position:fixed;
@@ -39,8 +47,12 @@
     box-shadow:0 4px 12px rgba(0,0,0,0.05);
   }
 
-  /* memberi ruang agar konten tidak tertimpa header */
-  main{margin-top:90px;}
+  main{
+    max-width:1100px;
+    margin:90px auto 0;
+    padding:20px;
+    width:100%;
+  }
 
   .nav-inner{
     max-width:1100px;
@@ -48,10 +60,20 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:12px
+    gap:12px;
   }
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand .logo{font-weight:700;color:var(--primary);font-size:20px}
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .brand .logo{
+    font-weight:700;
+    color:var(--primary);
+    font-size:20px;
+  }
 
   nav{position:relative;}
 
@@ -59,6 +81,7 @@
     display:flex;
     gap:8px;
   }
+
   .menu button{
     background:transparent;
     border:0;
@@ -66,12 +89,13 @@
     border-radius:10px;
     font-weight:600;
     color:var(--muted);
-    cursor:pointer
+    cursor:pointer;
   }
+
   .menu button[aria-current="true"]{
     background:linear-gradient(90deg,var(--primary),var(--accent));
     color:white;
-    box-shadow:var(--shadow)
+    box-shadow:var(--shadow);
   }
 
   .nav-toggle{
@@ -79,17 +103,22 @@
     background:transparent;
     border:0;
     padding:8px;
-    border-radius:10px;
     font-size:22px;
     cursor:pointer;
   }
 
-  .page{display:none}
-  .page.active{display:block}
+  .page{display:none;}
+  .page.active{display:block;}
 
-  .grid{display:grid;gap:18px}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-  .card{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow)}
+  .grid{display:grid;gap:18px;}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+
+  .card{
+    background:white;
+    padding:18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
 
   .hero{
     display:flex;
@@ -97,10 +126,18 @@
     gap:24px;
     padding:28px;
     border-radius:14px;
-    background:linear-gradient(135deg,#eaf4ff,#fff0f6)
+    background:linear-gradient(135deg,#eaf4ff,#fff0f6);
   }
-  .hero h1{margin:0;font-size:28px}
-  .hero p{margin:6px 0;color:var(--muted)}
+
+  .hero h1{
+    margin:0;
+    font-size:28px;
+  }
+
+  .hero p{
+    margin:6px 0;
+    color:var(--muted);
+  }
 
   .illustration{
     display:flex;
@@ -109,11 +146,15 @@
     padding:20px;
     border-radius:12px;
     background:linear-gradient(180deg,#fff,#F6FAFF);
-    box-shadow:0 6px 20px rgba(79,115,255,0.06)
+    box-shadow:0 6px 20px rgba(79,115,255,0.06);
   }
-  .illus-svg{width:100%;height:auto;max-width:420px}
 
-  /* responsive */
+  .illus-svg{
+    width:100%;
+    height:auto;
+    max-width:420px;
+  }
+
   @media (max-width:900px){
     .menu{
       display:none;
@@ -137,15 +178,12 @@
 <body>
   <div class="site">
 
-    <!-- ⭐ HEADER FIXED FINAL -->
     <header>
       <div class="nav-inner">
-        <div class="brand">
-          <div class="logo">MindBloow</div>
-        </div>
+        <div class="brand"><div class="logo">MindBloow</div></div>
 
         <nav>
-          <div class="menu" role="tablist" aria-label="Main navigation">
+          <div class="menu" role="tablist">
             <button data-page="home" aria-current="true">Beranda</button>
             <button data-page="edu">Edukasi</button>
             <button data-page="signs">Tanda-tanda</button>
@@ -154,132 +192,141 @@
             <button data-page="consult">Konsultasi</button>
           </div>
 
-          <button class="nav-toggle" aria-label="Buka menu">☰</button>
+          <button class="nav-toggle">☰</button>
         </nav>
       </div>
     </header>
 
-    <!-- MAIN MULAI -->
     <main>
       <!-- HOME -->
       <section id="home" class="page active">
+
         <div class="hero card">
           <div>
             <h1>Jaga Kesehatan Mentalmu</h1>
             <p>Self-screening, edukasi, dan dukungan awal berbasis pola — demo AI ringan.</p>
+
             <div style="margin-top:12px">
               <button data-page="test" class="chip">Mulai Tes</button>
               <button data-page="consult" class="chip">Konsultasi Sekarang</button>
             </div>
           </div>
 
-          <div class="illustration" aria-hidden="true">
-            <svg class="illus-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="g1" x1="0" x2="1">
-                  <stop offset="0" stop-color="#E8F4FF"/>
-                  <stop offset="1" stop-color="#FFF0F6"/>
-                </linearGradient>
-              </defs>
-              <rect x="0" y="0" width="560" height="360" rx="18" fill="url(#g1)" />
-              <g transform="translate(40,40)">
-                <ellipse cx="220" cy="140" rx="90" ry="85" fill="#FFF" opacity="0.9" />
-                <circle cx="120" cy="120" r="36" fill="#FFDEE9" opacity="0.9" />
-                <circle cx="300" cy="80" r="28" fill="#DFF7FF" opacity="0.95" />
-                <path d="M70 220c35-30 210-30 250 0v20H70z" fill="#fff" opacity="0.6" />
-              </g>
-            </svg>
+          <!-- SLIDESHOW FOTO -->
+          <div class="illustration" aria-hidden="true" style="position:relative;width:300px;height:200px;overflow:hidden;border-radius:14px;">
+            <img id="slideShow" src="" style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
           </div>
         </div>
+
       </section>
       <!-- EDUKASI -->
       <section id="edu" class="page">
         <div class="card">
           <h2>Edukasi Lengkap: Kondisi Kesehatan Mental Umum</h2>
-          <p class="muted">Di bawah ini adalah ringkasan singkat tiap kondisi — gunakan sebagai materi edukasi dan rujukan awal.</p>
+          <p class="muted">
+            Ringkasan singkat tiap kondisi — sebagai edukasi dan rujukan awal (bukan diagnosis).
+          </p>
 
           <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:16px">
             <div style="flex:1;min-width:320px">
 
+              <!-- Short Cards -->
               <div class="grid cols-3">
-                <div class="card"><h3>Depresi</h3><p>Gangguan suasana hati yang menurunkan energi dan minat.</p></div>
-                <div class="card"><h3>Kecemasan</h3><p>Khawatir berlebih yang mengganggu aktivitas harian.</p></div>
-                <div class="card"><h3>Burnout</h3><p>Kelelahan kronis akibat tekanan berkepanjangan.</p></div>
+                <div class="card"><h3>Depresi</h3><p>Penurunan energi dan minat.</p></div>
+                <div class="card"><h3>Kecemasan</h3><p>Rasa khawatir berlebih.</p></div>
+                <div class="card"><h3>Burnout</h3><p>Kelelahan emosional kronis.</p></div>
               </div>
 
+              <!-- DETAIL LIST -->
               <div class="disorders" id="disordersList">
 
-                <!-- 7 artikel lengkap (Depresi → OCD) -->
-                <!-- tidak dihapus satupun -->
-                <!-- kode 100% sama seperti versi fix sebelumnya -->
-
+                <!-- 1 -->
                 <article class="disorder" data-key="depresi">
-                  <h3>1. Depresi (Gangguan Depresif Mayor)</h3>
+                  <h3>1. Depresi</h3>
                   <div class="meta">Gangguan suasana hati persisten.</div>
-                  <div><strong>Gejala umum:</strong>
-                    <ul><li>Perasaan sedih</li><li>Kehilangan minat</li><li>Gangguan tidur</li></ul>
+                  <div><strong>Gejala:</strong>
+                    <ul>
+                      <li>Perasaan sedih</li>
+                      <li>Hilang minat</li>
+                      <li>Gangguan tidur</li>
+                    </ul>
                   </div>
                   <div class="more">
                     <p><strong>Saran awal:</strong></p>
-                    <ul><li>Dukungan sosial</li><li>CBT</li></ul>
+                    <ul>
+                      <li>Dukungan sosial</li>
+                      <li>CBT</li>
+                    </ul>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 2 -->
                 <article class="disorder" data-key="kecemasan">
                   <h3>2. Kecemasan</h3>
-                  <div class="meta">Khawatir berlebih yang sulit dikontrol.</div>
-                  <div><strong>Gejala umum:</strong>
-                    <ul><li>Gelisah</li><li>Ketegangan otot</li></ul>
+                  <div class="meta">Khawatir berlebihan.</div>
+                  <div><strong>Gejala:</strong>
+                    <ul>
+                      <li>Gelisah</li>
+                      <li>Ketegangan otot</li>
+                    </ul>
                   </div>
                   <div class="more">
                     <p><strong>Saran awal:</strong></p>
-                    <ul><li>Latihan pernapasan</li><li>CBT</li></ul>
+                    <ul>
+                      <li>Napas 4-4-4</li>
+                      <li>CBT</li>
+                    </ul>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 3 -->
                 <article class="disorder" data-key="burnout">
                   <h3>3. Burnout</h3>
-                  <div class="meta">Kelelahan emosional intens.</div>
+                  <div class="meta">Kelelahan emosional.</div>
                   <div class="more">
-                    <p>Istirahat dan batasan kerja penting.</p>
+                    <p>Istirahat + batasan kerja penting.</p>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 4 -->
                 <article class="disorder" data-key="bipolar">
                   <h3>4. Bipolar</h3>
                   <div class="meta">Perubahan mood ekstrem.</div>
                   <div class="more">
-                    <p>Butuh evaluasi profesional.</p>
+                    <p>Butuh evaluasi psikiater.</p>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 5 -->
                 <article class="disorder" data-key="skizofrenia">
                   <h3>5. Skizofrenia</h3>
                   <div class="meta">Dapat melibatkan halusinasi.</div>
                   <div class="more">
-                    <p>Butuh penanganan jangka panjang.</p>
+                    <p>Penanganan jangka panjang diperlukan.</p>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 6 -->
                 <article class="disorder" data-key="ptsd">
                   <h3>6. PTSD</h3>
                   <div class="meta">Flashback setelah trauma.</div>
                   <div class="more">
-                    <p>Terapi trauma.</p>
+                    <p>Terapi trauma direkomendasikan.</p>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
 
+                <!-- 7 -->
                 <article class="disorder" data-key="ocd">
                   <h3>7. OCD</h3>
                   <div class="meta">Obsesi + kompulsi.</div>
                   <div class="more">
-                    <p>ERP sangat efektif.</p>
+                    <p>ERP adalah terapi efektif.</p>
                     <button class="toggle">Tutup</button>
                   </div>
                 </article>
@@ -290,12 +337,16 @@
             <div style="width:320px">
               <div class="illustration card">
                 <svg viewBox="0 0 360 360" class="illus-svg">
-                  <defs><linearGradient id="eduGrad" x1="0" x2="1"><stop offset="0" stop-color="#FFF1F6"/><stop offset="1" stop-color="#F0FBFF"/></linearGradient></defs>
+                  <defs>
+                    <linearGradient id="eduGrad" x1="0" x2="1">
+                      <stop offset="0" stop-color="#FFF1F6"/>
+                      <stop offset="1" stop-color="#F0FBFF"/>
+                    </linearGradient>
+                  </defs>
                   <rect width="100%" height="100%" rx="12" fill="url(#eduGrad)"/>
                 </svg>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -303,11 +354,15 @@
       <!-- SIGNS -->
       <section id="signs" class="page">
         <div class="card">
-          <h2>Tanda-tanda</h2>
+          <h2>Tanda-tanda yang Perlu Diperhatikan</h2>
           <ol>
             <li>Kehilangan energi</li>
-            <li>Menarik diri</li>
-            <li>Mood berubah</li>
+            <li>Menarik diri dari lingkungan</li>
+            <li>Mood berubah tiba-tiba</li>
+            <li>Sulit tidur</li>
+            <li>Khawatir berlebihan</li>
+            <li>Perubahan makan drastis</li>
+            <li>Nyeri fisik tanpa sebab jelas</li>
           </ol>
         </div>
       </section>
@@ -317,23 +372,33 @@
         <div class="card">
           <h2>Cara Mengatasi</h2>
           <ol>
-            <li>Curhat</li>
-            <li>Istirahat</li>
-            <li>Journaling</li>
+            <li>Curhat ke orang tepercaya</li>
+            <li>Istirahat cukup</li>
+            <li>Melakukan journaling</li>
+            <li>Temui profesional bila perlu</li>
+            <li>Makan sehat</li>
+            <li>Menetapkan batasan (boundary)</li>
+            <li>Melakukan hobi</li>
+            <li>Olahraga ringan</li>
+            <li>Latihan relaksasi</li>
+            <li>Berjemur / ke alam</li>
           </ol>
         </div>
       </section>
-
       <!-- TEST -->
       <section id="test" class="page">
         <div class="card quiz-card">
-          <h2>Tes Interaktif</h2>
+          <h2>Tes Interaktif (GAD-like)</h2>
+          <p class="muted">Jawab tiap pertanyaan — hasil tidak menggantikan diagnosis.</p>
+
           <div class="progress"><i id="progressFill"></i></div>
           <div id="qArea"></div>
+
           <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
             <button id="prevQ" class="chip" style="display:none">Kembali</button>
             <button id="nextQ" class="chip">Lanjut</button>
           </div>
+
           <div id="resultBox" class="result" style="display:none;margin-top:12px"></div>
         </div>
       </section>
@@ -341,203 +406,245 @@
       <!-- CONSULT -->
       <section id="consult" class="page">
         <div class="card chat">
-          <h2>Konsultasi AI</h2>
+          <h2>Konsultasi — AI Support (demo)</h2>
+
           <div id="history" class="history"></div>
-          <div style="display:flex;gap:8px">
-            <input id="story" placeholder="Ceritakan perasaanmu..." style="flex:1;padding:12px;border-radius:10px;border:1px solid #e6eef8" />
+
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+            <input id="story" placeholder="Ceritakan apa yang kamu rasakan..."
+              style="flex:1;padding:12px;border-radius:10px;border:1px solid #e6eef8" />
             <button id="sendBtn" class="chip">Kirim</button>
             <button id="clearBtn" class="chip">Bersihkan</button>
           </div>
-          <div class="quick-replies" style="margin-top:8px">
+
+          <div class="quick-replies" style="margin-top:8px;">
             <button class="chip quick" data-q="cemas">Saya cemas</button>
             <button class="chip quick" data-q="sedih">Saya sedih</button>
+            <button class="chip quick" data-q="tidur">Sulit tidur</button>
+            <button class="chip quick" data-q="sendiri">Merasa sendiri</button>
           </div>
+
         </div>
       </section>
 
     </main>
 
     <footer>
-      <small>© 2025 MindBloow</small>
+      <small>© 2025 MindBloow — Demo edukasi, bukan pengganti profesional.</small>
     </footer>
+
   </div>
 
-  <!-- SCRIPT FINAL -->
-  <script>
-  /* ---------------- SPA NAVIGATION ---------------- */
-  (function(){
-    const buttons = document.querySelectorAll('[data-page]');
-    const pages = document.querySelectorAll('.page');
-    const navToggle = document.querySelector('.nav-toggle');
-    const menu = document.querySelector('.menu');
+<!-- ====================== JAVASCRIPT ========================== -->
+<script>
+/* ---------------- SLIDESHOW PHOTO ---------------- */
+(function(){
+  const photos = [
+    "IMG-20251119-WA0021.jpg",
+    "IMG-20251119-WA0022.jpg",
+    "IMG-20251119-WA0023.jpg",
+    "IMG-20251119-WA0024.jpg"
+  ];
 
-    function show(pageId){
-      pages.forEach(p => p.classList.toggle('active', p.id === pageId));
-      buttons.forEach(b => b.setAttribute('aria-current', b.dataset.page === pageId ? 'true' : 'false'));
-      history.replaceState(null, '', '#' + pageId);
-      if (window.innerWidth < 900){ menu.classList.remove('open'); }
-    }
+  let i = 0;
+  const img = document.getElementById("slideShow");
 
-    buttons.forEach(b => b.addEventListener('click', () => show(b.dataset.page)));
+  function swap(){
+    img.src = photos[i];
+    i = (i + 1) % photos.length;
+  }
+  swap();
+  setInterval(swap, 2500);
+})();
 
-    const initial = (location.hash && location.hash.replace('#','')) || 'home';
-    show(initial);
+/* ---------------- SPA NAVIGATION ---------------- */
+(function(){
+  const buttons = document.querySelectorAll("[data-page]");
+  const pages = document.querySelectorAll(".page");
+  const navToggle = document.querySelector(".nav-toggle");
+  const menu = document.querySelector(".menu");
 
-    navToggle.addEventListener('click', () => {
-      menu.classList.toggle('open');
+  function show(page){
+    pages.forEach(p => p.classList.toggle("active", p.id === page));
+    buttons.forEach(b => b.setAttribute("aria-current", b.dataset.page === page ? "true" : "false"));
+    history.replaceState(null, "", "#"+page);
+    menu.classList.remove("open");
+  }
+
+  buttons.forEach(btn => btn.addEventListener("click", () => show(btn.dataset.page)));
+
+  const initial = (location.hash || "#home").replace("#","");
+  show(initial);
+
+  navToggle.addEventListener("click", () => {
+    menu.classList.toggle("open");
+  });
+
+  document.addEventListener("click", e => {
+    if (!menu.contains(e.target) && !navToggle.contains(e.target))
+      menu.classList.remove("open");
+  });
+})();
+
+/* ---------------- QUIZ LOGIC ---------------- */
+(function(){
+  const questions = [
+    "Merasa gugup atau gelisah?",
+    "Sulit mengendalikan rasa khawatir?",
+    "Khawatir berlebihan tentang banyak hal?",
+    "Sulit untuk rileks?",
+    "Sering merasa tegang?",
+    "Sulit tidur karena cemas?",
+    "Kehilangan minat akibat khawatir?"
+  ];
+
+  const qArea = document.getElementById("qArea");
+  const prev = document.getElementById("prevQ");
+  const next = document.getElementById("nextQ");
+  const progress = document.getElementById("progressFill");
+  const resultBox = document.getElementById("resultBox");
+
+  let idx = 0;
+  let answers = new Array(questions.length).fill(null);
+
+  function render(i){
+    qArea.innerHTML = "";
+    const q = document.createElement("div");
+    q.className = "question";
+    q.innerHTML = "<h3>"+(i+1)+". "+questions[i]+"</h3>";
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+    const labels = ["Tidak sama sekali", "Beberapa hari", "Lebih dari setengah hari", "Hampir setiap hari"];
+
+    labels.forEach((label,j)=>{
+      const btn = document.createElement("button");
+      btn.className = "choice";
+      btn.innerText = label;
+      btn.dataset.val = j;
+      if(answers[i] === j) btn.classList.add("selected");
+      btn.onclick = () => { answers[i] = j; render(i); };
+      choices.appendChild(btn);
     });
 
-    document.addEventListener('click', (e)=>{
-      if(!menu.contains(e.target) && !navToggle.contains(e.target) && window.innerWidth<900){
-        menu.classList.remove('open');
-      }
-    });
-  })();
+    q.appendChild(choices);
+    qArea.appendChild(q);
 
+    prev.style.display = (i===0)? "none" : "inline-flex";
+    next.innerText = (i < questions.length - 1) ? "Lanjut" : "Selesai";
+    progress.style.width = Math.round(i/(questions.length-1)*100)+"%";
+    resultBox.style.display = "none";
+  }
 
-  /* ---------------- QUIZ LOGIC ---------------- */
-  (function(){
-    const questions = [
-      'Merasa gugup / gelisah?',
-      'Tidak dapat mengendalikan kekhawatiran?',
-      'Khawatir berlebihan?',
-      'Sulit santai?',
-      'Sulit tidur karena cemas?',
-      'Kehilangan minat karena khawatir?',
-      'Cemas hampir setiap hari?'
-    ];
-
-    const qArea = document.getElementById('qArea');
-    const prev = document.getElementById('prevQ');
-    const next = document.getElementById('nextQ');
-    const progress = document.getElementById('progressFill');
-    const resultBox = document.getElementById('resultBox');
-
-    let idx = 0;
-    let answers = new Array(questions.length).fill(null);
-
-    function render(i){
-      qArea.innerHTML = '';
-      const q = document.createElement('div');
-      q.className = 'question';
-      q.innerHTML = '<h3>'+(i+1)+'. '+questions[i]+'</h3>';
-
-      const choices = document.createElement('div');
-      choices.className = 'choices';
-
-      const labels = ['Tidak sama sekali','Beberapa hari','> setengah hari','Hampir setiap hari'];
-
-      labels.forEach((t,j)=>{
-        const btn = document.createElement('button');
-        btn.className = 'choice';
-        btn.innerText = t;
-        btn.dataset.val = j;
-        if(answers[i]===j) btn.classList.add('selected');
-        btn.onclick = ()=>{ answers[i]=j; render(i); };
-        choices.appendChild(btn);
-      });
-
-      q.appendChild(choices);
-      qArea.appendChild(q);
-
-      prev.style.display = i===0 ? 'none' : 'inline-flex';
-      next.innerText = i<questions.length-1 ? 'Lanjut' : 'Selesai';
-      progress.style.width = Math.round(i/(questions.length-1)*100)+'%';
-      resultBox.style.display='none';
+  prev.onclick = ()=>{ if(idx>0){ idx--; render(idx);} };
+  next.onclick = ()=>{
+    if (answers[idx] === null){
+      alert("Pilih jawaban dahulu.");
+      return;
     }
+    if (idx < questions.length-1){
+      idx++;
+      render(idx);
+    } else {
+      result();
+    }
+  };
 
-    prev.onclick = ()=>{ if(idx>0){ idx--; render(idx);} };
-    next.onclick = ()=>{
-      if(answers[idx]===null){ alert('Pilih jawaban dahulu'); return; }
-      if(idx<questions.length-1){ idx++; render(idx); }
-      else { showResult(); }
+  function result(){
+    const sum = answers.reduce((a,b)=>a+(b??0),0);
+    const max = questions.length * 3;
+    let level = sum < max*0.4 ? "Ringan" : sum < max*0.7 ? "Sedang" : "Tinggi";
+
+    const tips = {
+      Ringan: ["Tidur cukup", "Latihan napas 5 menit", "Kurangi layar malam"],
+      Sedang: ["Journaling", "Konseling ringan", "Kurangi pemicu stres"],
+      Tinggi: ["Temui profesional", "Minta dukungan keluarga", "Awasi pola tidur"]
     };
 
-    function showResult(){
-      const sum = answers.reduce((a,b)=>a+(b??0),0);
-      const max = questions.length*3;
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `
+      <h3>Hasil Tes</h3>
+      <p class="muted">Skor <strong>${sum}</strong> / ${max}</p>
+      <p><strong>${level}</strong></p>
+      <ul>${tips[level].map(t=>"<li>"+t+"</li>").join("")}</ul>
 
-      let level = sum<max*0.4 ? 'Ringan' : sum<max*0.7 ? 'Sedang' : 'Tinggi';
-      let txt = level==='Ringan' ? 'Perawatan diri cukup.' :
-                level==='Sedang' ? 'Pertimbangkan konseling.' :
-                'Butuh evaluasi profesional.';
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button id="retake" class="chip">Ulangi</button>
+        <button id="gotoConsult" class="chip">Konsultasi</button>
+      </div>
+    `;
 
-      resultBox.style.display='block';
-      resultBox.innerHTML = `
-        <h3>Hasil Tes</h3>
-        <p class="muted">Skor: <strong>${sum}</strong> / ${max}</p>
-        <p><strong>${level}</strong> — ${txt}</p>
-        <button class="chip" id="retake">Ulangi</button>
-        <button class="chip" data-page="consult">Konsultasi</button>
-      `;
-
-      document.getElementById('retake').onclick = ()=>{
-        answers.fill(null); idx=0; render(0);
-      };
-
-      document.querySelector('[data-page="consult"]').onclick = ()=>{
-        document.querySelector('[data-page="consult"]').click();
-      };
-
-      progress.style.width='100%';
-    }
-
-    render(0);
-  })();
-
-
-  /* ---------------- CONSULT AI ---------------- */
-  (function(){
-    const history = document.getElementById('history');
-    const story = document.getElementById('story');
-    const send = document.getElementById('sendBtn');
-    const clear = document.getElementById('clearBtn');
-    const quick = document.querySelectorAll('.quick');
-
-    function append(text, who='bot'){
-      const d = document.createElement('div');
-      d.className = 'bubble '+(who==='user'?'user':'bot');
-      d.innerHTML = text;
-      history.appendChild(d);
-      history.scrollTop = history.scrollHeight;
-    }
-
-    function reply(t){
-      t=t.toLowerCase();
-      if(t.includes('cemas')) return 'Aku mengerti kamu sedang cemas. Tarik napas perlahan, kamu tidak sendirian.';
-      if(t.includes('sedih')) return 'Sedih itu wajar. Ceritakan lebih banyak jika kamu mau.';
-      return 'Terima kasih sudah berbagi. Apa yang membuatmu merasa begitu?';
-    }
-
-    send.onclick = ()=>{
-      const text = story.value.trim();
-      if(!text) return;
-      append(text,'user');
-      story.value='';
-      setTimeout(()=>append(reply(text),'bot'),500);
+    document.getElementById("retake").onclick = ()=>{
+      answers.fill(null);
+      idx = 0;
+      progress.style.width = "0%";
+      render(0);
+    };
+    document.getElementById("gotoConsult").onclick = ()=>{
+      document.querySelector('[data-page="consult"]').click();
     };
 
-    clear.onclick = ()=>{ history.innerHTML=''; };
+    progress.style.width = "100%";
+  }
 
-    quick.forEach(q=>q.onclick=()=>{
-      story.value = q.dataset.q==='cemas' ? 'Saya sedang cemas' : 'Saya merasa sedih';
+  render(0);
+})();
+
+/* ---------------- CONSULT AI ---------------- */
+(function(){
+  const history = document.getElementById("history");
+  const story = document.getElementById("story");
+  const send = document.getElementById("sendBtn");
+  const clear = document.getElementById("clearBtn");
+  const quicks = document.querySelectorAll(".quick");
+
+  function append(txt, who="bot"){
+    const b = document.createElement("div");
+    b.className = "bubble "+(who==="user"?"user":"bot");
+    b.innerHTML = txt;
+    history.appendChild(b);
+    history.scrollTop = history.scrollHeight;
+  }
+
+  function analyze(t){
+    t = t.toLowerCase();
+    if(t.includes("cemas")) return "Aku mengerti kamu merasa cemas. Tarik napas perlahan… aku di sini.";
+    if(t.includes("sedih")) return "Aku ikut merasakan beratnya. Kamu tidak sendirian.";
+    if(t.includes("tidur")) return "Masalah tidur sering terkait stres. Mau tips sederhana?";
+    if(t.includes("sendiri")) return "Kesepian itu berat. Aku ada di sini mendengarkanmu.";
+    return "Ceritakan lebih detail, apa yang kamu rasakan akhir-akhir ini?";
+  }
+
+  send.onclick = ()=>{
+    const text = story.value.trim();
+    if(!text) return;
+    append(text,"user");
+    story.value = "";
+    setTimeout(()=>append(analyze(text),"bot"),500);
+  };
+
+  clear.onclick = ()=>{ history.innerHTML=""; };
+
+  quicks.forEach(q=>{
+    q.onclick = ()=>{
+      story.value = q.innerText;
       send.click();
-    });
-  })();
+    };
+  });
+})();
 
-
-  /* ---------------- ACCORDION EDU ---------------- */
-  (function(){
-    document.querySelectorAll('.disorder').forEach(d=>{
-      const toggle = d.querySelector('.toggle');
-      toggle.onclick = ()=>{
-        d.classList.toggle('open');
-        toggle.innerText = d.classList.contains('open') ? 'Tutup' : 'Buka detail';
-      };
-      d.querySelector('h3').onclick = toggle.onclick;
-    });
-  })();
-  </script>
+/* ---------------- ACCORDION ---------------- */
+(function(){
+  document.querySelectorAll(".disorder").forEach(item=>{
+    const toggle = item.querySelector(".toggle");
+    toggle.onclick = ()=>{
+      item.classList.toggle("open");
+      toggle.textContent = item.classList.contains("open") ? "Tutup" : "Buka detail";
+    };
+    item.querySelector("h3").onclick = ()=>toggle.click();
+  });
+})();
+</script>
 
 </body>
 </html>
