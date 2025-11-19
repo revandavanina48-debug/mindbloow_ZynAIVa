@@ -83,8 +83,34 @@
   footer{padding:20px;text-align:center;color:var(--muted)}
 
   /* Responsive */
+  @media (max-width:1200px){
+    main{padding:16px}
+    .nav-inner{padding:0 10px}
+  }
+
   @media (max-width:900px){
     .grid.cols-3{grid-template-columns:1fr}
+    .menu{display:none}
+    .nav-toggle{display:inline-flex}
+    .hero{flex-direction:column;text-align:left}
+  }
+
+  @media (max-width:600px){
+    .hero{padding:20px}
+    .hero h1{font-size:22px;line-height:1.3}
+    .illustration{padding:12px}
+    main{padding:10px}
+    .card{padding:14px}
+    ol li{font-size:15px}
+    .disorder{padding:10px}
+  }
+
+  @media (max-width:400px){
+    body{font-size:14px}
+    .chip{padding:6px 8px;font-size:13px}
+    .choice{padding:8px;font-size:13px}
+    header{padding:10px 14px}
+  }
     .menu{display:none}
     .nav-toggle{display:inline-flex}
   }
