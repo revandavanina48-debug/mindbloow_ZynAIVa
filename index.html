@@ -587,46 +587,173 @@
     const clearBtn = document.getElementById('clearBtn');
     const quicks = document.querySelectorAll('.quick');
 
-    function append(text, who='bot'){
-      const el = document.createElement('div'); el.className = 'bubble ' + (who==='user'?'user':'bot');
-      el.innerHTML = `<div>${escapeHtml(text)}</div>`;
-      history.appendChild(el); history.scrollTop = history.scrollHeight;
-    }
-    function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    // simple conversation memory (session-only)
+    const convo = [];
 
+    function append(text, who='bot', opts={html:false}){
+      const el = document.createElement('div');
+      el.className = 'bubble ' + (who==='user'?'user':'bot');
+      el.innerHTML = opts.html ? text : `<div>${escapeHtml(text)}</div>`;
+      history.appendChild(el);
+      history.scrollTop = history.scrollHeight;
+    }
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // helper to simulate typing indicator
+    function typing(ms=600){
+      append('...', 'bot');
+      return new Promise(res => setTimeout(()=>{
+        const last = history.querySelector('.bubble.bot:last-child');
+        if (last && last.textContent === '...') last.remove();
+        res();
+      }, ms));
+    }
+
+    // safety check - look for self-harm / suicide cues
+    function safetyCheck(text){
+      const t = text.toLowerCase();
+      const cues = ['bunuh','bunuh diri','ingin mati','meninggal','takut hidup','gak mau hidup','tidak mau hidup','sudah menyerah','mengakhiri hidup'];
+      return cues.some(c => t.includes(c));
+    }
+
+    // richer analyzer: detects intent + suggests tailored responses and actions
     function analyze(text){
       const t = text.toLowerCase();
-      const responses = [];
-      if (t.includes('cemas')||t.includes('khawatir')||t.includes('gelisah')) responses.push('Coba tarik napas dalam-dalam 4 kali secara perlahan (4-4-4). Mau aku berikan panduan singkat?');
-      if (t.includes('sedih')||t.includes('menangis')||t.includes('down')) responses.push('Aku dengar kamu sedih. Menuliskan tiga hal kecil yang berjalan baik hari ini bisa membantu. Mau coba?');
-      if (t.includes('tidur')||t.includes('insomnia')||t.includes('susah tidur')) responses.push('Coba matikan layar 30 menit sebelum tidur dan lakukan rutinitas ringan seperti peregangan.');
-      if (t.includes('sendiri')||t.includes('kesepian')) responses.push('Kamu tidak sendirian. Punya seseorang yang bisa diajak bicara sekarang?');
-      if (responses.length === 0) responses.push('Terima kasih sudah berbagi. Mau ceritakan lebih detail kapan ini mulai terjadi?');
-      return responses.slice(0,3);
+      const actions = [];
+      const out = {responses:[], actions:[]};
+
+      // Safety first
+      if (safetyCheck(t)){
+        out.responses.push('Aku mendengar kalimat yang membuatku khawatir tentang keselamatanmu. Jika kamu sedang berpikir untuk menyakiti diri sendiri atau bunuh diri, tolong hubungi layanan darurat atau nomor bantuan setempat sekarang.');
+        out.responses.push('Di Indonesia kamu dapat menghubungi 119 ext. 9 (pelayanan krisis jiwa) atau pusat layanan kesehatan setempat. Kalau kamu mau, sebutkan kotamu, aku bantu carikan opsi dukungan.');
+        out.actions = ['Info Darurat','Cari Bantuan Sekarang'];
+        return out;
+      }
+
+      // emotion / topic detection (simple keyword groups)
+      const groups = {
+        sadness: ['sedih','menangis','down','galau','kecewa','terpuruk'],
+        anxiety: ['cemas','khawatir','panic','panik','gelisah','deg-degan','takut'],
+        tired: ['lelah','capek','burnout','letih'],
+        lonely: ['sendiri','kesepian','sepi'],
+        sleep: ['tidur','insomnia','susah tidur','nggak bisa tidur','bangun malam'],
+        work: ['kerja','pekerjaan','bos','deadline','kantor'],
+        family: ['keluarga','ortu','anak','suami','istri'],
+        relationship: ['putus','pacar','selingkuh','bertengkar','hubungan'],
+        physical: ['sakit','nyeri','pusing','sakit kepala']
+      };
+
+      function matchGroup(keywords){ return keywords.some(k=> t.includes(k)); }
+
+      // generate responses based on matched groups (order matters)
+      if (matchGroup(groups.sadness)){
+        out.responses.push('Aku ikut sedih mendengar itu. Perasaan sedih itu valid — kamu tidak sendiri.');
+        out.responses.push('Kalau mau, ceritakan satu kejadian paling mengganggu akhir-akhir ini, atau katakan apa yang paling sering mengganggu pikiranmu.');
+        out.actions.push('Menuliskan perasaan','Curhat ke Teman');
+      }
+      if (matchGroup(groups.anxiety)){
+        out.responses.push('Terlihat kamu merasa cemas. Coba latihan pernapasan 4-4-4 sekarang jika kamu mau. Ingin aku pandu?');
+        out.actions.push('Panduan Pernapasan','Grounding 5-4-3-2-1');
+      }
+      if (matchGroup(groups.tired)){
+        out.responses.push('Kedengaran sangat lelah. Istirahat teratur dan batasan kerja bisa membantu. Apakah tekanan ini berasal dari pekerjaan atau hal lain?');
+        out.actions.push('Atur Batasan Kerja','Cuti Singkat');
+      }
+      if (matchGroup(groups.lonely)){
+        out.responses.push('Rasa kesepian sangat berat. Mencoba menghubungi satu orang yang kamu percaya atau ikut komunitas kecil dapat membantu. Mau ide bagaimana memulai?');
+        out.actions.push('Ide Kontak Sosial','Komunitas Lokal');
+      }
+      if (matchGroup(groups.sleep)){
+        out.responses.push('Masalah tidur sering memengaruhi mood. Coba rutinitas tidur: layar dimatikan 30 menit sebelum tidur, jadwal tidur teratur. Mau tips rutinitas singkat?');
+        out.actions.push('Tips Tidur','Latihan Relaksasi');
+      }
+      if (matchGroup(groups.work)){
+        out.responses.push('Permasalahan pekerjaan bisa sangat menyita. Mungkin membuat batasan waktu kerja dan mencatat prioritas tugas bisa meringankan. Ingin bantuan menyusun batasan?');
+        out.actions.push('Susun Batasan Kerja','Teknik Pomodoro');
+      }
+      if (matchGroup(groups.family) || matchGroup(groups.relationship)){
+        out.responses.push('Masalah hubungan sering memengaruhi emosi. Menjelaskan perasaan dengan kata-kata spesifik (apa yang kamu rasakan & butuhkan) bisa menjadi langkah awal. Mau contoh kalimat yang aman?');
+        out.actions.push('Contoh Kalimat','Terapi Pasangan');
+      }
+      if (matchGroup(groups.physical)){
+        out.responses.push('Keluhan fisik yang terus-menerus bisa terkait dengan stres. Jika berlanjut, pemeriksaan ke dokter juga penting. Mau saya bantu susun daftar gejala untuk dokter?');
+        out.actions.push('Buat Daftar Gejala','Konsultasi Medis');
+      }
+
+      // fallback if nothing matched strongly
+      if (out.responses.length === 0){
+        out.responses.push('Terima kasih sudah berbagi. Boleh ceritakan kapan mulai merasa begini dan apakah ada pemicu tertentu?');
+        out.actions.push('Ceritakan Detail','Lakukan Tes Singkat');
+      }
+
+      // limit actions to 4
+      out.actions = out.actions.slice(0,4);
+      return out;
     }
 
     async function botReply(userText){
-      append('...', 'bot');
-      await new Promise(r=>setTimeout(r,600));
-      const last = history.querySelector('.bubble.bot:last-child'); if (last && last.textContent === '...') last.remove();
-      const out = analyze(userText);
-      out.forEach(o=> append(o,'bot'));
-      // offer next actions as chips
-      const actions = document.createElement('div'); actions.className = 'quick-replies';
-      actions.innerHTML = '<button class="chip" onclick="document.querySelector(\'[data-page="test"]\').click()">Lakukan Tes</button> <button class="chip" onclick="alert(\'Jika butuh bantuan darurat, hubungi layanan setempat.\')">Info Darurat</button>';
-      history.appendChild(actions); history.scrollTop = history.scrollHeight;
+      convo.push({role:'user',text:userText});
+      await typing(700);
+
+      const analysis = analyze(userText);
+      // short pause between multiple responses to feel natural
+      for (let i=0;i<analysis.responses.length;i++){
+        await typing(350);
+        append(analysis.responses[i],'bot');
+        convo.push({role:'bot',text:analysis.responses[i]});
+      }
+
+      // render action chips
+      if (analysis.actions && analysis.actions.length){
+        const actions = document.createElement('div'); actions.className = 'quick-replies';
+        analysis.actions.forEach(a => {
+          const btn = document.createElement('button'); btn.className = 'chip'; btn.innerText = a;
+          btn.addEventListener('click', ()=>handleAction(a));
+          actions.appendChild(btn);
+        });
+        // always add a 'Lakukan Tes' & 'Info Darurat' quick action
+        const testBtn = document.createElement('button'); testBtn.className='chip'; testBtn.innerText='Lakukan Tes'; testBtn.addEventListener('click', ()=>document.querySelector('[data-page="test"]').click());
+        const emBtn = document.createElement('button'); emBtn.className='chip'; emBtn.innerText='Info Darurat'; emBtn.addEventListener('click', ()=>alert('Jika keadaan darurat, segera hubungi layanan darurat setempat atau nomor krisis lokal.'));
+        actions.appendChild(testBtn); actions.appendChild(emBtn);
+
+        history.appendChild(actions); history.scrollTop = history.scrollHeight;
+      }
+    }
+
+    // handlers for action chips
+    function handleAction(name){
+      if (name === 'Panduan Pernapasan'){
+        append('<strong>Panduan Pernapasan 4-4-4:</strong><br>Tarik napas selama 4 detik — tahan 4 detik — hembuskan 4 detik. Ulang 5 kali.','bot', {html:true});
+      } else if (name === 'Grounding 5-4-3-2-1'){
+        append('<strong>Grounding 5-4-3-2-1:</strong><br>1) Sebut 5 benda di sekitarmu, 2) Sebut 4 hal yang bisa kamu rasakan, 3) Sebut 3 suara, 4) Sebut 2 bau/wo, 5) Sebut 1 hal yang bisa kamu rasakan sebagai aman.','bot',{html:true});
+      } else if (name === 'Menuliskan perasaan' || name === 'Ceritakan Detail' || name === 'Curhat ke Teman'){
+        append('Kamu bisa mulai dengan menulis satu kalimat: "Aku merasa ___ ketika ___". Mau aku bantu susun satu kalimat berdasarkan ceritamu?','bot');
+      } else if (name === 'Lakukan Tes Singkat' || name === 'Lakukan Tes'){
+        document.querySelector('[data-page="test"]').click();
+      } else if (name === 'Info Darurat' || name === 'Cari Bantuan Sekarang'){
+        alert('Jika ini darurat, hubungi layanan darurat setempat. Di Indonesia, pertimbangkan menghubungi 119 ext. 9 untuk krisis jiwa, atau layanan kesehatan terdekat.');
+      } else if (name === 'Atur Batasan Kerja'){
+        append('Contoh batasan: "Mulai hari ini saya tidak akan membalas email kerja setelah jam 8 malam". Kamu ingin contoh yang disesuaikan?','bot');
+      } else if (name === 'Susun Batasan Kerja'){
+        append('Mari mulai: sebutkan 2 hal pekerjaan yang paling membuatmu stres. Aku bantu susun batasannya.','bot');
+      } else if (name === 'Tips Tidur'){
+        append('Coba ritual: 1) Matikan layar 30 menit sebelum tidur, 2) Minum air hangat, 3) Lakukan peregangan ringan 5 menit.','bot');
+      } else {
+        append('Baik — ' + name + '. Coba jelaskan sedikit lebih spesifik supaya aku bisa bantu dengan lebih tepat.','bot');
+      }
     }
 
     sendBtn.addEventListener('click', async ()=>{
       const text = (story.value||'').trim();
-      if (!text) return; append(text,'user'); story.value=''; await botReply(text);
+      if (!text) return; append(text,'user'); story.value='';
+      await botReply(text);
     });
 
-    clearBtn.addEventListener('click', ()=>{ history.innerHTML=''; story.value=''; story.focus(); });
+    clearBtn.addEventListener('click', ()=>{ history.innerHTML=''; story.value=''; story.focus(); convo.length=0; });
     quicks.forEach(q => q.addEventListener('click', async (e)=>{ const t = e.target.dataset.q; story.value = (t==='cemas')? 'Saya cemas akhir-akhir ini' : (t==='sedih')? 'Saya sering sedih' : (t==='tidur')? 'Saya susah tidur' : 'Saya merasa sendiri'; sendBtn.click(); }));
 
-    // keyboard send (Ctrl+Enter)
-    story.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' && (e.ctrlKey||e.metaKey)){ sendBtn.click(); } });
+    // keyboard send (Enter)
+    story.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendBtn.click(); } });
 
   })();
 
