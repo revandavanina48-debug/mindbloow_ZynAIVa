@@ -103,3 +103,64 @@ footer {
     margin-top: 50px;
     background: #ddd;
 }
+
+/* =======================================
+   PREMIUM HEADER UPGRADE — Glassmorphism
+   ======================================= */
+
+header.navbar {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+    transition: 0.25s ease;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 22px;
+    background: linear-gradient(90deg, #4f73ff, #ff9ebd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.nav-links a {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    color: #4a5b7a;
+}
+
+.nav-links a:hover {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 3px 12px rgba(79,115,255,0.18);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.nav-links a.active {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    color: white !important;
+    box-shadow: 0 4px 14px rgba(79,115,255,0.25);
+    transform: translateY(-1px);
+}
+
+.nav-toggle .bar {
+    width: 26px;
+    height: 3px;
+    background: linear-gradient(90deg, #4f73ff, #ff9ebd);
+    border-radius: 8px;
+    margin: 4px 0;
+    transition: 0.25s ease;
+}
+
+.nav-toggle:hover .bar {
+    box-shadow: 0 0 8px rgba(79,115,255,0.45);
+}
+
