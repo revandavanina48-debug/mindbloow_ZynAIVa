@@ -70,6 +70,15 @@
   .quick-replies{display:flex;gap:8px;flex-wrap:wrap}
   .chip{padding:8px 10px;border-radius:999px;border:1px solid #e6eef8;background:white;cursor:pointer}
 
+  /* EDU detailed list */
+  .disorders{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+  .disorder{border:1px solid #eef6ff;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fcfcff)}
+  .disorder h3{margin:0 0 6px 0}
+  .disorder .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .disorder .more{display:none;margin-top:8px}
+  .disorder.open .more{display:block}
+  .disorder .toggle{background:transparent;border:0;color:var(--primary);font-weight:700;cursor:pointer}
+
   /* Footer */
   footer{padding:20px;text-align:center;color:var(--muted)}
 
@@ -137,15 +146,158 @@
       <!-- EDUKASI -->
       <section id="edu" class="page">
         <div class="card">
-          <h2>Edukasi Singkat</h2>
-          <p class="muted">Ilustrasi lembut di samping menjelaskan kondisi dengan warna pastel.</p>
+          <h2>Edukasi Lengkap: Kondisi Kesehatan Mental Umum</h2>
+          <p class="muted">Di bawah ini adalah ringkasan singkat tiap kondisi — gunakan sebagai materi edukasi dan rujukan awal. Informasi bersifat umum, bukan pengganti diagnosis profesional.</p>
 
-          <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:16px">
-            <div style="flex:1;min-width:260px">
+          <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-top:16px">
+            <div style="flex:1;min-width:320px">
+
+              <!-- Short overview cards -->
               <div class="grid cols-3">
-                <div class="card"><h3>Depresi</h3><p>Kondisi suasana hati yang menurunkan energi dan minat.</p></div>
+                <div class="card"><h3>Depresi</h3><p>Gangguan suasana hati yang menurunkan energi dan minat.</p></div>
                 <div class="card"><h3>Kecemasan</h3><p>Khawatir berlebih yang mengganggu aktivitas harian.</p></div>
                 <div class="card"><h3>Burnout</h3><p>Kelelahan kronis akibat tekanan yang berkepanjangan.</p></div>
+              </div>
+
+              <!-- Detailed disorders list (requested additions) -->
+              <div class="disorders" id="disordersList">
+
+                <article class="disorder" data-key="depresi">
+                  <h3>1. Depresi (Gangguan Depresif Mayor)</h3>
+                  <div class="meta">Definisi singkat: Gangguan suasana hati persisten yang menyebabkan perasaan sedih, kehilangan minat, dan penurunan energi yang signifikan.</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Perasaan sedih, hampa, atau putus asa hampir setiap hari</li>
+                      <li>Hilangnya minat atau kesenangan pada aktivitas yang biasanya dinikmati</li>
+                      <li>Perubahan berat badan atau nafsu makan</li>
+                      <li>Gangguan tidur (insomnia atau tidur berlebihan)</li>
+                      <li>Kesulitan berkonsentrasi dan energi menurun</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika gejala berlangsung lebih dari dua minggu, mengganggu fungsi sehari-hari, atau muncul pemikiran untuk menyakiti diri sendiri, segera hubungi profesional kesehatan mental.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Mencari dukungan sosial (teman, keluarga)</li><li>Mencoba konseling atau terapi perilaku-kognitif (CBT)</li><li>Jika perlu, evaluasi oleh psikiater untuk pertimbangan pengobatan.</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="kecemasan">
+                  <h3>2. Kecemasan (Gangguan Kecemasan Umum)</h3>
+                  <div class="meta">Definisi singkat: Perasaan khawatir dan ketegangan yang berlebihan, tidak proporsional, dan sulit dikendalikan tentang kejadian sehari-hari.</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Kekhawatiran yang berlebihan dan konstan tentang berbagai hal</li>
+                      <li>Gelisah, ketegangan otot, mudah lelah</li>
+                      <li>Kesulitan berkonsentrasi dan gangguan tidur</li>
+                      <li>Sering mengalami kecemasan tanpa pemicu nyata</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika kecemasan mengganggu pekerjaan, hubungan, atau aktivitas sehari-hari dan teknik koping sederhana tidak membantu, pertimbangkan evaluasi profesional.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Latihan pernapasan dan relaksasi progresif</li><li>Terapi kognitif-perilaku (CBT)</li><li>Pelatihan manajemen stres dan kebiasaan tidur sehat.</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="burnout">
+                  <h3>3. Burnout (Kelelahan Emosional)</h3>
+                  <div class="meta">Definisi singkat: Kondisi kelelahan fisik, emosional, dan mental yang ekstrem akibat stres kerja jangka panjang dan intens.</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Kelelahan kronis yang tidak hilang setelah istirahat</li>
+                      <li>Sinisme atau jarak emosional terhadap pekerjaan</li>
+                      <li>Penurunan produktivitas dan perasaan tidak kompeten</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mengambil tindakan:</strong>
+                    <p>Jika merasa sering kewalahan oleh pekerjaan dan mengalami gangguan tidur/emosi, pertimbangkan cuti, konsultasi dengan atasan, serta dukungan profesional.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Atur batasan kerja dan istirahat terjadwal</li><li>Delegasi tugas bila memungkinkan</li><li>Terapkan rutinitas pemulihan: olahraga ringan, tidur, hobi.</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="bipolar">
+                  <h3>4. Gangguan Bipolar</h3>
+                  <div class="meta">Definisi singkat: Gangguan suasana hati yang ditandai dengan perubahan ekstrem antara episode manik (sangat gembira/enerjik) dan depresif (sangat sedih/lemah).</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Episode manik: energi sangat tinggi, sedikit kebutuhan tidur, perilaku impulsif</li>
+                      <li>Episode depresif: suasana hati rendah, kehilangan minat, kelelahan</li>
+                      <li>Perubahan mood yang jelas dan berbeda dari perilaku biasanya</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika ada perubahan suasana hati yang ekstrem atau perilaku berisiko selama periode manik, segera cari evaluasi psikiatri—gangguan bipolar biasanya memerlukan pengobatan jangka panjang.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Catat pola tidur dan mood untuk membantu diagnosis</li><li>Konsultasikan dengan psikiater untuk rencana pengobatan</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="skizofrenia">
+                  <h3>5. Skizofrenia</h3>
+                  <div class="meta">Definisi singkat: Gangguan otak kronis yang memengaruhi cara seseorang berpikir, merasakan, dan berperilaku, seringkali ditandai dengan psikosis (delusi atau halusinasi).</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Delusi (percaya hal yang tidak nyata) atau halusinasi (mendengar/ melihat yang tidak ada)</li>
+                      <li>Pikiran yang tidak teratur, penarikan sosial</li>
+                      <li>Penurunan fungsi sehari-hari (pekerjaan, perawatan diri)</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika ada tanda psikosis atau perubahan besar pada realitas/perilaku, segera cari bantuan medis—penanganan dini meningkatkan hasil jangka panjang.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Konsultasi ke psikiater untuk evaluasi dan pengobatan</li><li>Dukungan keluarga dan rujukan ke layanan rehabilitasi bila perlu</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="ptsd">
+                  <h3>6. Gangguan Stres Pasca Trauma (PTSD)</h3>
+                  <div class="meta">Definisi singkat: Kondisi yang dipicu setelah mengalami atau menyaksikan peristiwa traumatis, ditandai dengan flashback, mimpi buruk, dan kecemasan parah.</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Flashback atau kilas balik terhadap peristiwa</li>
+                      <li>Mimpi buruk berulang, menghindari pengingat trauma</li>
+                      <li>Kewaspadaan berlebih dan reaksi kaget</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika gejala berlangsung lebih dari sebulan dan mengganggu kehidupan sehari-hari, carilah psikoterapi khusus (mis. terapi berbasis trauma) dan dukungan profesional.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Cari terapis yang berpengalaman dalam trauma</li><li>Teknik grounding dan pernapasan untuk mengurangi flashback</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
+                <article class="disorder" data-key="ocd">
+                  <h3>7. Gangguan Obsesif Kompulsif (OCD)</h3>
+                  <div class="meta">Definisi singkat: Gangguan yang melibatkan pikiran yang mengganggu dan berulang (obsesi) serta dorongan kuat untuk melakukan perilaku berulang (kompulsi).</div>
+                  <div><strong>Gejala umum:</strong>
+                    <ul>
+                      <li>Obsesi: pikiran atau gambaran yang tidak diinginkan, berulang</li>
+                      <li>Kompulsi: ritual perilaku untuk meredakan kecemasan (mis. mencuci berulang)</li>
+                      <li>Waktu yang signifikan dihabiskan untuk ritual, mengganggu aktivitas</li>
+                    </ul>
+                  </div>
+                  <div class="more">
+                    <strong>Kapan mencari bantuan:</strong>
+                    <p>Jika obsesi/kompulsi menghabiskan banyak waktu atau mengganggu fungsi sehari-hari, terapi perilaku-kognitif khusus (ERP) dan/atau obat dapat membantu.</p>
+                    <strong>Saran awal:</strong>
+                    <ul><li>Terapi Eksposur dan Pencegahan Respons (ERP)</li><li>Konsultasi dengan profesional kesehatan mental untuk pendekatan terstruktur</li></ul>
+                    <button class="toggle" aria-expanded="false">Tutup</button>
+                  </div>
+                </article>
+
               </div>
             </div>
 
@@ -413,6 +565,25 @@
     // keyboard send (Ctrl+Enter)
     story.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' && (e.ctrlKey||e.metaKey)){ sendBtn.click(); } });
 
+  })();
+
+  /* --------- EDU: Accordion toggles for "Lebih Lanjut" on disorders --------- */
+  (function(){
+    const disorders = document.querySelectorAll('.disorder');
+    disorders.forEach(d => {
+      const toggle = d.querySelector('.toggle');
+      if (!toggle) return;
+      toggle.addEventListener('click', ()=>{
+        const isOpen = d.classList.toggle('open');
+        toggle.innerText = isOpen ? 'Tutup' : 'Buka detail';
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      // make header clickable to open
+      d.querySelector('h3').addEventListener('click', ()=>{
+        const isOpen = d.classList.toggle('open');
+        const t = d.querySelector('.toggle'); if (t) { t.innerText = isOpen ? 'Tutup' : 'Buka detail'; t.setAttribute('aria-expanded', String(isOpen)); }
+      });
+    });
   })();
 
   </script>
