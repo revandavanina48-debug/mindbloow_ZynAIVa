@@ -195,20 +195,26 @@
     .nav-toggle { display: none; background: transparent; border: 0; flex-direction: column; gap: 5px; cursor: pointer; }
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
 
-    @media (max-width: 900px) { /* Mulai responsif lebih awal */
-        .menu { display: none; }
-        .theme-chips { display: none; } /* Sembunyikan chips yang di luar menu di mobile */
-        .nav-toggle { display: flex; }
-        nav { gap: 10px; } /* Kurangi jarak di nav container */
+    /* Tampilan Mobile */
+    @media (max-width: 900px) { 
+        .menu { display: none; } /* Sembunyikan menu di mobile secara default */
+        .nav-toggle { display: flex; } /* Tampilkan tombol hamburger */
+        nav { gap: 10px; } 
     }
 
+    /* Tampilan Desktop */
     @media (min-width: 901px) {
-        /* Hanya tampilkan chips yang berada di luar menu di desktop */
-        .nav-links > .theme-chips {
-            display: none !important; 
+        .menu { 
+            display: flex !important; /* WAJIB TAMPIL di desktop */
+            flex-direction: row; /* Pastikan menu horizontal di desktop */
+            gap: 6px; 
         }
-        nav > .theme-chips {
-            display: flex; /* WAJIB tampil di desktop */
+        /* Pastikan chip tema di dalam menu ditampilkan sebagai bagian dari baris di desktop */
+        .menu > .theme-chips {
+            display: flex !important; 
+            padding: 0; 
+            border-top: none; 
+            margin-top: 0; 
         }
     }
     
@@ -216,7 +222,7 @@
         /* NAVIGASI */
         .nav-inner { width: 95%; } 
         .menu.open { 
-            display: flex; 
+            display: flex; /* Tampilkan sebagai dropdown saat dibuka */
             flex-direction: column;
             position: absolute; 
             top: 75px; 
@@ -232,9 +238,9 @@
         /* LAYOUT UTAMA */
         main { 
             max-width: 100%; 
-            padding: 15px; /* Padding lebih sedikit di sisi */
-            margin-top: 70px; /* Margin atas disesuaikan */
-            font-size: 15px; /* Ukuran font lebih kecil */
+            padding: 15px; 
+            margin-top: 70px; 
+            font-size: 15px; 
         }
         
         /* HERO SECTION */
@@ -282,7 +288,7 @@
             padding-top: 15px; 
         }
         .hero {
-            padding: 25px 10px; /* Padding sangat minimal */
+            padding: 25px 10px; 
         }
         .hero-text {
             padding-bottom: 0;
@@ -311,7 +317,8 @@
             <a class="nav-box" href="#" data-page="help">Cara Mengatasi</a>
             <a class="nav-box" href="#" data-page="test">Tes Mental</a>
             <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
-            <a class="nav-box" href="#" data-page="about">Tentang</a> <div class="theme-chips">
+            <a class="nav-box" href="#" data-page="about">Tentang</a> 
+            <div class="theme-chips">
                 <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
                 <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
                 <div class="theme-chip" data-theme="purple" title="Tema Ungu Muda"></div>
@@ -319,13 +326,6 @@
             </div>
           </div>
           
-          <div class="theme-chips">
-              <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
-              <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
-              <div class="theme-chip" data-theme="purple" title="Tema Ungu Muda"></div>
-              <div class="theme-chip" data-theme="green" title="Tema Hijau Muda"></div>
-          </div>
-
           <button class="nav-toggle" aria-label="Buka menu">
             <span class="bar"></span><span class="bar"></span><span class="bar"></span>
           </button>
@@ -559,7 +559,7 @@
       
       /* --- THEME SWITCHER LOGIC --- */
       const siteBody = document.querySelector('body');
-      // Mengambil semua chip tema, baik yang di menu mobile maupun yang di desktop
+      // Mengambil semua chip tema, yang sekarang hanya ada satu set di dalam .menu
       const themeChips = document.querySelectorAll('.theme-chips .theme-chip');
 
       function applyTheme(themeName) {
@@ -569,7 +569,7 @@
         // Tambahkan kelas tema baru
         siteBody.classList.add(`theme-${themeName}`);
         
-        // Set status aktif pada SEMUA chip (duplikat)
+        // Set status aktif pada semua chip
         themeChips.forEach(chip => {
           chip.classList.remove('active');
           if (chip.dataset.theme === themeName) {
@@ -597,8 +597,6 @@
       const pages = document.querySelectorAll('.page');
       const menu = document.querySelector('.menu');
       const navToggle = document.querySelector('.nav-toggle');
-      // Ambil chip tema desktop terluar
-      const desktopThemeChips = document.querySelector('nav > .theme-chips:not(.menu .theme-chips)'); 
 
       function showPage(pageId) {
         pages.forEach(p => {
@@ -610,9 +608,14 @@
           b.setAttribute('aria-current', b.dataset.page === pageId ? 'true' : 'false');
         });
 
-        if (window.innerWidth < 900) {
+        // Di mobile, tutup menu setelah navigasi
+        if (window.innerWidth < 901) {
           menu.classList.remove('open');
-          menu.style.display = ''; 
+          // Atur kembali display, agar CSS media query bisa mengontrolnya
+          if (window.innerWidth < 901) { 
+              // Jika menu dibuka via JS, pastikan tertutup
+              menu.style.display = 'none'; 
+          }
         }
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -633,29 +636,20 @@
       navToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = menu.classList.toggle('open');
-        menu.style.display = isOpen ? 'flex' : 'none';
+        // Kontrol display hanya di mobile
+        if (window.innerWidth < 901) {
+            menu.style.display = isOpen ? 'flex' : 'none';
+        }
       });
 
       document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !navToggle.contains(e.target) && window.innerWidth < 900) {
+        // Logika tutup menu saat klik di luar (hanya berlaku di mobile)
+        if (!menu.contains(e.target) && !navToggle.contains(e.target) && window.innerWidth < 901) {
           menu.classList.remove('open');
           menu.style.display = 'none';
         }
       });
       
-      // Kontrol tampilan chips desktop berdasarkan lebar layar
-      function handleThemeChipVisibility() {
-          if (desktopThemeChips) {
-              if (window.innerWidth < 900) {
-                  desktopThemeChips.style.display = 'none';
-              } else {
-                  desktopThemeChips.style.display = 'flex'; 
-              }
-          }
-      }
-      window.addEventListener('resize', handleThemeChipVisibility);
-      handleThemeChipVisibility(); // Panggil saat load
-
       showPage('home');
 
       /* --- 2. SISTEM KUIS (GAD-like Singkat) --- */
