@@ -127,7 +127,27 @@
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
 
     @media (max-width: 800px) {
-        .hero { flex-direction: column; text-align: center; padding: 30px 20px; }
+        /* OPTIMASI TAMBAHAN UNTUK LAYOUT UTAMA DI MOBILE */
+        main { 
+            max-width: 100%; /* Memastikan kontainer utama mengambil lebar penuh */
+            padding: 15px; /* Mengurangi padding di mobile */
+            margin-top: 75px; /* Menyesuaikan margin atas agar tidak bertabrakan dengan fixed header */
+        }
+        .hero { 
+            flex-direction: column; 
+            text-align: center; 
+            padding: 30px 20px; 
+        }
+        .hero-text {
+            order: 1; /* Pindahkan teks di atas gambar */
+        }
+        .illustration {
+            order: 2; /* Pindahkan gambar di bawah teks */
+            max-width: 90%;
+            margin-top: 20px;
+        }
+        /* END OPTIMASI TAMBAHAN */
+
         .hero::before { display: none; }
         .grid.cols-3 { grid-template-columns: 1fr; }
         .nav-toggle { display: flex; }
