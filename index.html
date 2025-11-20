@@ -12,17 +12,34 @@
 
   <style>
     /* ================= GAYA TAMPILAN (DESIGN V1.5) ================= */
+    /* Variabel CSS Dinamis untuk Tema */
     :root {
         --bg: #F0F4F8;
         --card: #ffffff;
-        --primary: #4F73FF;
+        --primary: #4F73FF; /* Default: Biru */
         --primary-dark: #3a5bcc;
-        --accent: #FF6B95;
+        --accent: #FF6B95; /* Default: Pink */
         --text: #1E293B;
         --muted: #64748B;
         --radius: 16px;
         --font: 'Poppins', sans-serif;
         --shadow: 0 10px 40px -10px rgba(79, 115, 255, 0.15);
+    }
+    /* Definisi Tema */
+    .theme-pink {
+        --primary: #FF6B95; /* Pink */
+        --primary-dark: #cc5677;
+        --accent: #4F73FF;
+    }
+    .theme-purple {
+        --primary: #8A2BE2; /* Blue Violet (Ungu Muda) */
+        --primary-dark: #6e22b6;
+        --accent: #FFD700; /* Gold/Kuning */
+    }
+    .theme-green {
+        --primary: #3CB371; /* Medium Sea Green (Hijau Muda) */
+        --primary-dark: #31975e;
+        --accent: #FF8C00; /* Dark Orange */
     }
 
     * { box-sizing: border-box; }
@@ -46,10 +63,38 @@
     .logo { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; }
 
     /* MENU */
+    nav { 
+        display: flex; 
+        align-items: center; 
+        gap: 20px; /* Jarak antara menu dan tombol toggle/theme */
+    }
     .menu { display: flex; gap: 6px; }
     .nav-box { text-decoration: none; padding: 8px 14px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; transition: all 0.3s; }
     .nav-box:hover { background: #EFF6FF; color: var(--primary); }
     .nav-box[aria-current="true"] { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 115, 255, 0.4); }
+
+    /* THEME SWITCHER STYLES */
+    .theme-chips {
+        display: flex;
+        gap: 8px; /* Jarak antar chips */
+    }
+    .theme-chip {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .theme-chip.active {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(79, 115, 255, 0.3); 
+    }
+    .theme-chip[data-theme='blue'] { background-color: #4F73FF; }
+    .theme-chip[data-theme='pink'] { background-color: #FF6B95; }
+    .theme-chip[data-theme='purple'] { background-color: #8A2BE2; }
+    .theme-chip[data-theme='green'] { background-color: #3CB371; }
+    /* END THEME SWITCHER STYLES */
 
     /* HERO SECTION */
     .hero { display: flex; align-items: center; gap: 40px; background: #fff; overflow: hidden; position: relative; }
@@ -133,22 +178,40 @@
     .styled-list { padding-left: 20px; }
     .styled-list li { margin-bottom: 12px; padding-left: 5px; }
 
-    /* RESPONSIVE MAXIMAL */
+    /* RESPONSIVE MAXIMAL KOREKSI */
     .nav-toggle { display: none; background: transparent; border: 0; flex-direction: column; gap: 5px; cursor: pointer; }
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
+
+    @media (max-width: 900px) { /* Mulai responsif lebih awal */
+        .menu { display: none; }
+        .theme-chips { display: none; } /* Sembunyikan chips di nav-inner pada mobile */
+        .nav-toggle { display: flex; }
+        nav { gap: 10px; } /* Kurangi jarak di nav container */
+    }
 
     @media (max-width: 800px) {
         /* NAVIGASI */
         .nav-inner { width: 95%; } 
-        .nav-toggle { display: flex; }
-        .menu { display: none; flex-direction: column; position: absolute; top: 75px; right: 20px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 220px; z-index: 999; }
-        .menu.open { display: flex; }
+        .menu.open { 
+            display: flex; 
+            flex-direction: column;
+            position: absolute; 
+            top: 75px; 
+            right: 20px; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            width: 220px; 
+            z-index: 999; 
+        }
 
         /* LAYOUT UTAMA */
         main { 
             max-width: 100%; 
-            padding: 15px; 
-            margin-top: 75px; 
+            padding: 15px; /* Padding lebih sedikit di sisi */
+            margin-top: 70px; /* Margin atas disesuaikan */
+            font-size: 15px; /* Ukuran font lebih kecil */
         }
         
         /* HERO SECTION */
@@ -196,7 +259,7 @@
             padding-top: 15px; 
         }
         .hero {
-            padding: 40px 15px;
+            padding: 25px 10px; /* Padding sangat minimal */
         }
         .hero-text {
             padding-bottom: 0;
@@ -211,12 +274,11 @@
     }
   </style>
 </head>
-<body>
-  <div class="site">
+<body class="theme-blue"> <div class="site">
     <header class="navbar">
       <div class="nav-inner">
         <div class="brand">
-          <div class="logo">MindBloow<span style="color:var(--accent)"></span></div>
+          <div class="logo">MindBloow<span style="color:var(--accent)">.ai</span></div>
         </div>
         <nav>
           <div class="nav-links menu" role="tablist">
@@ -226,7 +288,15 @@
             <a class="nav-box" href="#" data-page="help">Cara Mengatasi</a>
             <a class="nav-box" href="#" data-page="test">Tes Mental</a>
             <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
+            <a class="nav-box" href="#" data-page="about">Tentang</a> </div>
+          
+          <div class="theme-chips">
+              <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
+              <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
+              <div class="theme-chip" data-theme="purple" title="Tema Ungu Muda"></div>
+              <div class="theme-chip" data-theme="green" title="Tema Hijau Muda"></div>
           </div>
+
           <button class="nav-toggle" aria-label="Buka menu">
             <span class="bar"></span><span class="bar"></span><span class="bar"></span>
           </button>
@@ -238,16 +308,16 @@
       <section id="home" class="page active">
         <div class="hero card">
           <div class="hero-text">
-            <span class="badge-new"></span>
+            <span class="badge-new">Versi Demo 1.5</span>
             <h1>Jaga Kesehatan Mentalmu</h1>
-            <p>Kenali gejala, pahami kondisi, lakukan tes sederhana.</p>
+            <p>Self-screening, edukasi, dan dukungan awal berbasis pola — demo AI ringan.</p>
             <div class="hero-buttons" style="margin-top: 20px;">
               <button data-page="test" class="chip primary-chip btn-pulse">Mulai Tes Sekarang</button> 
               <button data-page="consult" class="chip">Konsultasi Sekarang</button>
             </div>
           </div>
           <div class="illustration">
-            <img src="awal.jpg" alt="Taman hijau yang tenang dengan tanaman dan kursi santai" />
+            <img src="https://images.unsplash.com/photo-1541017208453-e99d251f9a1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Taman hijau yang tenang dengan tanaman dan kursi santai" />
             <svg class="illus-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
               <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#E8F4FF"/><stop offset="1" stop-color="#FFF0F6"/></linearGradient></defs>
               <rect x="0" y="0" width="560" height="360" rx="24" fill="url(#g1)" />
@@ -409,7 +479,7 @@
               <button class="chip quick" data-q="cemas">Saya cemas</button>
               <button class="chip quick" data-q="sedih">Saya sedih</button>
               <button class="chip quick" data-q="tidur">Sulit tidur</button>
-			  <button class="chip quick" data-q="cemas">Saya bingung</button>
+			        <button class="chip quick" data-q="cemas">Saya bingung</button>
               <button class="chip quick" data-q="sedih">Saya takut</button>
             </div>
             <div class="input-row">
@@ -422,7 +492,33 @@
           </div>
         </div>
       </section>
-    </main>
+      
+      <section id="about" class="page">
+        <div class="card">
+          <h2>Tentang MindBloow.ai</h2>
+          <p>MindBloow.ai adalah proyek website interaktif yang dirancang untuk memberikan dukungan awal, edukasi, dan *self-screening* ringan bagi pengguna yang ingin memantau kondisi kesehatan mental mereka.</p>
+          
+          <h3 style="margin-top: 30px;">Tujuan Proyek</h3>
+          <ul class="styled-list">
+            <li>Menyediakan platform yang **mudah diakses** (mobile-friendly) untuk informasi kesehatan mental.</li>
+            <li>Menggunakan sistem SPA (**Single Page Application**) untuk pengalaman pengguna yang cepat dan mulus.</li>
+            <li>Menyajikan simulasi interaktif (Quiz dan Chatbot) sebagai langkah **pengenalan dini**, bukan diagnosis.</li>
+          </ul>
+
+          <h3 style="margin-top: 30px;">Teknologi yang Digunakan</h3>
+          <p>Website ini dibangun murni menggunakan teknologi inti web untuk menunjukkan penguasaan fundamental:</p>
+          <ul class="styled-list">
+            <li><strong>HTML5 Murni:</strong> Struktur dasar dengan semantik yang baik.</li>
+            <li><strong>CSS3 Murni:</strong> Styling, tata letak *grid/flex*, dan penerapan **desain responsif** serta **CSS Variables** untuk *theming*.</li>
+            <li><strong>JavaScript Murni (Vanilla JS):</strong> Mengimplementasikan SPA routing, Quiz logic, dan Chatbot interaction tanpa Framework JS kompleks.</li>
+            <li><strong>CSS Library (Optional):</strong> *Tidak digunakan* untuk menekankan kemampuan membangun desain dari nol.</li>
+          </ul>
+
+          <h3 style="margin-top: 30px;">Kreator</h3>
+          <p>Proyek ini dikembangkan oleh: <strong>[Nama Peserta Lomba Anda]</strong> sebagai demonstrasi keahlian di bidang HTML, CSS, dan JavaScript murni dalam konteks lomba website interaktif.</p>
+        </div>
+      </section>
+      </main>
 
     <footer>
       <small>© 2025 MindBloow — ZynAIVa.</small>
@@ -432,6 +528,40 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       
+      /* --- THEME SWITCHER LOGIC --- */
+      const siteBody = document.querySelector('body');
+      const themeChips = document.querySelectorAll('.theme-chip');
+
+      function applyTheme(themeName) {
+        // Hapus semua kelas tema yang mungkin ada
+        siteBody.classList.remove('theme-pink', 'theme-purple', 'theme-green', 'theme-blue'); 
+        
+        // Tambahkan kelas tema baru
+        siteBody.classList.add(`theme-${themeName}`);
+        
+        // Set status aktif pada chip
+        themeChips.forEach(chip => {
+          chip.classList.remove('active');
+          if (chip.dataset.theme === themeName) {
+            chip.classList.add('active');
+          }
+        });
+
+        // Simpan preferensi
+        localStorage.setItem('mindbloowTheme', themeName);
+      }
+
+      themeChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          applyTheme(chip.dataset.theme);
+        });
+      });
+
+      // Muat tema yang tersimpan saat halaman dimuat
+      const savedTheme = localStorage.getItem('mindbloowTheme') || 'blue';
+      applyTheme(savedTheme);
+
+
       /* --- 1. NAVIGASI SISTEM (SPA) --- */
       const buttons = document.querySelectorAll('[data-page]');
       const pages = document.querySelectorAll('.page');
@@ -602,22 +732,22 @@
           cat = 'Tinggi (Kritis) 🔴';
           msg = 'Skor ini mengindikasikan tingkat kecemasan yang sangat signifikan dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
           color = '#fee2e2'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Severe Anxiety (Kecemasan Parah).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Severe Anxiety** (Kecemasan Parah).`;
         } else if (totalScore >= scoreModerate) {
           cat = 'Sedang (Waspada) 🟠';
           msg = 'Anda mungkin mengalami tingkat kecemasan yang cukup mengganggu. Saran Penanganan: Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
           color = '#ffedd5'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Moderate Anxiety (Kecemasan Sedang).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Moderate Anxiety** (Kecemasan Sedang).`;
         } else if (totalScore >= scoreMild) {
           cat = 'Ringan (Pantau) 🟡';
-          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan journaling untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
+          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan **journaling** untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
           color = '#fffbeb'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Mild Anxiety (Kecemasan Ringan).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Mild Anxiety** (Kecemasan Ringan).`;
         } else {
           cat = 'Minimal (Sehat) 🟢';
-          msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk self-check secara berkala.';
+          msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk *self-check* secara berkala.';
           color = '#dcfce7'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Minimal Anxiety (Kecemasan Minimal).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Minimal Anxiety** (Kecemasan Minimal).`;
         }
 
         resultBox.style.display = 'block';
@@ -625,7 +755,7 @@
         resultBox.innerHTML = `
           <h3 style="margin-top:0">Hasil Tes: ${cat}</h3>
           <p style="font-size:15px; line-height:1.6">${msg}</p>
-          <p style="font-size:14px; margin-top:15px;">Detail Skor: ${resultDetail}</p>
+          <p style="font-size:14px; margin-top:15px;">**Detail Skor:** ${resultDetail}</p>
           <hr style="border:0; border-top:1px dashed rgba(0,0,0,0.1); margin:15px 0;">
           <div style="display:flex; gap:10px; justify-content:flex-end">
             <button id="btnRetake" class="chip">Ulangi Tes</button>
