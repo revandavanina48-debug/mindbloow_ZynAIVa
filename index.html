@@ -30,6 +30,7 @@
 
     /* LAYOUT */
     .site { display: flex; flex-direction: column; min-height: 100vh; }
+    /* Penyesuaian main untuk desktop */
     main { flex: 1; max-width: 1000px; margin: 90px auto 20px; padding: 20px; width: 100%; }
 
     /* NAVBAR GLASSMORPHISM */
@@ -127,33 +128,70 @@
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
 
     @media (max-width: 800px) {
-        /* OPTIMASI TAMBAHAN UNTUK LAYOUT UTAMA DI MOBILE */
-        main { 
-            max-width: 100%; /* Memastikan kontainer utama mengambil lebar penuh */
-            padding: 15px; /* Mengurangi padding di mobile */
-            margin-top: 75px; /* Menyesuaikan margin atas agar tidak bertabrakan dengan fixed header */
-        }
-        .hero { 
-            flex-direction: column; 
-            text-align: center; 
-            padding: 30px 20px; 
-        }
-        .hero-text {
-            order: 1; /* Pindahkan teks di atas gambar */
-        }
-        .illustration {
-            order: 2; /* Pindahkan gambar di bawah teks */
-            max-width: 90%;
-            margin-top: 20px;
-        }
-        /* END OPTIMASI TAMBAHAN */
-
-        .hero::before { display: none; }
-        .grid.cols-3 { grid-template-columns: 1fr; }
+        /* NAVIGASI */
+        .nav-inner { width: 95%; } /* Memastikan navbar mengisi lebar layar dengan baik */
         .nav-toggle { display: flex; }
         .menu { display: none; flex-direction: column; position: absolute; top: 75px; right: 20px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 220px; z-index: 999; }
         .menu.open { display: flex; }
+
+        /* LAYOUT UTAMA */
+        main { 
+            max-width: 100%; 
+            padding: 15px; 
+            margin-top: 75px; /* Margin atas disesuaikan dengan tinggi header */
+        }
+        
+        /* HERO SECTION */
+        .hero { 
+            flex-direction: column; 
+            text-align: center; 
+            padding: 30px 15px; 
+        }
+        .hero-text {
+            order: 1;
+            padding-bottom: 20px;
+        }
+        .illustration {
+            order: 2;
+            width: 100%;
+            max-width: 90%;
+            margin: 0 auto;
+        }
         .hero h1 { font-size: 2rem; }
+
+        /* GRID & CARDS */
+        .grid.cols-3 { grid-template-columns: 1fr; }
+        
+        /* CHAT INPUT */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap; /* Memungkinkan chips melompat ke baris baru */
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .quick-replies .chip {
+            flex-grow: 1; /* Biarkan chips mengambil ruang yang tersedia */
+        }
+    }
+    
+    /* Penyesuaian untuk layar sangat kecil (misal: iPhone SE lama) */
+    @media (max-width: 500px) {
+        .illustration {
+            display: none; /* Sembunyikan ilustrasi di layar sangat kecil untuk menghemat ruang vertikal */
+        }
+        .hero {
+            padding: 40px 15px;
+        }
+        .hero-text {
+            padding-bottom: 0;
+        }
+        .quick-replies .chip {
+            flex-grow: 0; /* Jangan paksa chips untuk tumbuh, biarkan menyesuaikan konten */
+            min-width: 45%; /* Minimal lebar 45% agar dua per baris */
+        }
+        .chat-input-area {
+            padding-bottom: 10px;
+        }
     }
   </style>
 </head>
