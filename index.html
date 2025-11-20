@@ -26,6 +26,11 @@
         --shadow: 0 10px 40px -10px rgba(79, 115, 255, 0.15);
     }
     /* Definisi Tema */
+    .theme-blue { /* Tema Default/Biru */
+        --primary: #4F73FF;
+        --primary-dark: #3a5bcc;
+        --accent: #FF6B95;
+    }
     .theme-pink {
         --primary: #FF6B95; /* Pink */
         --primary-dark: #cc5677;
@@ -66,7 +71,7 @@
     nav { 
         display: flex; 
         align-items: center; 
-        gap: 20px; /* Jarak antara menu utama, chips, dan tombol toggle */
+        gap: 20px; 
     }
     .menu { display: flex; gap: 6px; }
     .nav-box { text-decoration: none; padding: 8px 14px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; transition: all 0.3s; }
@@ -75,8 +80,8 @@
 
     /* THEME SWITCHER STYLES */
     .theme-chips {
-        display: flex; /* WAJIB: Memastikan chips tampil di desktop */
-        gap: 8px; /* Jarak antar chips */
+        display: flex; 
+        gap: 8px; 
     }
     .theme-chip {
         width: 18px;
@@ -94,7 +99,15 @@
     .theme-chip[data-theme='pink'] { background-color: #FF6B95; }
     .theme-chip[data-theme='purple'] { background-color: #8A2BE2; }
     .theme-chip[data-theme='green'] { background-color: #3CB371; }
-    /* END THEME SWITCHER STYLES */
+    
+    /* Style untuk chips di dalam menu mobile */
+    .menu > .theme-chips {
+        padding: 10px 0; 
+        border-top: 1px dashed #e2e8f0;
+        margin-top: 10px;
+        flex-direction: row; 
+    }
+
 
     /* HERO SECTION */
     .hero { display: flex; align-items: center; gap: 40px; background: #fff; overflow: hidden; position: relative; }
@@ -184,11 +197,21 @@
 
     @media (max-width: 900px) { /* Mulai responsif lebih awal */
         .menu { display: none; }
-        .theme-chips { display: none; } /* Sembunyikan chips di nav-inner pada mobile */
+        .theme-chips { display: none; } /* Sembunyikan chips yang di luar menu di mobile */
         .nav-toggle { display: flex; }
         nav { gap: 10px; } /* Kurangi jarak di nav container */
     }
 
+    @media (min-width: 901px) {
+        /* Hanya tampilkan chips yang berada di luar menu di desktop */
+        .nav-links > .theme-chips {
+            display: none !important; 
+        }
+        nav > .theme-chips {
+            display: flex; /* WAJIB tampil di desktop */
+        }
+    }
+    
     @media (max-width: 800px) {
         /* NAVIGASI */
         .nav-inner { width: 95%; } 
@@ -288,7 +311,13 @@
             <a class="nav-box" href="#" data-page="help">Cara Mengatasi</a>
             <a class="nav-box" href="#" data-page="test">Tes Mental</a>
             <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
-            <a class="nav-box" href="#" data-page="about">Tentang</a> </div>
+            <a class="nav-box" href="#" data-page="about">Tentang</a> <div class="theme-chips">
+                <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
+                <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
+                <div class="theme-chip" data-theme="purple" title="Tema Ungu Muda"></div>
+                <div class="theme-chip" data-theme="green" title="Tema Hijau Muda"></div>
+            </div>
+          </div>
           
           <div class="theme-chips">
               <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
@@ -530,7 +559,8 @@
       
       /* --- THEME SWITCHER LOGIC --- */
       const siteBody = document.querySelector('body');
-      const themeChips = document.querySelectorAll('.theme-chip');
+      // Mengambil semua chip tema, baik yang di menu mobile maupun yang di desktop
+      const themeChips = document.querySelectorAll('.theme-chips .theme-chip');
 
       function applyTheme(themeName) {
         // Hapus semua kelas tema yang mungkin ada
@@ -539,7 +569,7 @@
         // Tambahkan kelas tema baru
         siteBody.classList.add(`theme-${themeName}`);
         
-        // Set status aktif pada chip
+        // Set status aktif pada SEMUA chip (duplikat)
         themeChips.forEach(chip => {
           chip.classList.remove('active');
           if (chip.dataset.theme === themeName) {
@@ -567,6 +597,8 @@
       const pages = document.querySelectorAll('.page');
       const menu = document.querySelector('.menu');
       const navToggle = document.querySelector('.nav-toggle');
+      // Ambil chip tema desktop terluar
+      const desktopThemeChips = document.querySelector('nav > .theme-chips:not(.menu .theme-chips)'); 
 
       function showPage(pageId) {
         pages.forEach(p => {
@@ -610,6 +642,19 @@
           menu.style.display = 'none';
         }
       });
+      
+      // Kontrol tampilan chips desktop berdasarkan lebar layar
+      function handleThemeChipVisibility() {
+          if (desktopThemeChips) {
+              if (window.innerWidth < 900) {
+                  desktopThemeChips.style.display = 'none';
+              } else {
+                  desktopThemeChips.style.display = 'flex'; 
+              }
+          }
+      }
+      window.addEventListener('resize', handleThemeChipVisibility);
+      handleThemeChipVisibility(); // Panggil saat load
 
       showPage('home');
 
