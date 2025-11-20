@@ -66,7 +66,7 @@
     nav { 
         display: flex; 
         align-items: center; 
-        gap: 20px; /* Jarak antara menu dan tombol toggle/theme */
+        gap: 20px; /* Jarak antara menu utama, chips, dan tombol toggle */
     }
     .menu { display: flex; gap: 6px; }
     .nav-box { text-decoration: none; padding: 8px 14px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; transition: all 0.3s; }
@@ -75,7 +75,7 @@
 
     /* THEME SWITCHER STYLES */
     .theme-chips {
-        display: flex;
+        display: flex; /* WAJIB: Memastikan chips tampil di desktop */
         gap: 8px; /* Jarak antar chips */
     }
     .theme-chip {
