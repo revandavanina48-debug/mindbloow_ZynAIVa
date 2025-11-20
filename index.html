@@ -57,7 +57,18 @@
     .hero-text { flex: 1; z-index: 1; }
     .badge-new { display: inline-block; background: #ffebf0; color: var(--accent); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 700; margin-bottom: 15px; }
     .hero h1 { font-size: 2.5rem; line-height: 1.2; margin: 0 0 15px 0; color: #0f172a; }
-    .illus-svg { width: 100%; height: auto; transform: scale(1.05); }
+    
+    /* Gaya untuk gambar taman baru */
+    .hero .illustration img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    }
+    .hero .illustration .illus-svg {
+        display: none; /* Menyembunyikan SVG lama */
+    }
+
 
     /* CARDS & GRID */
     .card { background: var(--card); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 25px; border: 1px solid #fff; }
@@ -122,7 +133,7 @@
     .styled-list { padding-left: 20px; }
     .styled-list li { margin-bottom: 12px; padding-left: 5px; }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE MAXIMAL */
     .nav-toggle { display: none; background: transparent; border: 0; flex-direction: column; gap: 5px; cursor: pointer; }
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
 
@@ -157,6 +168,12 @@
             margin: 0 auto;
         }
         .hero h1 { font-size: 2rem; }
+        .hero .illustration img {
+            display: block; 
+            max-width: 100%;
+            height: auto;
+        }
+
 
         /* GRID & CARDS */
         .grid.cols-3 { grid-template-columns: 1fr; }
@@ -175,8 +192,8 @@
     
     /* Penyesuaian untuk layar sangat kecil */
     @media (max-width: 500px) {
-        .illustration {
-            display: none; 
+        .hero .illustration {
+            padding-top: 15px; 
         }
         .hero {
             padding: 40px 15px;
@@ -223,13 +240,14 @@
           <div class="hero-text">
             <span class="badge-new"></span>
             <h1>Jaga Kesehatan Mentalmu</h1>
-            <p>Self-screening, edukasi, dan dukungan awal berbasis pola</p>
+            <p>Kenali gejala, pahami kondisi, lakukan tes sederhana.</p>
             <div class="hero-buttons" style="margin-top: 20px;">
               <button data-page="test" class="chip primary-chip btn-pulse">Mulai Tes Sekarang</button> 
               <button data-page="consult" class="chip">Konsultasi Sekarang</button>
             </div>
           </div>
           <div class="illustration">
+            <img src="awal.jpg" alt="Taman hijau yang tenang dengan tanaman dan kursi santai" />
             <svg class="illus-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
               <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#E8F4FF"/><stop offset="1" stop-color="#FFF0F6"/></linearGradient></defs>
               <rect x="0" y="0" width="560" height="360" rx="24" fill="url(#g1)" />
@@ -346,7 +364,7 @@
 
       <section id="test" class="page">
         <div class="card quiz-card">
-          <h2>Tes Interaktif (GAD-like singkat)</h2>
+          <h2>Tes Kondisi Emosional Anda</h2>
           <p class="muted">Pilih jawaban untuk setiap pertanyaan — hasil bersifat indikatif, bukan diagnosis.</p>
           
           <div class="progress-container">
@@ -388,9 +406,11 @@
           
           <div class="chat-input-area">
             <div class="quick-replies">
-              <button class="chip quick" data-q="cemas">Saya cemas 😰</button>
-              <button class="chip quick" data-q="sedih">Saya sedih 😢</button>
-              <button class="chip quick" data-q="tidur">Sulit tidur 😴</button>
+              <button class="chip quick" data-q="cemas">Saya cemas</button>
+              <button class="chip quick" data-q="sedih">Saya sedih</button>
+              <button class="chip quick" data-q="tidur">Sulit tidur</button>
+			  <button class="chip quick" data-q="cemas">Saya bingung</button>
+              <button class="chip quick" data-q="sedih">Saya takut</button>
             </div>
             <div class="input-row">
               <input id="story" type="text" placeholder="Ketik pesanmu di sini..." autocomplete="off">
@@ -405,7 +425,7 @@
     </main>
 
     <footer>
-      <small>© 2025 MindBloow — ZynAIVa</small>
+      <small>© 2025 MindBloow — ZynAIVa.</small>
     </footer>
   </div>
   
@@ -464,7 +484,6 @@
       showPage('home');
 
       /* --- 2. SISTEM KUIS (GAD-like Singkat) --- */
-      // Disesuaikan agar semua pertanyaan memiliki bobot 1 untuk Total Maksimal 21
       const questions = [
         { text: 'Merasa gugup, gelisah, atau tegang?', weight: 1 },
         { text: 'Tidak dapat berhenti atau mengendalikan kekhawatiran?', weight: 1 },
@@ -474,7 +493,7 @@
         { text: 'Sulit untuk tidur karena kecemasan?', weight: 1 },
         { text: 'Kehilangan minat karena khawatir terus?', weight: 1 }
       ];
-      // Total Maksimum Skor: 7 pertanyaan * 3 (nilai maks per jawaban) * 1 (bobot) = 21
+      // Total Maksimum Skor: 21
 
       let currentIdx = 0;
       let answers = new Array(questions.length).fill(null);
@@ -566,14 +585,12 @@
         let resultDetail = '';
         
         answers.forEach((ans, i) => {
-          // Nilai Jawaban (0-3) * Bobot (1)
           const score = ans * questions[i].weight;
           totalScore += score;
           maxPossible += (3 * questions[i].weight);
         });
 
-        // Kategori Skor (Disesuaikan dengan GAD-7 Scale, Max 21):
-        // 0-4 = Minimal; 5-9 = Mild; 10-14 = Moderate; 15-21 = Severe
+        // Kategori Skor (GAD-7 Scale, Max 21):
         const scoreMin = 0;
         const scoreMild = 5;
         const scoreModerate = 10;
@@ -583,7 +600,7 @@
         
         if (totalScore >= scoreSevere) {
           cat = 'Tinggi (Kritis) 🔴';
-          msg = 'Skor ini mengindikasikan tingkat kecemasan yang *sangat signifikan* dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
+          msg = 'Skor ini mengindikasikan tingkat kecemasan yang sangat signifikan dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
           color = '#fee2e2'; 
           resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Severe Anxiety (Kecemasan Parah).`;
         } else if (totalScore >= scoreModerate) {
@@ -625,8 +642,6 @@
       const sendBtn = document.getElementById('sendBtn');
       const clearBtn = document.getElementById('clearBtn');
       
-      const avatarBot = `<div style="width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;">AI</div>`;
-
       function addBubble(text, type) {
         const d = document.createElement('div');
         d.className = `bubble ${type}`;
@@ -677,7 +692,6 @@
         clearBtn.addEventListener('click', () => { history.innerHTML = '<div class="bubble bot">Halo! Aku MindBloow AI. Chat sudah dibersihkan.</div>'; });
         document.querySelectorAll('.quick').forEach(btn => {
           btn.addEventListener('click', () => { 
-            // Mengambil teks tombol tanpa emoji untuk input
             let btnText = btn.innerText.replace(/[\uD800-\uDBFF\uDC00-\uDFFF]/g, '').trim(); 
             storyInput.value = btnText; 
             sendBtn.click(); 
