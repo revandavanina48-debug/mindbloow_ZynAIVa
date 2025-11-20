@@ -583,24 +583,24 @@
         
         if (totalScore >= scoreSevere) {
           cat = 'Tinggi (Kritis) 🔴';
-          msg = 'Skor ini mengindikasikan tingkat kecemasan yang **sangat signifikan** dan mengganggu fungsi harian Anda. **Saran Penanganan:** Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
+          msg = 'Skor ini mengindikasikan tingkat kecemasan yang *sangat signifikan* dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
           color = '#fee2e2'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Severe Anxiety** (Kecemasan Parah).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Severe Anxiety (Kecemasan Parah).`;
         } else if (totalScore >= scoreModerate) {
           cat = 'Sedang (Waspada) 🟠';
-          msg = 'Anda mungkin mengalami tingkat kecemasan yang **cukup mengganggu**. **Saran Penanganan:** Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
+          msg = 'Anda mungkin mengalami tingkat kecemasan yang cukup mengganggu. Saran Penanganan: Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
           color = '#ffedd5'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Moderate Anxiety** (Kecemasan Sedang).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Moderate Anxiety (Kecemasan Sedang).`;
         } else if (totalScore >= scoreMild) {
           cat = 'Ringan (Pantau) 🟡';
-          msg = 'Gejala kecemasan Anda **ringan** dan tidak mengganggu secara substansial. **Saran Penanganan:** Fokus pada rutinitas tidur, olahraga, dan **journaling** untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
+          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan journaling untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
           color = '#fffbeb'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Mild Anxiety** (Kecemasan Ringan).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Mild Anxiety (Kecemasan Ringan).`;
         } else {
           cat = 'Minimal (Sehat) 🟢';
-          msg = 'Kesehatan mental Anda tampak **terjaga dengan baik**. **Saran Penanganan:** Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk *self-check* secara berkala.';
+          msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk self-check secara berkala.';
           color = '#dcfce7'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Minimal Anxiety** (Kecemasan Minimal).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Minimal Anxiety (Kecemasan Minimal).`;
         }
 
         resultBox.style.display = 'block';
