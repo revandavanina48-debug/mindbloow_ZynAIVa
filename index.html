@@ -12,34 +12,17 @@
 
   <style>
     /* ================= GAYA TAMPILAN (DESIGN V1.5) ================= */
-    /* Variabel CSS Dinamis untuk Tema */
     :root {
         --bg: #F0F4F8;
         --card: #ffffff;
-        --primary: #4F73FF; /* Default: Biru */
+        --primary: #4F73FF;
         --primary-dark: #3a5bcc;
-        --accent: #FF6B95; /* Default: Pink */
+        --accent: #FF6B95;
         --text: #1E293B;
         --muted: #64748B;
         --radius: 16px;
         --font: 'Poppins', sans-serif;
         --shadow: 0 10px 40px -10px rgba(79, 115, 255, 0.15);
-    }
-    /* Definisi Tema */
-    .theme-pink {
-        --primary: #FF6B95; /* Pink */
-        --primary-dark: #cc5677;
-        --accent: #4F73FF;
-    }
-    .theme-purple {
-        --primary: #8A2BE2; /* Blue Violet (Ungu Muda) */
-        --primary-dark: #6e22b6;
-        --accent: #FFD700; /* Gold */
-    }
-    .theme-green {
-        --primary: #3CB371; /* Medium Sea Green (Hijau Muda) */
-        --primary-dark: #31975e;
-        --accent: #FF8C00; /* Dark Orange */
     }
 
     * { box-sizing: border-box; }
@@ -67,35 +50,6 @@
     .nav-box { text-decoration: none; padding: 8px 14px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; transition: all 0.3s; }
     .nav-box:hover { background: #EFF6FF; color: var(--primary); }
     .nav-box[aria-current="true"] { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 115, 255, 0.4); }
-
-    /* THEME SWITCHER STYLES */
-    .theme-switcher-container {
-        display: flex;
-        align-items: center;
-        gap: 15px; /* Jarak antara menu nav dan theme switcher */
-    }
-    .theme-chips {
-        display: flex;
-        gap: 8px; /* Jarak antar chips */
-    }
-    .theme-chip {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.5);
-    }
-    .theme-chip.active {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px var(--primary), 0 0 0 6px rgba(255, 255, 255, 0.5); 
-    }
-    .theme-chip[data-theme='pink'] { background-color: #FF6B95; }
-    .theme-chip[data-theme='purple'] { background-color: #8A2BE2; }
-    .theme-chip[data-theme='green'] { background-color: #3CB371; }
-    /* END THEME SWITCHER STYLES */
-
 
     /* HERO SECTION */
     .hero { display: flex; align-items: center; gap: 40px; background: #fff; overflow: hidden; position: relative; }
@@ -186,28 +140,9 @@
     @media (max-width: 800px) {
         /* NAVIGASI */
         .nav-inner { width: 95%; } 
-        /* Pastikan chips tema tidak berantakan di mobile, bisa di sembunyikan atau di pindah */
-        .theme-switcher-container {
-            display: none; /* Menyembunyikan theme switcher di nav-inner untuk mobile */
-        }
-        
         .nav-toggle { display: flex; }
-        .menu { 
-            display: none; 
-            flex-direction: column; 
-            position: absolute; 
-            top: 75px; 
-            right: 20px; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-            width: 220px; 
-            z-index: 999; 
-        }
-        .menu.open { 
-            display: flex; 
-        }
+        .menu { display: none; flex-direction: column; position: absolute; top: 75px; right: 20px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 220px; z-index: 999; }
+        .menu.open { display: flex; }
 
         /* LAYOUT UTAMA */
         main { 
@@ -276,31 +211,22 @@
     }
   </style>
 </head>
-<body class="theme-blue"> <div class="site">
+<body>
+  <div class="site">
     <header class="navbar">
       <div class="nav-inner">
         <div class="brand">
-          <div class="logo">MindBloow<span style="color:var(--accent)">.ai</span></div>
+          <div class="logo">MindBloow<span style="color:var(--accent)"></span></div>
         </div>
         <nav>
-          <div class="theme-switcher-container">
-            <div class="nav-links menu" role="tablist">
-              <a class="nav-box" href="#" data-page="home" aria-current="true">Beranda</a>
-              <a class="nav-box" href="#" data-page="edu">Edukasi</a>
-              <a class="nav-box" href="#" data-page="signs">Tanda-tanda</a>
-              <a class="nav-box" href="#" data-page="help">Cara Mengatasi</a>
-              <a class="nav-box" href="#" data-page="test">Tes Mental</a>
-              <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
-            </div>
-            
-            <div class="theme-chips">
-                <div class="theme-chip active" data-theme="blue" style="background-color: #4F73FF;" title="Tema Biru (Default)"></div>
-                <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
-                <div class="theme-chip" data-theme="purple" title="Tema Ungu Muda"></div>
-                <div class="theme-chip" data-theme="green" title="Tema Hijau Muda"></div>
-            </div>
+          <div class="nav-links menu" role="tablist">
+            <a class="nav-box" href="#" data-page="home" aria-current="true">Beranda</a>
+            <a class="nav-box" href="#" data-page="edu">Edukasi</a>
+            <a class="nav-box" href="#" data-page="signs">Tanda-tanda</a>
+            <a class="nav-box" href="#" data-page="help">Cara Mengatasi</a>
+            <a class="nav-box" href="#" data-page="test">Tes Mental</a>
+            <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
           </div>
-
           <button class="nav-toggle" aria-label="Buka menu">
             <span class="bar"></span><span class="bar"></span><span class="bar"></span>
           </button>
@@ -312,9 +238,9 @@
       <section id="home" class="page active">
         <div class="hero card">
           <div class="hero-text">
-            <span class="badge-new">Versi Demo 1.5</span>
+            <span class="badge-new"></span>
             <h1>Jaga Kesehatan Mentalmu</h1>
-            <p>Self-screening, edukasi, dan dukungan awal berbasis pola — demo AI ringan.</p>
+            <p>Kenali gejala, pahami kondisi, lakukan tes sederhana.</p>
             <div class="hero-buttons" style="margin-top: 20px;">
               <button data-page="test" class="chip primary-chip btn-pulse">Mulai Tes Sekarang</button> 
               <button data-page="consult" class="chip">Konsultasi Sekarang</button>
@@ -438,7 +364,7 @@
 
       <section id="test" class="page">
         <div class="card quiz-card">
-          <h2>Tes Interaktif (GAD-like singkat)</h2>
+          <h2>Tes Kondisi Emosional Anda</h2>
           <p class="muted">Pilih jawaban untuk setiap pertanyaan — hasil bersifat indikatif, bukan diagnosis.</p>
           
           <div class="progress-container">
@@ -480,9 +406,11 @@
           
           <div class="chat-input-area">
             <div class="quick-replies">
-              <button class="chip quick" data-q="cemas">Saya cemas 😰</button>
-              <button class="chip quick" data-q="sedih">Saya sedih 😢</button>
-              <button class="chip quick" data-q="tidur">Sulit tidur 😴</button>
+              <button class="chip quick" data-q="cemas">Saya cemas</button>
+              <button class="chip quick" data-q="sedih">Saya sedih</button>
+              <button class="chip quick" data-q="tidur">Sulit tidur</button>
+			  <button class="chip quick" data-q="cemas">Saya bingung</button>
+              <button class="chip quick" data-q="sedih">Saya takut</button>
             </div>
             <div class="input-row">
               <input id="story" type="text" placeholder="Ketik pesanmu di sini..." autocomplete="off">
@@ -497,47 +425,13 @@
     </main>
 
     <footer>
-      <small>© 2025 MindBloow — Demo Kompetisi.</small>
+      <small>© 2025 MindBloow — ZynAIVa.</small>
     </footer>
   </div>
   
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       
-      /* --- THEME SWITCHER LOGIC --- */
-      const siteBody = document.querySelector('body');
-      const themeChips = document.querySelectorAll('.theme-chip');
-
-      function applyTheme(themeName) {
-        // Hapus semua kelas tema yang mungkin ada, kecuali 'body' itu sendiri
-        siteBody.classList.remove('theme-pink', 'theme-purple', 'theme-green', 'theme-blue'); 
-        
-        // Tambahkan kelas tema baru
-        siteBody.classList.add(`theme-${themeName}`);
-        
-        // Set status aktif pada chip
-        themeChips.forEach(chip => {
-          chip.classList.remove('active');
-          if (chip.dataset.theme === themeName) {
-            chip.classList.add('active');
-          }
-        });
-
-        // Simpan preferensi
-        localStorage.setItem('mindbloowTheme', themeName);
-      }
-
-      themeChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-          applyTheme(chip.dataset.theme);
-        });
-      });
-
-      // Muat tema yang tersimpan saat halaman dimuat
-      const savedTheme = localStorage.getItem('mindbloowTheme') || 'blue';
-      applyTheme(savedTheme);
-
-
       /* --- 1. NAVIGASI SISTEM (SPA) --- */
       const buttons = document.querySelectorAll('[data-page]');
       const pages = document.querySelectorAll('.page');
@@ -706,24 +600,24 @@
         
         if (totalScore >= scoreSevere) {
           cat = 'Tinggi (Kritis) 🔴';
-          msg = 'Skor ini mengindikasikan tingkat kecemasan yang **sangat signifikan** dan mengganggu fungsi harian Anda. **Saran Penanganan:** Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
+          msg = 'Skor ini mengindikasikan tingkat kecemasan yang sangat signifikan dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
           color = '#fee2e2'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Severe Anxiety** (Kecemasan Parah).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Severe Anxiety (Kecemasan Parah).`;
         } else if (totalScore >= scoreModerate) {
           cat = 'Sedang (Waspada) 🟠';
-          msg = 'Anda mungkin mengalami tingkat kecemasan yang **cukup mengganggu**. **Saran Penanganan:** Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
+          msg = 'Anda mungkin mengalami tingkat kecemasan yang cukup mengganggu. Saran Penanganan: Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
           color = '#ffedd5'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Moderate Anxiety** (Kecemasan Sedang).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Moderate Anxiety (Kecemasan Sedang).`;
         } else if (totalScore >= scoreMild) {
           cat = 'Ringan (Pantau) 🟡';
-          msg = 'Gejala kecemasan Anda **ringan** dan tidak mengganggu secara substansial. **Saran Penanganan:** Fokus pada rutinitas tidur, olahraga, dan **journaling** untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
+          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan journaling untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
           color = '#fffbeb'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Mild Anxiety** (Kecemasan Ringan).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Mild Anxiety (Kecemasan Ringan).`;
         } else {
           cat = 'Minimal (Sehat) 🟢';
-          msg = 'Kesehatan mental Anda tampak **terjaga dengan baik**. **Saran Penanganan:** Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk *self-check* secara berkala.';
+          msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk self-check secara berkala.';
           color = '#dcfce7'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Minimal Anxiety** (Kecemasan Minimal).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Minimal Anxiety (Kecemasan Minimal).`;
         }
 
         resultBox.style.display = 'block';
@@ -731,7 +625,7 @@
         resultBox.innerHTML = `
           <h3 style="margin-top:0">Hasil Tes: ${cat}</h3>
           <p style="font-size:15px; line-height:1.6">${msg}</p>
-          <p style="font-size:14px; margin-top:15px;">**Detail Skor:** ${resultDetail}</p>
+          <p style="font-size:14px; margin-top:15px;">Detail Skor: ${resultDetail}</p>
           <hr style="border:0; border-top:1px dashed rgba(0,0,0,0.1); margin:15px 0;">
           <div style="display:flex; gap:10px; justify-content:flex-end">
             <button id="btnRetake" class="chip">Ulangi Tes</button>
