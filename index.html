@@ -307,7 +307,7 @@
     <header class="navbar">
       <div class="nav-inner">
         <div class="brand">
-          <div class="logo">MindBloow<span style="color:var(--accent)">.ai</span></div>
+          <div class="logo">MindBloow<span style="color:var(--accent)"></span></div>
         </div>
         <nav>
           <div class="nav-links menu" role="tablist">
@@ -337,16 +337,16 @@
       <section id="home" class="page active">
         <div class="hero card">
           <div class="hero-text">
-            <span class="badge-new">Versi Demo 1.5</span>
-            <h1>Jaga Kesehatan Mentalmu</h1>
-            <p>Self-screening, edukasi, dan dukungan awal berbasis pola — demo AI ringan.</p>
+            <span class="badge-new"></span>
+            <h1>Jaga Kesehatan Mentalmu, Mulai dari Sini</h1>
+            <p>Kenali gejala, pahami kondisi, lakukan tes sederhana</p>
             <div class="hero-buttons" style="margin-top: 20px;">
               <button data-page="test" class="chip primary-chip btn-pulse">Mulai Tes Sekarang</button> 
               <button data-page="consult" class="chip">Konsultasi Sekarang</button>
             </div>
           </div>
           <div class="illustration">
-            <img src="https://images.unsplash.com/photo-1541017208453-e99d251f9a1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Taman hijau yang tenang dengan tanaman dan kursi santai" />
+            <img src="pertama.jpg" alt="Taman hijau yang tenang dengan tanaman dan kursi santai" />
             <svg class="illus-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
               <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#E8F4FF"/><stop offset="1" stop-color="#FFF0F6"/></linearGradient></defs>
               <rect x="0" y="0" width="560" height="360" rx="24" fill="url(#g1)" />
@@ -524,27 +524,27 @@
       
       <section id="about" class="page">
         <div class="card">
-          <h2>Tentang MindBloow.ai</h2>
-          <p>MindBloow.ai adalah proyek website interaktif yang dirancang untuk memberikan dukungan awal, edukasi, dan *self-screening* ringan bagi pengguna yang ingin memantau kondisi kesehatan mental mereka.</p>
+          <h2>Tentang MindBloow</h2>
+          <p>MindBloow.ai adalah proyek website interaktif yang dirancang untuk memberikan dukungan awal, edukasi, dan self-screening ringan bagi pengguna yang ingin memantau kondisi kesehatan mental mereka.</p>
           
           <h3 style="margin-top: 30px;">Tujuan Proyek</h3>
           <ul class="styled-list">
-            <li>Menyediakan platform yang **mudah diakses** (mobile-friendly) untuk informasi kesehatan mental.</li>
-            <li>Menggunakan sistem SPA (**Single Page Application**) untuk pengalaman pengguna yang cepat dan mulus.</li>
-            <li>Menyajikan simulasi interaktif (Quiz dan Chatbot) sebagai langkah **pengenalan dini**, bukan diagnosis.</li>
+            <li>Memberikan edukasi mengeenai kesehatan mental yang mudah diakses, aman, dan ramah pengguna.</li>
+            <li>Menggunakan sistem SPA (Single Page Application) untuk pengalaman pengguna yang cepat dan mulus.</li>
+            <li>Menyajikan simulasi interaktif (Quiz dan Chatbot) sebagai langkah pengenalan dini, bukan diagnosis.</li>
           </ul>
 
           <h3 style="margin-top: 30px;">Teknologi yang Digunakan</h3>
           <p>Website ini dibangun murni menggunakan teknologi inti web untuk menunjukkan penguasaan fundamental:</p>
           <ul class="styled-list">
             <li><strong>HTML5 Murni:</strong> Struktur dasar dengan semantik yang baik.</li>
-            <li><strong>CSS3 Murni:</strong> Styling, tata letak *grid/flex*, dan penerapan **desain responsif** serta **CSS Variables** untuk *theming*.</li>
+            <li><strong>CSS3 Murni:</strong> Styling, tata letak grid/flex, dan penerapan **desain responsif** serta **CSS Variables** untuk *theming*.</li>
             <li><strong>JavaScript Murni (Vanilla JS):</strong> Mengimplementasikan SPA routing, Quiz logic, dan Chatbot interaction tanpa Framework JS kompleks.</li>
-            <li><strong>CSS Library (Optional):</strong> *Tidak digunakan* untuk menekankan kemampuan membangun desain dari nol.</li>
+            <li><strong>CSS Library (Optional):</strong> Untuk menekankan kemampuan membangun desain dari nol.</li>
           </ul>
 
           <h3 style="margin-top: 30px;">Kreator</h3>
-          <p>Proyek ini dikembangkan oleh: <strong>[Nama Peserta Lomba Anda]</strong> sebagai demonstrasi keahlian di bidang HTML, CSS, dan JavaScript murni dalam konteks lomba website interaktif.</p>
+          <p>Proyek ini dikembangkan oleh: <strong>Zanuba dan Revanda</strong></p>
         </div>
       </section>
       </main>
@@ -771,22 +771,22 @@
           cat = 'Tinggi (Kritis) 🔴';
           msg = 'Skor ini mengindikasikan tingkat kecemasan yang sangat signifikan dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera.';
           color = '#fee2e2'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Severe Anxiety** (Kecemasan Parah).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Severe Anxiety (Kecemasan Parah).`;
         } else if (totalScore >= scoreModerate) {
           cat = 'Sedang (Waspada) 🟠';
           msg = 'Anda mungkin mengalami tingkat kecemasan yang cukup mengganggu. Saran Penanganan: Sangat disarankan untuk memulai konseling atau terapi bicara, serta menerapkan teknik relaksasi rutin.';
           color = '#ffedd5'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Moderate Anxiety** (Kecemasan Sedang).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Moderate Anxiety (Kecemasan Sedang).`;
         } else if (totalScore >= scoreMild) {
           cat = 'Ringan (Pantau) 🟡';
-          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan **journaling** untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
+          msg = 'Gejala kecemasan Anda ringan dan tidak mengganggu secara substansial. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan journaling untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
           color = '#fffbeb'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Mild Anxiety** (Kecemasan Ringan).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Mild Anxiety (Kecemasan Ringan).`;
         } else {
           cat = 'Minimal (Sehat) 🟢';
           msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk *self-check* secara berkala.';
           color = '#dcfce7'; 
-          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: **Minimal Anxiety** (Kecemasan Minimal).`;
+          resultDetail = `Skor Anda: ${totalScore}/${maxPossible}. Kategori: Minimal Anxiety (Kecemasan Minimal).`;
         }
 
         resultBox.style.display = 'block';
@@ -794,7 +794,7 @@
         resultBox.innerHTML = `
           <h3 style="margin-top:0">Hasil Tes: ${cat}</h3>
           <p style="font-size:15px; line-height:1.6">${msg}</p>
-          <p style="font-size:14px; margin-top:15px;">**Detail Skor:** ${resultDetail}</p>
+          <p style="font-size:14px; margin-top:15px;">Detail Skor: ${resultDetail}</p>
           <hr style="border:0; border-top:1px dashed rgba(0,0,0,0.1); margin:15px 0;">
           <div style="display:flex; gap:10px; justify-content:flex-end">
             <button id="btnRetake" class="chip">Ulangi Tes</button>
