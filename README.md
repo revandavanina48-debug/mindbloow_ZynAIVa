@@ -1,4 +1,5 @@
 <h3>MindBloow: Web kesehatan mental</h3>
+website  MindBlow yang dirancang untuk memberikan dukungan awal, edukasi, dan self screening ringan untuk para pengguna yang ingin memantau kondisi kesehatan mental mereka.<br>
 Tim ZynAIVa<br>
 Anggota:<br> 
 1. Zanuba Cahya Balqista<br>
