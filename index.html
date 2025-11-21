@@ -71,10 +71,21 @@
     nav { 
         display: flex; 
         align-items: center; 
-        gap: 20px; 
+        gap: 30px; /* PENYESUAIAN: Menambah jarak antara logo dan menu/theme chips */
     }
-    .menu { display: flex; gap: 6px; }
-    .nav-box { text-decoration: none; padding: 8px 14px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; transition: all 0.3s; }
+    .menu { 
+        display: flex; 
+        gap: 4px; /* PENYESUAIAN: Mengurangi jarak antar tombol menu */
+    }
+    .nav-box { 
+        text-decoration: none; 
+        padding: 8px 10px; /* PENYESUAIAN: Mengurangi padding horizontal untuk tombol menu */
+        border-radius: 8px; 
+        color: var(--muted); 
+        font-weight: 600; 
+        font-size: 13px; /* PENYESUAIAN FONT: Diubah menjadi 13px */
+        transition: all 0.3s; 
+    }
     .nav-box:hover { background: #EFF6FF; color: var(--primary); }
     .nav-box[aria-current="true"] { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 115, 255, 0.4); }
 
@@ -140,6 +151,7 @@
     .chip:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
     .chip.primary-chip { background: var(--primary); color: white; border: none; box-shadow: 0 4px 15px rgba(79, 115, 255, 0.3); }
     .chip.primary-chip:hover { background: var(--primary-dark); }
+    .chip.primary-chip:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
 
     /* PULSE ANIMATION */
     .btn-pulse { animation: pulse 2s infinite; }
@@ -196,6 +208,66 @@
     .nav-toggle { display: none; background: transparent; border: 0; flex-direction: column; gap: 5px; cursor: pointer; }
     .nav-toggle .bar { width: 25px; height: 3px; background: var(--text); border-radius: 3px; }
 
+    /* GAYA BARU: Mood Tracker */
+    .mood-selector {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    .mood-chip {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        padding: 10px;
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        text-align: center;
+    }
+    .mood-chip:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    .mood-chip.selected {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(79, 115, 255, 0.2);
+        color: var(--primary);
+    }
+    .mood-chip span {
+        font-size: 28px;
+        margin-bottom: 5px;
+        line-height: 1;
+    }
+    #moodHistory {
+        max-height: 350px;
+        overflow-y: auto;
+        padding: 10px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #f1f5f9;
+        margin-top: 20px;
+    }
+    .history-entry {
+        padding: 12px 15px;
+        border-bottom: 1px dashed #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+    }
+    .history-entry:last-child {
+        border-bottom: none;
+    }
+
     /* Tampilan Mobile */
     @media (max-width: 900px) { 
         .menu { display: none; } /* Sembunyikan menu di mobile secara default */
@@ -208,7 +280,7 @@
         .menu { 
             display: flex !important; /* WAJIB TAMPIL di desktop */
             flex-direction: row; /* Pastikan menu horizontal di desktop */
-            gap: 6px; 
+            gap: 4px; /* PENYESUAIAN MENU: Diubah dari 6px ke 4px */
         }
         /* Pastikan chip tema di dalam menu ditampilkan sebagai bagian dari baris di desktop */
         .menu > .theme-chips {
@@ -216,6 +288,12 @@
             padding: 0; 
             border-top: none; 
             margin-top: 0; 
+        }
+        nav { 
+            gap: 30px; /* PENYESUAIAN MENU: Diubah untuk jarak antara brand dan menu */
+        }
+        .nav-box { 
+            padding: 8px 10px; /* PENYESUAIAN MENU: Diubah dari 14px ke 10px */
         }
     }
     
@@ -301,6 +379,10 @@
         .chat-input-area {
             padding-bottom: 10px;
         }
+        .mood-chip {
+            width: 70px;
+            height: 70px;
+        }
     }
   </style>
 </head>
@@ -318,7 +400,7 @@
             <a class="nav-box" href="#" data-page="help">Tips Mengatasi</a>
             <a class="nav-box" href="#" data-page="test">Tes Mental</a>
             <a class="nav-box" href="#" data-page="consult">Konsultasi</a>
-            <a class="nav-box" href="#" data-page="about">Tentang</a> 
+            <a class="nav-box" href="#" data-page="mood">Mood Harian</a> <a class="nav-box" href="#" data-page="about">Tentang</a> 
             <div class="theme-chips">
                 <div class="theme-chip active" data-theme="blue" title="Tema Biru (Default)"></div>
                 <div class="theme-chip" data-theme="pink" title="Tema Pink Muda"></div>
@@ -461,7 +543,7 @@ Kesehatan mental tidak hanya berarti bebas dari gangguan, tetapi juga mencakup k
             <li><strong>Mengabaikan kebersihan diri:</strong> Penurunan drastis dalam kebiasaan mandi, ganti pakaian, atau penampilan diri.</li>
             <li><strong>Peningkatan iritabilitas:</strong> Lebih cepat marah, frustrasi, atau merasa mudah tersinggung tanpa pemicu besar.</li>
             <li><strong>Ketergantungan pada zat/perilaku:</strong> Menggunakan alkohol, obat-obatan, atau perilaku berisiko (misalnya judi, belanja) untuk meredakan emosi.</li>
-            <li><strong>Perilaku merusak diri:</strong> Melukai diri sendiri (self-harm) atau memiliki pikiran untuk melakukannya. (Segera cari bantuan profesional).</li>
+            <li><strong>Perilaku merusak diri:sendiri:</strong> Melukai diri sendiri (self-harm) atau memiliki pikiran untuk melakukannya. (Segera cari bantuan profesional).</li>
             <li><strong>Sinisme atau sikap apatis:</strong> Pandangan negatif yang terus-menerus terhadap dunia, pekerjaan, atau masa depan (seolah tidak ada harapan).</li>
             <li><strong>Peningkatan kepekaan sensorik:</strong> Merasa sangat terganggu oleh suara keras, cahaya terang, atau keramaian yang biasanya normal.</li>
             <li><strong>Penurunan libido:</strong> Kehilangan minat pada aktivitas seksual atau keintiman.</li>
@@ -574,6 +656,40 @@ Kesehatan mental tidak hanya berarti bebas dari gangguan, tetapi juga mencakup k
         </div>
       </section>
       
+      <section id="mood" class="page">
+        <div class="card">
+          <h2>Mood Tracker Harian 📝</h2>
+          <p class="muted">Bagaimana perasaanmu hari ini? Pilih emoji yang paling mewakili suasana hatimu untuk membantu melacak polamu.</p>
+          
+          <div style="text-align: center; margin: 20px 0;">
+            <p style="font-size: 18px; font-weight: 600; color: var(--text);">
+                <span id="currentDateDisplay"></span>
+                <span id="moodSavedIndicator" style="font-weight: 400; color: #4ade80; margin-left: 10px; display: none;">(Sudah Tersimpan)</span>
+            </p>
+          </div>
+
+          <div class="mood-selector" id="moodSelector">
+            <div class="mood-chip" data-mood="Senang" data-emoji="😊"><span>😊</span> Senang</div>
+            <div class="mood-chip" data-mood="Tenang" data-emoji="😌"><span>😌</span> Tenang</div>
+            <div class="mood-chip" data-mood="Biasa" data-emoji="😐"><span>😐</span> Biasa</div>
+            <div class="mood-chip" data-mood="Sedih" data-emoji="😔"><span>😔</span> Sedih</div>
+            <div class="mood-chip" data-mood="Cemas" data-emoji="😰"><span>😰</span> Cemas</div>
+            <div class="mood-chip" data-mood="Lelah" data-emoji="😴"><span>😴</span> Lelah</div>
+            <div class="mood-chip" data-mood="Marah" data-emoji="😡"><span>😡</span> Marah</div>
+            <div class="mood-chip" data-mood="Stres" data-emoji="😫"><span>😫</span> Stres</div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px;">
+            <button id="saveMoodBtn" class="chip primary-chip" disabled>Simpan Mood Hari Ini</button>
+          </div>
+          
+          <h3 style="margin-top: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Riwayat Mood Terakhir</h3>
+          <div id="moodHistory">
+            <p style="font-style:italic; color:var(--muted);">Riwayat sedang dimuat...</p>
+          </div>
+        </div>
+      </section>
+
       <section id="about" class="page">
         <div class="card">
           <h2>Tentang MindBloow</h2>
@@ -683,6 +799,11 @@ Kesehatan mental tidak hanya berarti bebas dari gangguan, tetapi juga mencakup k
         // Panggil fungsi quote jika di halaman home
         if (pageId === 'home') {
             displayDailyQuote();
+        }
+        
+        // Panggil inisialisasi Mood Tracker (BARU)
+        if (pageId === 'mood') {
+            initMoodPage();
         }
       }
 
@@ -1248,6 +1369,139 @@ Kesehatan mental tidak hanya berarti bebas dari gangguan, tetapi juga mencakup k
               }, 50); 
           }
       }
+      
+      
+      /* --- 5. MOOD TRACKER LOGIC (BARU) --- */
+      const moodChips = document.querySelectorAll('.mood-chip');
+      const saveMoodBtn = document.getElementById('saveMoodBtn');
+      const currentDateDisplay = document.getElementById('currentDateDisplay');
+      const moodSavedIndicator = document.getElementById('moodSavedIndicator');
+      const moodHistoryContainer = document.getElementById('moodHistory');
+      
+      let selectedMood = null;
+      
+      // Fungsi utilitas untuk tanggal
+      function getTodayKey() {
+          const today = new Date();
+          // Format MM/DD/YYYY untuk kunci penyimpanan (agar bisa diurutkan)
+          return today.toLocaleDateString('en-US'); 
+      }
+      
+      function getTodayDisplay() {
+          const today = new Date();
+          return today.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      // Logika Pemilihan Mood
+      moodChips.forEach(chip => {
+          chip.addEventListener('click', () => {
+              // Hapus pilihan sebelumnya
+              moodChips.forEach(c => c.classList.remove('selected'));
+              
+              // Pilih yang baru
+              chip.classList.add('selected');
+              selectedMood = {
+                  mood: chip.dataset.mood,
+                  emoji: chip.dataset.emoji
+              };
+              saveMoodBtn.disabled = false;
+              saveMoodBtn.innerText = 'Simpan Mood Hari Ini';
+              moodSavedIndicator.style.display = 'none';
+          });
+      });
+      
+      // Logika Penyimpanan Mood
+      saveMoodBtn.addEventListener('click', () => {
+          if (!selectedMood || saveMoodBtn.disabled) return;
+          
+          const todayKey = getTodayKey();
+          let allMoods = JSON.parse(localStorage.getItem('mindbloowMoodHistory')) || {};
+          
+          allMoods[todayKey] = {
+              mood: selectedMood.mood,
+              emoji: selectedMood.emoji,
+              time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+          };
+          
+          localStorage.setItem('mindbloowMoodHistory', JSON.stringify(allMoods));
+          
+          // Beri umpan balik ke pengguna
+          moodSavedIndicator.style.display = 'inline';
+          saveMoodBtn.innerText = 'Mood Tersimpan!';
+          saveMoodBtn.disabled = true;
+          
+          // Render ulang riwayat setelah penyimpanan
+          setTimeout(() => {
+             renderMoodHistory(); // Render ulang setelah data dipastikan tersimpan
+          }, 500);
+      });
+      
+      // Logika Render Riwayat dan Status Hari Ini
+      function renderMoodHistory() {
+          const allMoods = JSON.parse(localStorage.getItem('mindbloowMoodHistory')) || {};
+          const todayKey = getTodayKey();
+          
+          let historyHtml = '';
+          const historyArray = [];
+          
+          // Konversi objek ke array untuk diurutkan
+          for (const dateKey in allMoods) {
+              const entry = allMoods[dateKey];
+              entry.dateTimestamp = new Date(dateKey).getTime(); 
+              entry.dateKey = dateKey;
+              historyArray.push(entry);
+          }
+          
+          // Urutkan (terbaru di atas)
+          historyArray.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+          
+          // Ambil 7 entri terakhir
+          const latestEntries = historyArray.slice(0, 7); 
+          
+          if (latestEntries.length === 0) {
+              moodHistoryContainer.innerHTML = '<p style="font-style:italic; color:var(--muted);">Belum ada riwayat mood yang tersimpan.</p>';
+          } else {
+              latestEntries.forEach(entry => {
+                  // Tambahkan sedikit penanganan jika time tidak ada (dari entri lama)
+                  const entryTime = entry.time ? `Pukul ${entry.time}` : 'Tersimpan'; 
+                  const displayDate = new Date(entry.dateKey).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                  historyHtml += `
+                      <div class="history-entry">
+                          <span style="font-weight: 500;">${displayDate}</span>
+                          <span style="color:var(--text);">${entry.emoji} ${entry.mood}</span>
+                          <span style="color:var(--muted); font-size:12px;">${entryTime}</span>
+                      </div>
+                  `;
+              });
+              moodHistoryContainer.innerHTML = historyHtml;
+          }
+          
+          // Cek status mood hari ini untuk tampilan di Mood Tracker Page
+          moodChips.forEach(c => c.classList.remove('selected'));
+          saveMoodBtn.disabled = false;
+          moodSavedIndicator.style.display = 'none';
+          saveMoodBtn.innerText = 'Simpan Mood Hari Ini';
+
+          if (allMoods[todayKey]) {
+              const moodToday = allMoods[todayKey];
+              const selectedChip = document.querySelector(`.mood-chip[data-mood='${moodToday.mood}'][data-emoji='${moodToday.emoji}']`);
+              if (selectedChip) selectedChip.classList.add('selected');
+              
+              selectedMood = moodToday; 
+              saveMoodBtn.disabled = true; 
+              moodSavedIndicator.style.display = 'inline';
+              saveMoodBtn.innerText = 'Mood Tersimpan!';
+          } else {
+              selectedMood = null;
+          }
+      }
+      
+      // Inisialisasi halaman Mood
+      function initMoodPage() {
+          currentDateDisplay.innerText = getTodayDisplay();
+          renderMoodHistory();
+      }
+
 
       // Pemanggilan awal untuk inisiasi SPA dan menampilkan kutipan pertama
       showPage('home'); 
