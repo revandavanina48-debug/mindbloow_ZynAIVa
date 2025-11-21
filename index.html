@@ -360,7 +360,13 @@
             </svg>
           </div>
         </div>
-      </section>
+
+        <div id="dailyQuoteCard" class="card" style="margin-top: 25px;">
+            <h3 style="margin-top: 0; color: var(--primary); font-size: 16px;">Kutipan Harian</h3>
+            <p id="dailyQuoteText" style="font-style: italic; font-size: 18px; color: var(--text); font-weight: 500;">Sedang memuat kutipan...</p>
+            <p id="dailyQuoteSource" style="text-align: right; margin-top: 10px; color: var(--muted); font-size: 14px;">— Penulis</p>
+        </div>
+        </section>
 
       <section id="edu" class="page">
         <div class="card">
@@ -642,6 +648,11 @@
             document.getElementById('resultBox').style.display = 'none';
             renderTestHistory(); // Panggil fungsi render history
         }
+
+        // Panggil fungsi quote jika di halaman home
+        if (pageId === 'home') {
+            displayDailyQuote();
+        }
       }
 
       buttons.forEach(b => b.addEventListener('click', (e) => {
@@ -666,7 +677,9 @@
         }
       });
       
-      showPage('home');
+      // showPage('home'); <-- Menghapus pemanggilan ini, diganti dengan panggilan di akhir DOMContentLoaded
+      
+
 
       /* --- 2. SISTEM KUIS (4 Jenis Tes Spesifik) --- */
       
@@ -1121,6 +1134,93 @@
           if(t) t.innerText = d.classList.contains('open') ? 'Tutup' : 'Buka detail';
         });
       });
+      
+      
+      /* --- 4. DAILY QUOTE LOGIC (NEW) --- */
+      const quotes = [
+        { text: "Keberanian memulai adalah langkah pertama menuju kemenangan.", source: "Walt Disney" },
+        { text: "Kesuksesan bukanlah akhir, kegagalan bukanlah sesuatu yang fatal. Keberanian untuk terus melanjutkanlah yang paling penting.", source: "Winston Churchill" },
+        { text: "Percayalah bahwa kamu bisa, maka kamu sudah setengah jalan.", source: "Theodore Roosevelt" },
+        { text: "Waktu kita terbatas, jadi jangan menghabiskannya untuk menjadi orang lain.", source: "Steve Jobs" },
+        { text: "Bermimpilah besar dan beranilah gagal.", source: "Norman Vaughan" },
+        { text: "Semuanya tampak mustahil sampai akhirnya berhasil.", source: "Nelson Mandela" },
+        { text: "Kamu akan gagal 100% pada peluang yang tidak kamu ambil.", source: "Wayne Gretzky" },
+        { text: "Mulailah dari tempatmu berada. Gunakan apa yang kamu miliki. Lakukan apa yang kamu bisa.", source: "Arthur Ashe" },
+        { text: "Apa yang kamu dapatkan dari mencapai tujuan tidak sepenting siapa dirimu setelah mencapainya.", source: "Zig Ziglar" },
+        { text: "Kualitas bukanlah tindakan sesaat, melainkan kebiasaan.", source: "Aristoteles" },
+        { text: "Bertindaklah seakan apa yang kamu lakukan memberi pengaruh—karena memang begitu.", source: "William James" },
+        { text: "Arahkan wajahmu selalu ke arah cahaya matahari, maka bayangan akan jatuh di belakangmu.", source: "Walt Whitman" },
+        { text: "Jangan melihat jam. Lakukan seperti jam—terus berjalan.", source: "Sam Levenson" },
+        { text: "Hidup adalah 10% apa yang terjadi padamu dan 90% bagaimana kamu meresponnya.", source: "Charles R. Swindoll" },
+        { text: "Kesulitan sering mempersiapkan orang biasa untuk takdir yang luar biasa.", source: "C.S. Lewis" },
+        { text: "Hanya diriku sendiri yang bisa mengubah hidupku. Tidak ada orang lain yang bisa.", source: "Carol Burnett" },
+        { text: "Kamu tidak pernah terlalu tua untuk memiliki mimpi baru.", source: "Les Brown" },
+        { text: "Lakukan apa yang kamu bisa, dengan apa yang kamu punya, di tempat kamu berada.", source: "Theodore Roosevelt" },
+        { text: "Segala sesuatu yang bisa kamu bayangkan itu nyata.", source: "Pablo Picasso" },
+        { text: "Ubah lukamu menjadi kebijaksanaan.", source: "Oprah Winfrey" },
+        { text: "Jadilah dirimu sendiri; yang lain sudah ada yang punya.", source: "Oscar Wilde" },
+        { text: "Apa yang ada di hadapan dan di belakang kita tidak seberapa dibandingkan apa yang ada dalam diri kita.", source: "Ralph Waldo Emerson" },
+        { text: "Masa depan bergantung pada apa yang kamu lakukan hari ini.", source: "Mahatma Gandhi" },
+        { text: "Kebahagiaan bergantung pada diri kita sendiri.", source: "Aristoteles" },
+        { text: "Kesempatan tidak terjadi begitu saja, kamu yang menciptakannya.", source: "Chris Grosser" },
+        { text: "Lakukan sesuatu hari ini yang akan membuat dirimu di masa depan berterima kasih.", source: "Sean Patrick Flanery" },
+        { text: "Jangan batasi tantanganmu. Tantanglah limit dirimu.", source: "Jerry Dunn" },
+        { text: "Hiduplah seolah kamu akan mati besok. Belajarlah seolah kamu akan hidup selamanya.", source: "Mahatma Gandhi" },
+        { text: "Kesuksesan adalah berjalan dari kegagalan ke kegagalan tanpa kehilangan semangat.", source: "Winston Churchill" },
+        { text: "Kegagalan hanyalah kesempatan untuk memulai kembali dengan lebih cerdas.", source: "Henry Ford" },
+        { text: "Jika kamu sedang melalui masa sulit, teruslah berjalan.", source: "Winston Churchill" },
+        { text: "Percayalah pada dirimu dan seluruh kemampuanmu.", source: "Christian D. Larson" },
+        { text: "Kebahagiaan bukan sesuatu yang sudah jadi. Ia datang dari tindakanmu sendiri.", source: "Dalai Lama" },
+        { text: "Kamu lebih kuat daripada yang kamu kira.", source: "A. A. Milne" },
+        { text: "Satu-satunya batasan untuk masa depan kita adalah keraguan kita hari ini.", source: "Franklin D. Roosevelt" },
+        { text: "Jangan biarkan kemarin mengambil terlalu banyak dari hari ini.", source: "Will Rogers" },
+        { text: "Perjalanan seribu mil dimulai dari satu langkah.", source: "Lao Tzu" },
+        { text: "Kesuksesan biasanya datang kepada mereka yang terlalu sibuk untuk mencarinya.", source: "Henry David Thoreau" },
+        { text: "Bersama hari baru, datanglah kekuatan dan pikiran baru.", source: "Eleanor Roosevelt" },
+        { text: "Di mana ada cinta dan inspirasi, tidak mungkin ada kesalahan.", source: "Ella Fitzgerald" },
+        { text: "Kita menciptakan ketakutan saat kita diam. Kita mengatasinya melalui tindakan.", source: "Dr. Henry Link" },
+        { text: "Jika kamu ingin mengangkat dirimu sendiri, angkatlah seseorang yang lain.", source: "Booker T. Washington" },
+        { text: "Jangan menunggu besi panas untuk ditempa; panaskan dengan menempa.", source: "W.B. Yeats" },
+        { text: "Apa yang kita pikirkan, itulah yang kita menjadi.", source: "Buddha" },
+        { text: "Segala sesuatu punya keindahan, hanya saja tidak semua orang bisa melihatnya.", source: "Confucius" },
+        { text: "Yang penting bukan seberapa sering kamu jatuh, tapi seberapa sering kamu bangkit.", source: "Vince Lombardi" },
+        { text: "Keberanian adalah anugerah di bawah tekanan.", source: "Ernest Hemingway" },
+        { text: "Di tengah kesulitan terdapat kesempatan.", source: "Albert Einstein" },
+        { text: "Mereka yang punya alasan kuat untuk hidup dapat menanggung hampir cara hidup apa pun.", source: "Friedrich Nietzsche" },
+        { text: "Rahasia untuk maju adalah memulai.", source: "Mark Twain" }
+      ];
+
+      function displayDailyQuote() {
+          const quoteContainer = document.getElementById('dailyQuoteCard');
+          const quoteTextEl = document.getElementById('dailyQuoteText');
+          const quoteSourceEl = document.getElementById('dailyQuoteSource');
+
+          if (quoteContainer && quoteTextEl) {
+              
+              // 1. Terapkan properti transisi terlebih dahulu
+              quoteContainer.style.transition = 'opacity 0.5s ease';
+
+              // 2. Sembunyikan card secara instan untuk menyegarkan konten
+              quoteContainer.style.opacity = 0;
+
+              // Pilih kutipan secara acak
+              const randomIndex = Math.floor(Math.random() * quotes.length);
+              const randomQuote = quotes[randomIndex];
+
+              // 3. Perbarui konten
+              quoteTextEl.innerText = `“${randomQuote.text}”`;
+              quoteSourceEl.innerText = `— ${randomQuote.source}`;
+
+              // 4. Tampilkan card setelah sedikit penundaan (untuk memastikan konten terupdate)
+              setTimeout(() => {
+                  quoteContainer.style.opacity = 1;
+              }, 50); 
+          }
+      }
+
+      // Pemanggilan awal untuk inisiasi SPA dan menampilkan kutipan pertama
+      showPage('home'); 
+      
     });
   </script>
 </body>
