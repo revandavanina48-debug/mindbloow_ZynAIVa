@@ -466,9 +466,6 @@
         <div class="card quiz-card">
           <h2>Tes Kondisi Emosional Anda</h2>
           
-          <div id="testHistoryContainer" style="margin-top: 20px;">
-              </div>
-          
           <p class="muted" style="margin-top: 20px;">Pilih jenis tes yang ingin kamu ambil untuk mendapatkan hasil yang lebih spesifik.</p>
           
           <div id="testSelection" style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
@@ -477,6 +474,9 @@
             <button class="chip primary-chip test-select" data-test="kelelahan">3. Tes Kelelahan & Produktivitas (Burnout)</button>
             <button class="chip primary-chip test-select" data-test="stres">4. Tes Tingkat Stres Umum</button>
           </div>
+
+          <div id="testHistoryContainer" style="margin-top: 40px;">
+              </div>
 
           <div id="quizContainer" style="display:none;">
             <div class="progress-container">
@@ -778,11 +778,11 @@
         document.getElementById('quizContainer').style.display = 'none';
         
         if (testHistory.length === 0) {
-            testHistoryContainer.innerHTML = '';
+            testHistoryContainer.innerHTML = '<p style="font-style:italic; color:var(--muted);">Belum ada riwayat tes yang tersimpan.</p>';
             return;
         }
 
-        let historyHtml = '<h3>Riwayat Hasil Tes</h3>';
+        let historyHtml = '<h3 style="margin-bottom:15px; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Riwayat Hasil Tes</h3>';
         historyHtml += '<div style="display:flex; flex-direction:column; gap:10px;">';
         
         testHistory.slice().reverse().forEach(result => { // Tampilkan yang terbaru di atas
@@ -811,6 +811,7 @@
         document.getElementById('quizContainer').style.display = 'block';
         document.getElementById('quizTitle').innerText = currentTest.title;
         testHistoryContainer.innerHTML = ''; // Sembunyikan riwayat saat kuis dimulai
+        testHistoryContainer.style.display = 'none'; // Tambahan: Sembunyikan kontainer riwayat
 
         resultBox.style.display = 'none';
         loadingOverlay.style.display = 'none';
@@ -946,35 +947,24 @@
         
         // Simpan Hasil & Update localStorage
         testHistory.push(result);
-        saveTestHistory(); // <--- PANGGILAN BARU: Simpan ke perangkat
+        saveTestHistory(); // <-- Menyimpan hasil ke perangkat
         
-        // Render Hasil dengan Tombol "Lanjut Tes Lain"
-        resultBox.style.display = 'block';
-        resultBox.style.backgroundColor = color;
-        resultBox.innerHTML = `
-          <h3 style="margin-top:0">Hasil Tes ${result.title}</h3>
-          <p style="font-size:15px; line-height:1.6">${msg}</p>
-          <p style="font-size:14px; margin-top:15px;">Detail Skor: ${resultDetail}</p>
-          <hr style="border:0; border-top:1px dashed rgba(0,0,0,0.1); margin:15px 0;">
-          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end">
-            <button id="btnRetake" class="chip">Ulangi Tes Ini</button>
-            <button id="btnChat" class="chip">Konsultasi</button>
-            <button id="btnNextTest" class="chip primary-chip">Lanjut Tes Lain</button>
-          </div>`;
+        // --- KODE HANYA UNTUK MENYIMPAN DAN KEMBALI ---
         
-        document.getElementById('btnRetake').onclick = () => {
-            // Temukan kunci tes berdasarkan judul, lalu inisialisasi ulang
-            const testKey = Object.keys(allTests).find(key => allTests[key].title === result.title);
-            if(testKey) initQuiz(testKey); 
-        };
-        document.getElementById('btnChat').onclick = () => showPage('consult');
+        // Sembunyikan kontainer kuis
+        document.getElementById('quizContainer').style.display = 'none';
+        // Sembunyikan kotak hasil
+        resultBox.style.display = 'none';
         
-        // Fungsi Tombol Lanjut Tes Lain
-        document.getElementById('btnNextTest').onclick = () => {
-            document.getElementById('quizContainer').style.display = 'none';
-            resultBox.style.display = 'none';
-            renderTestHistory(); // Kembali ke pilihan tes dan tampilkan riwayat
-        };
+        // Tampilkan kontainer riwayat
+        testHistoryContainer.style.display = 'block';
+
+        // Tampilkan pesan singkat bahwa hasil tersimpan
+        alert(`Hasil tes ${currentTest.title} telah tersimpan ke Riwayat Tes. Skor: ${totalScore}/${maxPossible}.`);
+
+        // Kembali ke tampilan pilihan tes dan tampilkan riwayat yang baru dimuat
+        renderTestHistory(); 
+        // --- END: KODE HANYA UNTUK MENYIMPAN DAN KEMBALI ---
       }
 
       /* --- 3. CHATBOT (LOGIKA INTERAKTIF BARU) --- */
