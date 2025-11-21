@@ -61,7 +61,7 @@
         padding: 15px 20px;
         position: fixed;
         top: 0; left: 0; right: 0; z-index: 1000;
-        border-bottom: 1px solid rgba(255,255,255,0.3);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
     .nav-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
@@ -156,12 +156,13 @@
 
     /* QUIZ STYLES */
     .progress-container { margin-bottom: 25px; }
-    .progress-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    .progress-label { font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 10px; }
     .progress-bar { background: #f1f5f9; height: 8px; border-radius: 10px; overflow: hidden; }
     .progress-bar i { display: block; height: 100%; background: var(--primary); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
     .choice { width: 100%; padding: 15px; margin-bottom: 10px; border: 2px solid #f1f5f9; border-radius: 12px; background: #fff; text-align: left; font-weight: 500; cursor: pointer; transition: 0.2s; }
     .choice:hover { border-color: var(--primary); background: #f8fbff; }
     .choice.selected { border-color: var(--primary); background: var(--primary); color: white; }
+    .test-select { width: 100%; }
 
     /* LOADING SPINNER */
     .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
@@ -381,7 +382,7 @@
                 <div class="meta">Definisi singkat: Gangguan suasana hati persisten yang menyebabkan perasaan sedih, kehilangan minat, dan penurunan energi yang signifikan.</div>
                 <div class="more">
                    <strong>Gejala umum:</strong>
-                   <ul>
+                   <ul class="styled-list">
                      <li>Perasaan sedih, hampa, atau putus asa hampir setiap hari</li>
                      <li>Hilangnya minat atau kesenangan pada aktivitas yang biasanya dinikmati</li>
                      <li>Perubahan berat badan atau nafsu makan</li>
@@ -397,7 +398,7 @@
                 <div class="meta">Definisi singkat: Perasaan khawatir dan ketegangan yang berlebihan, tidak proporsional, dan sulit dikendalikan tentang kejadian sehari-hari.</div>
                 <div class="more">
                    <strong>Gejala umum:</strong>
-                   <ul>
+                   <ul class="styled-list">
                      <li>Kekhawatiran yang berlebihan dan konstan tentang berbagai hal</li>
                      <li>Gelisah, ketegangan otot, mudah lelah</li>
                      <li>Kesulitan berkonsentrasi dan gangguan tidur</li>
@@ -411,7 +412,7 @@
                 <div class="meta">Definisi singkat: Kondisi kelelahan fisik, emosional, dan mental yang ekstrem akibat stres kerja jangka panjang dan intens.</div>
                 <div class="more">
                    <strong>Gejala umum:</strong>
-                   <ul>
+                   <ul class="styled-list">
                      <li>Kelelahan kronis yang tidak hilang setelah istirahat</li>
                      <li>Sinisme atau jarak emosional terhadap pekerjaan</li>
                      <li>Penurunan produktivitas dan perasaan tidak kompeten</li>
@@ -464,23 +465,36 @@
       <section id="test" class="page">
         <div class="card quiz-card">
           <h2>Tes Kondisi Emosional Anda</h2>
-          <p class="muted">Pilih jawaban untuk setiap pertanyaan — hasil bersifat indikatif, bukan diagnosis.</p>
           
-          <div class="progress-container">
-            <div class="progress-label">Progress</div>
-            <div class="progress-bar"><i id="progressFill"></i></div>
+          <div id="testHistoryContainer" style="margin-top: 20px;">
+              </div>
+          
+          <p class="muted" style="margin-top: 20px;">Pilih jenis tes yang ingin kamu ambil untuk mendapatkan hasil yang lebih spesifik.</p>
+          
+          <div id="testSelection" style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+            <button class="chip primary-chip btn-pulse test-select" data-test="kecemasan">1. Tes Kecemasan (GAD-7 Versi Singkat)</button>
+            <button class="chip primary-chip test-select" data-test="suasana_hati">2. Tes Suasana Hati (Depresi)</button>
+            <button class="chip primary-chip test-select" data-test="kelelahan">3. Tes Kelelahan & Produktivitas (Burnout)</button>
+            <button class="chip primary-chip test-select" data-test="stres">4. Tes Tingkat Stres Umum</button>
           </div>
-          
-          <div id="qArea"></div>
 
-          <div id="loadingOverlay" style="display:none; text-align:center; padding:30px;">
-            <div class="spinner"></div>
-            <p>AI sedang menganalisis pola jawabanmu...</p>
-          </div>
-          
-          <div class="quiz-controls">
-            <button id="prevQ" class="chip secondary" style="display:none">Kembali</button>
-            <button id="nextQ" class="chip primary-chip">Lanjut</button>
+          <div id="quizContainer" style="display:none;">
+            <div class="progress-container">
+                <div class="progress-label" id="quizTitle"></div>
+                <div class="progress-bar"><i id="progressFill"></i></div>
+            </div>
+            
+            <div id="qArea"></div>
+
+            <div id="loadingOverlay" style="display:none; text-align:center; padding:30px;">
+              <div class="spinner"></div>
+              <p>AI sedang menganalisis pola jawabanmu...</p>
+            </div>
+            
+            <div class="quiz-controls">
+              <button id="prevQ" class="chip secondary" style="display:none">Kembali</button>
+              <button id="nextQ" class="chip primary-chip">Lanjut</button>
+            </div>
           </div>
           
           <div id="resultBox" class="result slide-up" style="display:none"></div>
@@ -507,9 +521,10 @@
             <div class="quick-replies">
               <button class="chip quick" data-q="cemas">Saya cemas</button>
               <button class="chip quick" data-q="sedih">Saya sedih</button>
-              <button class="chip quick" data-q="tidur">Sulit tidur</button>
-			        <button class="chip quick" data-q="cemas">Saya bingung</button>
-              <button class="chip quick" data-q="sedih">Saya takut</button>
+              <button class="chip quick" data-q="lelah">Saya lelah</button>
+              <button class="chip quick" data-q="bingung">Saya bingung</button>
+              <button class="chip quick" data-q="sendiri">Saya kesepian</button>
+              <button class="chip quick" data-q="marah">Saya marah</button>
             </div>
             <div class="input-row">
               <input id="story" type="text" placeholder="Ketik pesanmu di sini..." autocomplete="off">
@@ -620,11 +635,12 @@
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
+        // Handle Test Page initialization
         if (pageId === 'test') {
-           const qContent = document.getElementById('qArea');
-           if (qContent.innerHTML.trim() === '') {
-              initQuiz();
-           }
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('testSelection').style.display = 'flex';
+            document.getElementById('resultBox').style.display = 'none';
+            renderTestHistory(); // Panggil fungsi render history
         }
       }
 
@@ -652,41 +668,102 @@
       
       showPage('home');
 
-      /* --- 2. SISTEM KUIS (GAD-like Singkat) --- */
-      const questions = [
-        { text: 'Merasa gugup, gelisah, atau tegang?', weight: 1, reverse: false },
-        { text: 'Tidak dapat berhenti atau mengendalikan kekhawatiran?', weight: 1, reverse: false },
-        { text: 'Khawatir berlebihan tentang berbagai hal?', weight: 1, reverse: false },
-        { text: 'Sulit santai?', weight: 1, reverse: false },
-        { text: 'Sulit untuk berhenti merasa khawatir?', weight: 1, reverse: false },
-        { text: 'Sulit untuk tidur karena kecemasan?', weight: 1, reverse: false },
-        { text: 'Kehilangan minat karena khawatir terus?', weight: 1, reverse: false },
-        // --- Mulai 20 Soal Tambahan ---
-        { text: 'Saya merasa sangat sedih atau hampa hampir setiap hari.', weight: 1, reverse: false },
-        { text: 'Saya kehilangan minat atau kesenangan pada hal-hal yang biasanya saya nikmati.', weight: 1, reverse: false },
-        { text: 'Saya mengalami perubahan berat badan atau nafsu makan yang signifikan.', weight: 1, reverse: false },
-        { text: 'Saya merasa lambat atau gelisah, sehingga orang lain bisa melihatnya.', weight: 1, reverse: false },
-        { text: 'Saya merasa tidak berharga atau merasa bersalah secara berlebihan.', weight: 1, reverse: false },
-        { text: 'Saya merasa sulit untuk berpikir, berkonsentrasi, atau membuat keputusan.', weight: 1, reverse: false },
-        { text: 'Saya memiliki pikiran tentang kematian atau bunuh diri (segera cari bantuan jika ini terjadi).', weight: 1, reverse: false },
-        { text: 'Saya merasa memiliki banyak energi dan dapat tidur sedikit tanpa merasa lelah.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya mudah marah atau kesal pada orang lain.', weight: 1, reverse: false },
-        { text: 'Saya merasa memiliki tujuan yang jelas dalam hidup saya.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya memiliki hubungan yang stabil dan mendukung dengan orang-orang terdekat.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya merasa percaya diri dengan kemampuan saya mengatasi masalah.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya sering sakit fisik (seperti sakit kepala atau perut) tanpa penyebab yang jelas.', weight: 1, reverse: false },
-        { text: 'Saya merasa terbebani oleh tanggung jawab sehari-hari saya.', weight: 1, reverse: false },
-        { text: 'Saya dapat menerima dan mengelola emosi saya dengan baik.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya merasa aman dan terlindungi di lingkungan saya.', weight: 1, reverse: true }, // Reverse Score
-        { text: 'Saya sering membandingkan diri saya secara negatif dengan orang lain.', weight: 1, reverse: false },
-        { text: 'Saya mudah terkejut atau kaget oleh suara atau gerakan tiba-tiba.', weight: 1, reverse: false },
-        { text: 'Saya merasa bersyukur atas hal-hal baik dalam hidup saya.', weight: 1, reverse: true }, // Reverse Score
-      ];
-      // Total Soal: 7 + 20 = 27
-      // Total Maksimum Skor: 27 * 3 = 81
+      /* --- 2. SISTEM KUIS (4 Jenis Tes Spesifik) --- */
+      
+      const testHistoryContainer = document.getElementById('testHistoryContainer'); 
+      // BARU: Muat riwayat tes dari localStorage
+      let testHistory = JSON.parse(localStorage.getItem('mindbloowTestHistory')) || [];
+
+      // FUNGSI BARU: Simpan riwayat tes ke localStorage
+      function saveTestHistory() {
+        try {
+            localStorage.setItem('mindbloowTestHistory', JSON.stringify(testHistory));
+        } catch (e) {
+            console.error('Error saving to localStorage:', e);
+            alert('Perangkat Anda mungkin tidak mengizinkan penyimpanan lokal. Riwayat tes tidak akan tersimpan.');
+        }
+      }
+
+      const allTests = {
+          kecemasan: {
+              title: "Tes Kecemasan (GAD-7 Versi Singkat)",
+              questions: [
+                  { text: 'Merasa gugup, gelisah, atau tegang?', weight: 1, reverse: false },
+                  { text: 'Tidak dapat berhenti atau mengendalikan kekhawatiran?', weight: 1, reverse: false },
+                  { text: 'Khawatir berlebihan tentang berbagai hal?', weight: 1, reverse: false },
+                  { text: 'Sulit santai?', weight: 1, reverse: false },
+                  { text: 'Sulit untuk berhenti merasa khawatir?', weight: 1, reverse: false },
+                  { text: 'Sulit untuk tidur karena kecemasan?', weight: 1, reverse: false },
+                  { text: 'Sering membandingkan diri saya secara negatif dengan orang lain.', weight: 1, reverse: false },
+              ],
+              scoring: [ // Max 7*3=21
+                  { maxScore: 4, cat: 'Minimal 🟢', msg: 'Tingkat kecemasanmu saat ini sangat rendah. Pertahankan manajemen stres yang baik!' },
+                  { maxScore: 9, cat: 'Ringan 🟡', msg: 'Ada sedikit kecemasan. Fokus pada relaksasi dan pernapasan.' },
+                  { maxScore: 14, cat: 'Sedang 🟠', msg: 'Tingkat kecemasan sedang. Kami sangat sarankan teknik grounding dan konseling.' },
+                  { maxScore: 21, cat: 'Tinggi 🔴', msg: 'Kecemasan yang tinggi. Wajib segera mencari bantuan profesional.' },
+              ]
+          },
+          suasana_hati: {
+              title: "Tes Suasana Hati (Depresi Versi Singkat)",
+              questions: [
+                  { text: 'Saya merasa sangat sedih atau hampa hampir setiap hari.', weight: 1, reverse: false },
+                  { text: 'Saya kehilangan minat atau kesenangan pada hal-hal yang biasanya saya nikmati.', weight: 1, reverse: false },
+                  { text: 'Saya mengalami perubahan berat badan atau nafsu makan yang signifikan.', weight: 1, reverse: false },
+                  { text: 'Saya merasa lambat atau gelisah, sehingga orang lain bisa melihatnya.', weight: 1, reverse: false },
+                  { text: 'Saya merasa tidak berharga atau merasa bersalah secara berlebihan.', weight: 1, reverse: false },
+                  { text: 'Saya merasa sulit untuk berpikir, berkonsentrasi, atau membuat keputusan.', weight: 1, reverse: false },
+                  { text: 'Saya memiliki pikiran tentang kematian atau bunuh diri (segera cari bantuan jika ini terjadi).', weight: 1, reverse: false },
+              ],
+              scoring: [ // Max 7*3=21
+                  { maxScore: 4, cat: 'Minimal 🟢', msg: 'Suasana hati stabil. Terus jaga koneksi sosial dan aktivitas yang disukai.' },
+                  { maxScore: 9, cat: 'Ringan 🟡', msg: 'Ada tanda-tanda mood menurun. Pastikan tidur dan nutrisi tercukupi.' },
+                  { maxScore: 14, cat: 'Sedang 🟠', msg: 'Tingkat depresi sedang. Konsultasi dan dukungan sosial sangat dianjurkan.' },
+                  { maxScore: 21, cat: 'Tinggi 🔴', msg: 'Tingkat depresi tinggi. Wajib mencari bantuan profesional segera. Kamu tidak sendirian.' },
+              ]
+          },
+          kelelahan: {
+              title: "Tes Kelelahan & Produktivitas (Burnout)",
+              questions: [
+                  { text: 'Kelelahan berkepanjangan meskipun sudah beristirahat.', weight: 1, reverse: false }, 
+                  { text: 'Saya merasa lambat atau gelisah, sehingga orang lain bisa melihatnya.', weight: 1, reverse: false }, 
+                  { text: 'Saya mudah marah atau kesal pada orang lain.', weight: 1, reverse: false },
+                  { text: 'Saya merasa terbebani oleh tanggung jawab sehari-hari saya.', weight: 1, reverse: false },
+                  { text: 'Saya mengalami kesulitan berkonsentrasi dan menyelesaikan pekerjaan.', weight: 1, reverse: false }, 
+                  { text: 'Saya merasa sinis atau acuh tak acuh terhadap pekerjaan atau studi saya.', weight: 1, reverse: false }, 
+                  { text: 'Saya merasa energi saya menurun drastis di pertengahan hari.', weight: 1, reverse: false }, 
+              ],
+              scoring: [ // Max 7*3=21
+                  { maxScore: 6, cat: 'Minimal 🟢', msg: 'Energi dan produktivitas Anda baik. Tetap seimbangkan kerja dan istirahat.' },
+                  { maxScore: 12, cat: 'Ringan 🟡', msg: 'Ada tanda awal kelelahan. Perlu tidur lebih teratur dan ambil cuti sebentar.' },
+                  { maxScore: 16, cat: 'Sedang 🟠', msg: 'Anda mungkin menuju burnout. Segera tetapkan batasan (boundaries) kerja yang ketat.' },
+                  { maxScore: 21, cat: 'Tinggi 🔴', msg: 'Tanda-tanda burnout yang jelas. Ambil istirahat total dan cari dukungan manajemen/profesional.' },
+              ]
+          },
+          stres: {
+              title: "Tes Tingkat Stres Umum",
+              questions: [
+                  { text: 'Saya sering merasa memiliki tujuan yang jelas dalam hidup saya.', weight: 1, reverse: true }, 
+                  { text: 'Saya memiliki hubungan yang stabil dan mendukung dengan orang-orang terdekat.', weight: 1, reverse: true }, 
+                  { text: 'Saya merasa percaya diri dengan kemampuan saya mengatasi masalah.', weight: 1, reverse: true }, 
+                  { text: 'Saya sering sakit fisik (seperti sakit kepala atau perut) tanpa penyebab yang jelas.', weight: 1, reverse: false }, 
+                  { text: 'Saya dapat menerima dan mengelola emosi saya dengan baik.', weight: 1, reverse: true }, 
+                  { text: 'Saya merasa aman dan terlindungi di lingkungan saya.', weight: 1, reverse: true }, 
+                  { text: 'Saya mudah terkejut atau kaget oleh suara atau gerakan tiba-tiba.', weight: 1, reverse: false }, 
+                  { text: 'Saya merasa bersyukur atas hal-hal baik dalam hidup saya.', weight: 1, reverse: true }, 
+              ],
+              scoring: [ // Max 8*3=24
+                  { maxScore: 8, cat: 'Minimal 🟢', msg: 'Tingkat stres umum sangat rendah. Anda memiliki mekanisme koping yang efektif.' },
+                  { maxScore: 14, cat: 'Ringan 🟡', msg: 'Anda menghadapi stres harian yang normal. Jaga keseimbangan hidup.' },
+                  { maxScore: 20, cat: 'Sedang 🟠', msg: 'Stres sedang. Perlu memperkuat jaringan sosial dan fokus pada *self-care*.' },
+                  { maxScore: 24, cat: 'Tinggi 🔴', msg: 'Stres tinggi dan mungkin memengaruhi kesehatan fisik. Perlu perubahan gaya hidup dan konseling.' },
+              ]
+          }
+      };
 
       let currentIdx = 0;
-      let answers = new Array(questions.length).fill(null);
+      let answers = [];
+      let questions = []; 
+      let currentTest = null;
 
       const qArea = document.getElementById('qArea');
       const prevBtn = document.getElementById('prevQ');
@@ -695,17 +772,63 @@
       const resultBox = document.getElementById('resultBox');
       const loadingOverlay = document.getElementById('loadingOverlay');
 
-      function initQuiz() {
+      // FUNGSI RENDER RIWAYAT TES
+      function renderTestHistory() {
+        document.getElementById('testSelection').style.display = 'flex'; // Pastikan pilihan tes terlihat
+        document.getElementById('quizContainer').style.display = 'none';
+        
+        if (testHistory.length === 0) {
+            testHistoryContainer.innerHTML = '';
+            return;
+        }
+
+        let historyHtml = '<h3>Riwayat Hasil Tes</h3>';
+        historyHtml += '<div style="display:flex; flex-direction:column; gap:10px;">';
+        
+        testHistory.slice().reverse().forEach(result => { // Tampilkan yang terbaru di atas
+            historyHtml += `
+                <div style="background:${result.color}; padding:15px; border-radius:12px; border: 1px solid #e2e8f0; font-size:14px;">
+                    <strong style="color:var(--text);">${result.title}</strong>
+                    <span style="float:right; font-size:12px; color:var(--muted);">${result.date}</span>
+                    <p style="margin:5px 0 0 0; line-height:1.5;"><strong>Kategori:</strong> ${result.rawCat} </p>
+                    <p style="margin:5px 0 0 0; font-size:13px; color:#475569;">Pesan: ${result.message}</p>
+                </div>
+            `;
+        });
+        historyHtml += '</div>';
+        
+        testHistoryContainer.innerHTML = historyHtml;
+      }
+
+
+      function initQuiz(testType) {
+        currentTest = allTests[testType];
+        questions = currentTest.questions;
         currentIdx = 0;
-        answers.fill(null);
+        answers = new Array(questions.length).fill(null);
+        
+        document.getElementById('testSelection').style.display = 'none';
+        document.getElementById('quizContainer').style.display = 'block';
+        document.getElementById('quizTitle').innerText = currentTest.title;
+        testHistoryContainer.innerHTML = ''; // Sembunyikan riwayat saat kuis dimulai
+
         resultBox.style.display = 'none';
         loadingOverlay.style.display = 'none';
         qArea.style.display = 'block';
         document.querySelector('.quiz-controls').style.display = 'flex';
         renderQuestion();
       }
+      
+      // Attach click handlers to the new test selection buttons
+      document.querySelectorAll('.test-select').forEach(button => {
+          button.addEventListener('click', () => {
+              initQuiz(button.dataset.test);
+          });
+      });
 
       function renderQuestion() {
+        if (!currentTest) return; // Safety check
+        
         qArea.innerHTML = '';
         const qData = questions[currentIdx];
         
@@ -736,7 +859,7 @@
         });
         qArea.appendChild(choicesDiv);
 
-        const percent = ((currentIdx) / questions.length) * 100;
+        const percent = ((currentIdx + 1) / questions.length) * 100; // +1 to show current question index
         progressBar.style.width = percent + '%';
         
         prevBtn.style.display = currentIdx === 0 ? 'none' : 'inline-flex';
@@ -772,65 +895,89 @@
       function calculateResult() {
         let totalScore = 0;
         let maxPossible = 0;
-        let resultDetail = '';
-        const totalQuestions = questions.length;
         
         answers.forEach((ans, i) => {
           let score = ans; 
           
           // Penyesuaian skor terbalik (Reverse Score)
           if (questions[i].reverse) {
-              score = 3 - ans; // Jika jawaban 0 -> skor 3, 1 -> 2, 2 -> 1, 3 -> 0
+              score = 3 - ans; 
           }
 
           totalScore += score;
           maxPossible += 3; // Maks skor per pertanyaan selalu 3
         });
         
-        // Kategori Skor (Skala Total 0 - 81):
-        // Kami menggunakan persentase untuk kategorisasi yang lebih umum.
-        const percentage = (totalScore / maxPossible) * 100;
-
+        const testScoring = currentTest.scoring;
         let cat = '', msg = '', color = '';
         
-        // Skala Penilaian Baru (Berdasarkan Total 27 Soal, Max Score 81)
-        if (percentage >= 70) {
-            cat = 'Tinggi (Kritis) 🔴';
-            msg = 'Skor ini mengindikasikan tekanan mental yang sangat signifikan dan mengganggu fungsi harian Anda. Saran Penanganan: Wajib mencari bantuan profesional (psikolog/psikiater) segera. Kesehatan Anda adalah prioritas.';
-            color = '#fee2e2'; // Reddish
-        } else if (percentage >= 45) {
-            cat = 'Sedang (Waspada) 🟠';
-            msg = 'Anda mungkin mengalami tingkat tekanan mental yang cukup mengganggu. Saran Penanganan: Sangat disarankan untuk memulai konseling, menerapkan teknik relaksasi rutin, dan mengatur batasan (boundary) yang sehat.';
-            color = '#ffedd5'; // Orange-ish
-        } else if (percentage >= 20) {
-            cat = 'Ringan (Pantau) 🟡';
-            msg = 'Gejala tekanan mental Anda ringan. Saran Penanganan: Fokus pada rutinitas tidur, olahraga, dan journaling untuk memantau emosi. Pertimbangkan konseling jika gejala memburuk.';
-            color = '#fffbeb'; // Yellow-ish
-        } else {
-            cat = 'Minimal (Sehat) 🟢';
-            msg = 'Kesehatan mental Anda tampak terjaga dengan baik. Saran Penanganan: Pertahankan pola hidup sehat (tidur, nutrisi, olahraga) dan gunakan MindBloow AI untuk self-check secara berkala.';
-            color = '#dcfce7'; // Green-ish
+        // Iterate through scoring levels to find the correct category
+        for(const level of testScoring) {
+            if (totalScore <= level.maxScore) {
+                cat = level.cat;
+                msg = level.msg;
+                
+                // Assign color based on category level
+                if (level.cat.includes('🟢')) color = '#dcfce7'; 
+                else if (level.cat.includes('🟡')) color = '#fffbeb';
+                else if (level.cat.includes('🟠')) color = '#ffedd5'; 
+                else if (level.cat.includes('🔴')) color = '#fee2e2'; 
+                
+                break;
+            }
         }
-
-        resultDetail = `Skor Anda: ${totalScore}/${maxPossible} (${percentage.toFixed(1)}%). Total Soal: ${totalQuestions}.`;
-
+        
+        const totalQuestions = questions.length;
+        const percentage = (totalScore / maxPossible) * 100;
+        const resultDetail = `Skor Anda: ${totalScore}/${maxPossible} (${percentage.toFixed(1)}%). Total Soal: ${totalQuestions}.`;
+        
+        // Objek Hasil untuk Riwayat
+        const result = {
+            id: Date.now(),
+            title: currentTest.title,
+            score: totalScore,
+            maxScore: maxPossible,
+            category: cat.replace(/[\u2705\u26a0\u26aa]/g, '').trim(), // Bersihkan emoji
+            message: msg,
+            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+            color: color,
+            rawCat: cat // Kategori mentah dengan emoji untuk tampilan
+        };
+        
+        // Simpan Hasil & Update localStorage
+        testHistory.push(result);
+        saveTestHistory(); // <--- PANGGILAN BARU: Simpan ke perangkat
+        
+        // Render Hasil dengan Tombol "Lanjut Tes Lain"
         resultBox.style.display = 'block';
         resultBox.style.backgroundColor = color;
         resultBox.innerHTML = `
-          <h3 style="margin-top:0">Hasil Tes: ${cat}</h3>
+          <h3 style="margin-top:0">Hasil Tes ${result.title}</h3>
           <p style="font-size:15px; line-height:1.6">${msg}</p>
           <p style="font-size:14px; margin-top:15px;">Detail Skor: ${resultDetail}</p>
           <hr style="border:0; border-top:1px dashed rgba(0,0,0,0.1); margin:15px 0;">
-          <div style="display:flex; gap:10px; justify-content:flex-end">
-            <button id="btnRetake" class="chip">Ulangi Tes</button>
-            <button id="btnChat" class="chip primary-chip">Konsultasi</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end">
+            <button id="btnRetake" class="chip">Ulangi Tes Ini</button>
+            <button id="btnChat" class="chip">Konsultasi</button>
+            <button id="btnNextTest" class="chip primary-chip">Lanjut Tes Lain</button>
           </div>`;
         
-        document.getElementById('btnRetake').onclick = initQuiz;
+        document.getElementById('btnRetake').onclick = () => {
+            // Temukan kunci tes berdasarkan judul, lalu inisialisasi ulang
+            const testKey = Object.keys(allTests).find(key => allTests[key].title === result.title);
+            if(testKey) initQuiz(testKey); 
+        };
         document.getElementById('btnChat').onclick = () => showPage('consult');
+        
+        // Fungsi Tombol Lanjut Tes Lain
+        document.getElementById('btnNextTest').onclick = () => {
+            document.getElementById('quizContainer').style.display = 'none';
+            resultBox.style.display = 'none';
+            renderTestHistory(); // Kembali ke pilihan tes dan tampilkan riwayat
+        };
       }
 
-      /* --- 3. CHATBOT (LOGIKA SESUAI FILE AWAL) --- */
+      /* --- 3. CHATBOT (LOGIKA INTERAKTIF BARU) --- */
       const history = document.getElementById('history');
       const storyInput = document.getElementById('story');
       const sendBtn = document.getElementById('sendBtn');
@@ -844,6 +991,68 @@
         history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
       }
 
+      // Varian Respons untuk Chatbot
+      const responses = {
+        sedih: [
+          "Aku turut merasakan apa yang kamu rasakan. Tidak apa-apa untuk merasa sedih. Coba luangkan 5 menit untuk menuliskan apa pun yang kamu pikirkan (journaling). Kamu hebat karena bertahan sejauh ini. 📝",
+          "Denganku kamu aman. **Kesedihanmu valid**. Bisakah kamu peluk dirimu sebentar? Mengizinkan diri merasakan itu adalah langkah awal penyembuhan. Apa hal kecil yang bisa membuatmu tersenyum hari ini?",
+          "Perasaan ini berat ya. Ingat, emosi itu seperti ombak, dia datang dan pergi. Jangan mencoba melawan kesedihanmu, biarkan saja dia lewat. Aku di sini, menemanimu sampai ombak itu surut. Cerita lagi yuk. **Ingat, selalu ada hari esok yang lebih baik**.",
+          "Sulit sekali ya rasanya. Untuk hari ini, biarkan saja. Tapi besok, aku tantang kamu melakukan satu hal kecil yang pernah kamu nikmati, meski hanya 5 menit. Fokus pada **pemulihan kecil**.",
+        ],
+        cemas: [
+          "Terlihat kamu merasa cemas. Ingat untuk bernapas. Tarik napas **4 detik**, tahan **4 detik**, hembuskan **4 detik**. Lakukan 3 kali. Apakah kamu ingin aku pandu langkah-langkah relaksasi lainnya?",
+          "Kecemasan bisa terasa seperti alarm yang berlebihan. Coba lakukan teknik '**grounding**' 5-4-3-2-1. Ini akan membantumu kembali ke saat ini. Sebutkan 5 hal yang kamu lihat. Ayo kita coba.",
+          "Wajar jika kamu merasa panik, tetapi ini akan berlalu. Ingat, **kekhawatiranmu saat ini hanyalah 'pikiran', bukan 'fakta'**. Apa yang menjadi pemicu utamamu saat ini?",
+          "Aku tahu pikiranmu berlari kencang. Coba tangkap satu pikiran negatifmu. Sekarang, tanyakan pada diri sendiri: **'Apa buktinya ini benar?'** dan **'Apa yang paling mungkin terjadi?'** Tantang pikiranmu. 🧠",
+        ],
+        lelah: [
+          "Kelelahan itu wajar. Tubuh dan pikiranmu butuh istirahat. Mungkin sudah waktunya kamu menetapkan **batasan yang lebih jelas** di tempat kerja atau aktivitasmu. Batasan yang sehat itu bukan egois, lho. 🔋",
+          "Aku bisa merasakan betapa lelahnya kamu. Kamu tidak harus kuat setiap saat. Hari ini, izinkan dirimu beristirahat. Bisakah kamu menunda satu tugas besok? **Prioritaskan diri sendiri**.",
+          "Jika kamu merasa **burnout**, artinya kamu sudah berusaha terlalu keras. Saatnya re-evaluasi. Kualitas istirahat sama pentingnya dengan kualitas bekerja. Apa yang paling memberatkanmu saat ini?",
+          "Coba praktikkan mengatakan '**tidak**' pada satu permintaan yang tidak mendesak. Melindungi energimu adalah bentuk *self-care* paling dasar.",
+        ],
+        sendiri: [
+          "Aku di sini untuk mendengarkan. Kamu tidak sendirian. Bisakah kamu coba menghubungi seseorang yang kamu percayai malam ini? Atau, bagaimana kalau kita coba cari musik yang menenangkan bersama? 🎧",
+          "Kesepian adalah perasaan yang valid. Ingat, **sendirian tidak sama dengan kesepian**. Coba lakukan aktivitas yang kamu nikmati (baca buku, nonton) tanpa perlu interaksi, itu bisa membantu 'mengisi ulang' energimu.",
+          "Sulit ya, rasanya terisolasi. Aku ingin kamu tahu bahwa ada orang di luar sana yang peduli, meskipun kamu belum melihatnya. Ceritakan tentang harimu, aku siap mendengarkan dari awal. 🫂",
+          "Mungkin ini saatnya mencoba aktivitas terstruktur. Coba daftar ke kelas online atau komunitas kecil yang sesuai minatmu. **Koneksi baru bisa dimulai dari hobi**.",
+        ],
+        marah: [
+          "Aku mengerti kamu sedang marah atau frustrasi. Luapkan emosi itu. Kamu bisa menuliskannya atau berteriak di bantal. Tapi pastikan kamu tidak melukai dirimu sendiri atau orang lain. Kenapa kamu merasa marah?",
+          "Kemarahan adalah sinyal bahwa ada **batasan yang dilanggar** atau kebutuhan yang tidak terpenuhi. Tarik napas. Coba identifikasi: Apa yang sebenarnya kamu butuhkan saat ini? Kedamaian? Pengakuan?",
+          "Marah itu sehat, asal disalurkan dengan tepat. Coba ubah energi itu: lakukan olahraga ringan atau berjalan cepat. Setelah itu, kita bicara lagi, ya. 💪",
+          "Seringkali, di balik kemarahan ada rasa sakit. Bisakah kamu temukan, **rasa sakit apa** yang tersembunyi di balik amarah ini? Mari kita selesaikan akar masalahnya.",
+        ],
+        bingung: [
+          "Merasa bingung itu wajar ketika terlalu banyak hal terjadi. Coba kita buat daftar: Apa **3 hal** yang paling mengganggu pikiranmu saat ini? Memilah-milah akan membantu mengurangi kebingungan.",
+          "Kebingungan sering muncul dari perasaan kewalahan. Ambil jeda, hanya 5 menit, dan jangan berpikir. Lalu, mari kita fokus pada **satu masalah** saja. Yang mana yang ingin kita prioritaskan?",
+          "Tidak tahu harus mulai dari mana? Mari kita pecah masalahmu. Bingung dalam hal pekerjaan, hubungan, atau diri sendiri? Menjelaskan kebingunganmu adalah setengah dari solusi! 💡",
+          "Saat bingung, visualisasikan semua masalahmu di atas kertas. Lalu, berikan skor 1-10 untuk tingkat urgensi. **Selesaikan yang skornya paling tinggi dulu**.",
+        ],
+        tidur: [
+          "Masalah tidur sering memengaruhi mood. Coba matikan semua layar (HP/Laptop) 30 menit sebelum tidur dan jaga suhu kamar tetap nyaman (**Sleep Hygiene**). Ini sangat penting untuk pemulihan otakmu. 😴",
+          "Sulit tidur? Mari kita coba '**brain dump**'. Tuliskan semua hal yang kamu khawatirkan di selembar kertas sebelum tidur, lalu singkirkan. Ini membantu pikiranmu 'membersihkan' diri.",
+          "Tidurmu berharga! Hindari kafein dan makanan berat mendekati waktu tidur. Kalau kamu sudah mencoba semua, jangan khawatir, kita akan mencari tips lain besok. Saat ini, fokus relaksasi.",
+          "Coba dengarkan suara alam atau **meditasi terpandu** sebelum tidur. Itu bisa sangat efektif untuk menenangkan sistem sarafmu.",
+        ],
+        hubungan: [ // Kategori Baru
+            "Konflik dalam hubungan itu melelahkan. Ingat prinsip 70/30: Fokus pada 70% hal baik dan cari solusi untuk 30% sisanya. Apa satu hal yang kamu harapkan dari hubungan ini saat ini?",
+            "Saat ada masalah dengan orang lain, coba gunakan kalimat '**Saya merasa**' alih-alih '**Kamu selalu**'. Komunikasi yang tidak menyalahkan bisa membuka jalan keluar. 🗣️",
+            "Sulit untuk berkomunikasi dengan mereka, ya? Cobalah berikan ruang (space) sebentar. Terkadang, mengambil jeda sebelum bicara dapat mencegah ledakan emosi.",
+        ],
+        kerja_kuliah: [ // Kategori Baru
+            "Tekanan kerja/kuliah seringkali memicu stres. Coba terapkan teknik **Pomodoro** (25 menit fokus, 5 menit istirahat). Manajemen waktu yang lebih baik seringkali mengurangi rasa kewalahan.",
+            "Daftar tugasmu terlalu banyak? Pilih **satu tugas paling sulit** dan selesaikan itu di pagi hari. Setelah itu, sisa hari akan terasa lebih ringan.",
+            "Ingat, nilaimu tidak mendefinisikan dirimu. Fokus pada proses, bukan hanya hasil. Apakah kamu sudah mengambil istirahat yang cukup di antara belajarmu hari ini?",
+        ],
+        default: [
+          "Terima kasih sudah berbagi. Boleh ceritakan lebih banyak tentang hal yang sedang mengganggu pikiranmu? Aku siap mendengarkan. 💬",
+          "Aku mendengarkanmu. Cerita apa pun, sekecil apa pun, itu penting. Sejak kapan kamu mulai merasakan ini?",
+          "Terkadang, hanya butuh waktu untuk mengatakan 'Aku tidak baik-baik saja'. Kamu sudah melakukannya, dan itu hebat. Apa yang membuatmu datang ke sini hari ini?",
+          "Aku mengerti kamu sedang mencari dukungan. Jika kamu tidak tahu harus mulai dari mana, bagaimana kalau kamu jelaskan **perasaan fisik** yang kamu rasakan saat ini (misal: tegang di bahu, sakit perut)?",
+        ]
+      };
+
       async function processAI(text) {
         const t = text.toLowerCase();
         const id = 'typing-'+Date.now();
@@ -854,24 +1063,41 @@
         const typingEl = document.getElementById(id);
         if(typingEl) typingEl.parentElement.remove();
 
-        // Logic Safety Check & Groups dari file awal
-        const cues = ['bunuh','bunuh diri','ingin mati','meninggal','takut hidup','gak mau hidup','tidak mau hidup','sudah menyerah','mengakhiri hidup'];
+        // Logic Safety Check & Groups
+        const cues = ['bunuh','bunuh diri','ingin mati','meninggal','takut hidup','gak mau hidup','tidak mau hidup','sudah menyerah','mengakhiri hidup','self harm','melukai diri'];
         if (cues.some(c => t.includes(c))) {
-            addBubble("⚠️ <strong>Pesan Keselamatan:</strong> Aku mendengar kalimat yang membuatku khawatir. Jika kamu berpikir untuk menyakiti diri sendiri, tolong hubungi layanan darurat 119 atau orang terdekat.", 'bot');
+            addBubble("⚠️ <strong>Pesan Keselamatan:</strong> Aku mendengar kalimat yang membuatku khawatir. Jika kamu berpikir untuk menyakiti diri sendiri, tolong hubungi **layanan darurat 119** atau orang terdekat (misalnya Hotline Bunuh Diri). Kamu sangat berharga. Tolong, cari bantuan segera.", 'bot');
             return;
         }
 
-        if (t.includes('sedih') || t.includes('nangis') || t.includes('galau')) {
-            addBubble("Aku ikut sedih mendengar itu. Perasaan sedih itu valid — kamu tidak sendiri. Mau cerita lebih lanjut?", 'bot');
-        } else if (t.includes('cemas') || t.includes('khawatir') || t.includes('panik')) {
-            addBubble("Terlihat kamu merasa cemas. Coba latihan pernapasan 4-4-4 sekarang jika kamu mau. Ingin aku pandu?", 'bot');
-        } else if (t.includes('lelah') || t.includes('capek') || t.includes('burnout')) {
-            addBubble("Kedengaran sangat lelah. Istirahat teratur dan batasan kerja bisa membantu. Apakah tekanan ini berasal dari pekerjaan?", 'bot');
-        } else if (t.includes('tidur')) {
-            addBubble("Masalah tidur sering memengaruhi mood. Coba rutinitas tidur yang teratur.", 'bot');
-        } else {
-            addBubble("Terima kasih sudah berbagi. Boleh ceritakan kapan mulai merasa begini?", 'bot');
+        let responseKey = 'default';
+        // Deteksi Kata Kunci Lebih Spesifik
+        if (t.includes('sedih') || t.includes('nangis') || t.includes('galau') || t.includes('down') || t.includes('hampa') || t.includes('putus asa')) {
+            responseKey = 'sedih';
+        } else if (t.includes('cemas') || t.includes('khawatir') || t.includes('panik') || t.includes('gelisah') || t.includes('deg degan')) {
+            responseKey = 'cemas';
+        } else if (t.includes('lelah') || t.includes('capek') || t.includes('burnout') || t.includes('energi') || t.includes('stamina')) {
+            responseKey = 'lelah';
+        } else if (t.includes('sendiri') || t.includes('kesepian') || t.includes('terisolasi') || t.includes('ditinggal')) {
+            responseKey = 'sendiri';
+        } else if (t.includes('marah') || t.includes('frustasi') || t.includes('kesal') || t.includes('emosi') || t.includes('benci')) {
+            responseKey = 'marah';
+        } else if (t.includes('bingung') || t.includes('kewalahan') || t.includes('jalan keluar') || t.includes('tidak tahu') || t.includes('serba salah')) {
+             responseKey = 'bingung';
+        } else if (t.includes('tidur') || t.includes('insomnia') || t.includes('susah tidur') || t.includes('terbangun')) {
+            responseKey = 'tidur';
+        } else if (t.includes('pacar') || t.includes('pasangan') || t.includes('suami') || t.includes('istri') || t.includes('teman') || t.includes('konflik') || t.includes('berantem')) {
+            responseKey = 'hubungan';
+        } else if (t.includes('kerja') || t.includes('kuliah') || t.includes('tugas') || t.includes('deadline') || t.includes('sekolah') || t.includes('kantor')) {
+            responseKey = 'kerja_kuliah';
         }
+        
+        // Randomly select a response
+        const availableResponses = responses[responseKey];
+        const randomIndex = Math.floor(Math.random() * availableResponses.length);
+        const selectedResponse = availableResponses[randomIndex];
+        
+        addBubble(selectedResponse, 'bot');
       }
 
       if (sendBtn) {
@@ -883,12 +1109,16 @@
           processAI(txt);
         });
         storyInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendBtn.click(); });
-        clearBtn.addEventListener('click', () => { history.innerHTML = '<div class="bubble bot">Halo! Aku MindBloow AI. Chat sudah dibersihkan.</div>'; });
+        clearBtn.addEventListener('click', () => { history.innerHTML = '<div class="bubble bot">Halo! Aku MindBloow AI. Chat sudah dibersihkan. Aku di sini untuk mendengarkan tanpa menghakimi. Apa yang sedang kamu rasakan?</div>'; });
         document.querySelectorAll('.quick').forEach(btn => {
           btn.addEventListener('click', () => { 
-            let btnText = btn.innerText.replace(/[\uD800-\uDBFF\uDC00-\uDFFF]/g, '').trim(); 
-            storyInput.value = btnText; 
-            sendBtn.click(); 
+            // Ambil data-q untuk logika AI, tapi kirim innerText ke bubble user
+            const query = btn.dataset.q;
+            const btnText = btn.innerText.replace(/[\uD800-\uDBFF\uDC00-\uDFFF]/g, '').trim(); 
+            
+            addBubble(btnText, 'user');
+            storyInput.value = '';
+            processAI(query);
           });
         });
       }
